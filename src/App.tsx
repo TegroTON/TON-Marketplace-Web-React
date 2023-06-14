@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect } from 'react'
 
 import {
     AppRoot,
@@ -11,36 +11,19 @@ import {
     FormItem,
     Input,
     Snackbar,
-    ScreenSpinner,
-} from "@vkontakte/vkui";
-import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
+    ScreenSpinner
+} from '@vkontakte/vkui'
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 
 import {
     Icon24Dismiss,
     Icon28CancelCircleFillRed,
-    Icon28CheckCircleFill,
-} from "@vkontakte/icons";
-import { VldBuilder, vlds } from "validatorus-react";
+    Icon28CheckCircleFill
+} from '@vkontakte/icons'
+import { VldBuilder, vlds } from 'validatorus-react'
 
 import { Coins } from 'ton3'
 
-import { Main } from "./pages/main";
-import { Explore } from "./pages/explore";
-import { Rankings } from "./pages/rankings";
-import { Collection } from "./pages/collection";
-import { User1 } from "./pages/user1";
-import { SuccessfullyPut } from "./pages/successfully-put";
-import { CreateNft } from "./pages/create-nft";
-import { NotFound404 } from "./pages/404";
-import { CollectionItem } from "./pages/collection-item";
-import { Launchpad } from "./pages/launchpad";
-import { LaunchpadActive } from "./pages/launchpad-active";
-import { Profile } from "./pages/profile";
-
-import { HeaderBlock } from "./layout/header";
-import { FooterBlock } from "./layout/footer";
-
-import { Modals } from "./block/modal";
 import {
     DeLabAddress,
     DeLabConnect,
@@ -48,61 +31,78 @@ import {
     DeLabEvent,
     DeLabNetwork,
     DeLabTransaction,
-    DeLabTypeConnect,
-} from "@delab-team/connect";
-import { Item } from "./logic/tonapi";
-import { rawToTon } from "./logic/utils";
+    DeLabTypeConnect
+} from '@delab-team/connect'
+import { Address, TonClient } from 'ton'
+import { Main } from './pages/main'
+import { Explore } from './pages/explore'
+import { Rankings } from './pages/rankings'
+import { Collection } from './pages/collection'
+import { User1 } from './pages/user1'
+import { SuccessfullyPut } from './pages/successfully-put'
+import { CreateNft } from './pages/create-nft'
+import { NotFound404 } from './pages/404'
+import { CollectionItem } from './pages/collection-item'
+import { Launchpad } from './pages/launchpad'
+import { LaunchpadActive } from './pages/launchpad-active'
+import { Profile } from './pages/profile'
+
+import { HeaderBlock } from './layout/header'
+import { FooterBlock } from './layout/footer'
+
+import { Modals } from './block/modal'
+import { Item } from './logic/tonapi'
+import { rawToTon } from './logic/utils'
 
 const DeLabConnector = new DeLabConnect(
-    "https://example.com",
-    "Libermall",
-    "mainnet"
-);
+    'https://example.com',
+    'Libermall',
+    'mainnet'
+)
 
 export const App: React.FC = () => {
-    const [activeModal, setActiveModal] = React.useState<any>(null);
+    const [ activeModal, setActiveModal ] = React.useState<any>(null)
 
-    const [snackbar, setSnackbar] = React.useState<any>(null);
+    const [ snackbar, setSnackbar ] = React.useState<any>(null)
 
-    const [popout, setPopout] = React.useState<any>(null);
+    const [ popout, setPopout ] = React.useState<any>(null)
 
-    const [firstRender, setFirstRender] = React.useState<boolean>(false);
+    const [ firstRender, setFirstRender ] = React.useState<boolean>(false)
 
-    const [DelabLink, setDelabLink] = React.useState<string>("");
+    const [ DelabLink, setDelabLink ] = React.useState<string>('')
 
-    const [isConnected, setIsConnected] = React.useState<boolean>(false);
-    const [address, setAddress] = React.useState<DeLabAddress>(undefined);
-    const [network, setNetwork] = React.useState<DeLabNetwork>("mainnet");
-    const [typeConnect, setTypeConnect] =
-        React.useState<DeLabTypeConnect>(undefined);
+    const [ isConnected, setIsConnected ] = React.useState<boolean>(false)
+    const [ address, setAddress ] = React.useState<DeLabAddress>(undefined)
+    const [ balance, setBalance ] = React.useState<string | undefined>(undefined)
+    const [ network, setNetwork ] = React.useState<DeLabNetwork>('mainnet')
+    const [ typeConnect, setTypeConnect ] = React.useState<DeLabTypeConnect>(undefined)
 
-    const [modalData, setModalData] = React.useState<any | undefined>(undefined);
+    const [ modalData, setModalData ] = React.useState<any | undefined>(undefined)
 
+    const isDesktop = window.innerWidth >= 1200
 
-    const isDesktop = window.innerWidth >= 1200;
+    const location = useLocation()
 
-    const location = useLocation();
+    const history = useNavigate()
 
-    const history = useNavigate();
-
-    function openPop() {
-        setPopout(<ScreenSpinner state="loading" />);
+    function openPop () {
+        setPopout(<ScreenSpinner state="loading" />)
     }
 
-    function closePop(type: boolean) {
-        if (type) setPopout(<ScreenSpinner state="done" aria-label="Success" />);
-        else setPopout(<ScreenSpinner state="error" aria-label="Error" />);
+    function closePop (type: boolean) {
+        if (type) setPopout(<ScreenSpinner state="done" aria-label="Success" />)
+        else setPopout(<ScreenSpinner state="error" aria-label="Error" />)
 
         setTimeout(() => {
-            setPopout(null);
-        }, 1000);
+            setPopout(null)
+        }, 1000)
     }
 
     const input = new VldBuilder()
         .with(vlds.VLen, 4, 128)
-        .withFname("Merchant name");
+        .withFname('Merchant name')
 
-    function consoleLog(data: string, type: boolean = false) {
+    function consoleLog (data: string, type: boolean = false) {
         setSnackbar(
             <Snackbar
                 before={
@@ -112,26 +112,26 @@ export const App: React.FC = () => {
             >
                 {data}
             </Snackbar>
-        );
+        )
     }
 
-    function openLink(url: string) {
-        const link2 = document.createElement("a");
-        link2.href = url;
-        link2.target = "_blank";
-        link2.click();
+    function openLink (url: string) {
+        const link2 = document.createElement('a')
+        link2.href = url
+        link2.target = '_blank'
+        link2.click()
     }
 
-    function regListen() {
-        DeLabConnector.on("link", (data: DeLabEvent) => {
-            setDelabLink(data.data ?? "");
+    function regListen () {
+        DeLabConnector.on('link', (data: DeLabEvent) => {
+            setDelabLink(data.data ?? '')
             // setType(1)
 
-            console.log("link", data.data);
+            console.log('link', data.data)
 
-            const typeWallet = data.data.indexOf("tonhub") > -1;
+            const typeWallet = data.data.indexOf('tonhub') > -1
             // if (!isDesktop)
-            openLink(data.data);
+            // openLink(data.data);
 
             // const tonconnectImg = props.DeLabConnectObject.tonConnectWallet?.imageUrl
 
@@ -139,43 +139,49 @@ export const App: React.FC = () => {
             //     data: data.data,
             //     image: typeWallet ? tonhubLogo : tonkeeperLogo
             // })
-        });
+        })
 
-        DeLabConnector.on("connected", () => {
+        DeLabConnector.on('connected', () => {
             // setIsOpenModal(false)
             // setType(0)
-            setDelabLink("");
-            document.querySelector("#ConnectModal")?.setAttribute("style", "");
-        });
+            setDelabLink('')
+            document.querySelector('#ConnectModal')?.setAttribute('style', '')
+        })
 
-        DeLabConnector.on("connect", (data: DeLabEvent) => {
-            setIsConnected(true);
-            const connectConfig: DeLabConnecting = data.data;
-            setAddress(connectConfig.address);
-            setTypeConnect(connectConfig.typeConnect);
-            setNetwork(connectConfig.network);
+        DeLabConnector.on('connect', async (data: DeLabEvent) => {
+            setIsConnected(true)
+            const connectConfig: DeLabConnecting = data.data
+            setAddress(connectConfig.address)
+            setTypeConnect(connectConfig.typeConnect)
+            setNetwork(connectConfig.network)
+
+            if (connectConfig.address) {
+                const client = new TonClient({ endpoint: 'https://mainnet.tonhubapi.com/jsonRPC' })
+                const bl = await client.getBalance(Address.parse(connectConfig.address))
+                setBalance(bl.toString())
+            }
 
             // document.querySelector('#ConnectModal')?.setAttribute('style', '')
             // document.querySelector('.modal-backdrop')?.setAttribute('style', 'display: none')
 
             const bthClose = document.querySelector(
-                "button.modal-close"
-            ) as HTMLElement;
+                'button.modal-close'
+            ) as HTMLElement
 
-            bthClose.click();
-        });
+            bthClose.click()
+        })
 
-        DeLabConnector.on("disconnect", () => {
-            setIsConnected(false);
-            setAddress(undefined);
-            setTypeConnect(undefined);
-            setNetwork("mainnet");
-            console.log("disconect");
-        });
+        DeLabConnector.on('disconnect', () => {
+            setIsConnected(false)
+            setAddress(undefined)
+            setTypeConnect(undefined)
+            setNetwork('mainnet')
+            console.log('disconect')
+        })
     }
 
-    function openModalConnect() {
-        DeLabConnector.openModal();
+    function openModalConnect () {
+        DeLabConnector.openModal()
     }
 
     function openModalData (modal: string | undefined, data: any | undefined) {
@@ -198,57 +204,56 @@ export const App: React.FC = () => {
 
     useEffect(() => {
         if (!firstRender) {
-            setFirstRender(true);
+            setFirstRender(true)
 
-            regListen();
+            regListen()
 
             installScripts()
         }
-    }, []);
+    }, [])
 
-    function installScripts() {
-        document.querySelectorAll(".script-del").forEach((el) => el.remove());
+    function installScripts () {
+        document.querySelectorAll('.script-del').forEach(el => el.remove())
 
-        const script1 = document.createElement("script");
-        const script2 = document.createElement("script");
-        const script3 = document.createElement("script");
-        const script4 = document.createElement("script");
+        const script1 = document.createElement('script')
+        const script2 = document.createElement('script')
+        const script3 = document.createElement('script')
+        const script4 = document.createElement('script')
 
-        script1.setAttribute("src", "/assets/js/popper.min.js");
-        script2.setAttribute("src", "/assets/js/slick.min.js");
-        script3.setAttribute("src", "/assets/js/settings.js");
-        script4.setAttribute("src", "/assets/js/bootstrap.min.js");
+        script1.setAttribute('src', '/assets/js/popper.min.js')
+        script2.setAttribute('src', '/assets/js/slick.min.js')
+        script3.setAttribute('src', '/assets/js/settings.js')
+        script4.setAttribute('src', '/assets/js/bootstrap.min.js')
 
-        script1.setAttribute("class", "script-del");
-        script2.setAttribute("class", "script-del");
-        script3.setAttribute("class", "script-del");
-        script4.setAttribute("class", "script-del");
+        script1.setAttribute('class', 'script-del')
+        script2.setAttribute('class', 'script-del')
+        script3.setAttribute('class', 'script-del')
+        script4.setAttribute('class', 'script-del')
 
         // document.querySelector('body')?.appendChild(script1)
 
         // document.querySelector('body')?.appendChild(script4)
 
-        document.querySelector("body")?.appendChild(script2);
-        document.querySelector("body")?.appendChild(script3);
+        document.querySelector('body')?.appendChild(script2)
+        document.querySelector('body')?.appendChild(script3)
 
-        console.log("install");
+        console.log('install')
     }
 
-
     useEffect(() => {
-        setTimeout(()=>{
+        setTimeout(() => {
             installScripts()
         }, 1000)
-    }, [location.pathname]);
+    }, [ location.pathname ])
 
     useEffect(() => {
-        input.reset(true, true);
-    }, [activeModal]);
+        input.reset(true, true)
+    }, [ activeModal ])
 
     const modalRoot = (
         <ModalRoot activeModal={activeModal}>
             <ModalPage
-                id={"create_merchant"}
+                id={'create_merchant'}
                 className="polus"
                 onClose={() => setActiveModal(null)}
                 dynamicContentHeight
@@ -274,7 +279,7 @@ export const App: React.FC = () => {
                             placeholder="Company name"
                             value={input.value}
                             onChange={(e) => {
-                                input.change(e.target.value);
+                                input.change(e.target.value)
                             }}
                             status={input.iserr}
                         />
@@ -282,13 +287,13 @@ export const App: React.FC = () => {
                 </Div>
             </ModalPage>
         </ModalRoot>
-    );
+    )
 
     return (
         <AppRoot>
             <SplitLayout
                 className="polus"
-                style={{ justifyContent: "center" }}
+                style={{ justifyContent: 'center' }}
                 modal={modalRoot}
                 popout={popout}
             // header={isDesktop
@@ -302,6 +307,7 @@ export const App: React.FC = () => {
                     openModalConnect={openModalConnect}
                     address={address}
                     DelabObject={DeLabConnector}
+                    balance={balance}
                 />
 
                 <Routes>
@@ -494,7 +500,10 @@ export const App: React.FC = () => {
                     />
                 </Routes>
 
-                <FooterBlock />
+                <FooterBlock
+                    openModalConnect={openModalConnect}
+                    address={address}
+                    DelabObject={DeLabConnector} />
 
                 <Modals
                     id="modals"
@@ -511,5 +520,5 @@ export const App: React.FC = () => {
                 {snackbar}
             </SplitLayout>
         </AppRoot>
-    );
-};
+    )
+}

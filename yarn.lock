@@ -1209,12 +1209,12 @@
   resolved "https://registry.npmjs.org/@csstools/selector-specificity/-/selector-specificity-2.0.2.tgz"
   integrity sha512-IkpVW/ehM1hWKln4fCA3NzJU8KwD+kIOvPZA4cqxoJHtE21CCzjyp+Kxbu0i5I4tBNOlXPL9mjwnWlL0VEG4Fg==
 
-"@delab-team/connect@^1.4.2":
-  version "1.4.2"
-  resolved "https://registry.yarnpkg.com/@delab-team/connect/-/connect-1.4.2.tgz#eabc82ce2659862374bd165f536cd1ca214365f2"
-  integrity sha512-QSdywXdPokJz5BSR1ThD9WFtv7dOor2HDchl42/Jd9vh2Txby6/grWg9GeXw9zNIQIFcZs9P1vWDsGGyUnaNrg==
+"@delab-team/connect@^1.4.4":
+  version "1.4.4"
+  resolved "https://registry.yarnpkg.com/@delab-team/connect/-/connect-1.4.4.tgz#1e3337a5e6301e8601414e91e320f56873c2dd11"
+  integrity sha512-yEVtGmW1eNUrMJziNHY4h/++PkfocQxP5f21Ao05UkWRbjSa4OlVGgOohQiNsFYeOmUA88Bc/yQ5nGh/s08NVg==
   dependencies:
-    "@tonconnect/sdk" "^2.0.7"
+    "@tonconnect/sdk" "^2.1.3"
     "@vkontakte/icons" "^1.184.0"
     buffer "^6.0.3"
     crypto-browserify "^3.12.0"
@@ -1853,11 +1853,33 @@
   resolved "https://registry.yarnpkg.com/@ton.org/func-js/-/func-js-0.1.3.tgz#75edeee566d95af9df64f0346cdf01e90370b300"
   integrity sha512-/XtBVF9rxCez/tzbzbWhxPt4FLIN7Ca+EbB43JE0xfTmK4vjdjlDNS2erl7Re1xEQhEkEngd7J41S+Pf30uLkA==
 
+"@tonconnect/isomorphic-eventsource@^0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@tonconnect/isomorphic-eventsource/-/isomorphic-eventsource-0.0.1.tgz#199e5a86c31dad706b79826f65879e0d77d3dd51"
+  integrity sha512-ODk48pMlqLSOvu3fM0R1sdlz/Cv2y4hSfwtXmLq9ky9+H7ZQfw/16ElpIJ69B4lUvHycxrueNgrRtF9PJHoGMw==
+  dependencies:
+    eventsource "^2.0.2"
+
+"@tonconnect/isomorphic-fetch@^0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@tonconnect/isomorphic-fetch/-/isomorphic-fetch-0.0.2.tgz#c09ff05a409ec89262c369d4bf27305820cdaa33"
+  integrity sha512-DAyA4oL7MqbBo9k8+8E+YiWsGCYi6UMhDTcsZjhgzhESkBNG6b+NBkpb1KH4oi0xDZQoknFtY9XogJLuQtSMQQ==
+  dependencies:
+    node-fetch "^2.6.9"
+
 "@tonconnect/protocol@^2.0.1":
   version "2.1.0"
   resolved "https://registry.npmjs.org/@tonconnect/protocol/-/protocol-2.1.0.tgz"
   integrity sha512-9TTWx9lYmSMaI+C0k90IoeFogdO28RrXgI3QW50mJe+y10adbldNjbteaVHGuZ61KNZehkmfLaUrxEWW7vhcbw==
   dependencies:
+    tweetnacl-util "^0.15.1"
+
+"@tonconnect/protocol@^2.2.5":
+  version "2.2.5"
+  resolved "https://registry.yarnpkg.com/@tonconnect/protocol/-/protocol-2.2.5.tgz#15369801708354821295a6d284f0267799ac48cc"
+  integrity sha512-kR0E+CWZl6JrE/30283v+sRiAvEu21t1xOLFx6f/BxlCNLY2wki39+L32+iicX8gn/Ig99L1flr9TAI9QW9bnQ==
+  dependencies:
+    tweetnacl "^1.0.3"
     tweetnacl-util "^0.15.1"
 
 "@tonconnect/sdk@^2.0.7":
@@ -1870,6 +1892,15 @@
     eventsource "^2.0.2"
     node-fetch "^2.6.7"
     tweetnacl "^1.0.3"
+
+"@tonconnect/sdk@^2.1.3":
+  version "2.1.3"
+  resolved "https://registry.yarnpkg.com/@tonconnect/sdk/-/sdk-2.1.3.tgz#c147361474b074c904722691027fac4ba942693c"
+  integrity sha512-LxHJr96NvGTqj4qSKYPPS/7fMlUpHNyj5bCNlzY5xMW8JmdgPj+jXxm5wEI00xBWy478dbE9ZaBhLMLH1V2wZw==
+  dependencies:
+    "@tonconnect/isomorphic-eventsource" "^0.0.1"
+    "@tonconnect/isomorphic-fetch" "^0.0.2"
+    "@tonconnect/protocol" "^2.2.5"
 
 "@tootallnate/once@1":
   version "1.1.2"
@@ -2122,6 +2153,13 @@
   integrity sha512-rLVtIfbwyur2iFKykP2w0pl/1unw26b5td16d5xMgp7/yjTHomkyxPYChFoCr/FtEX1lN9wY6lFj1qvKdS5kDw==
   dependencies:
     "@types/react" "^17"
+
+"@types/react-slick@^0.23.10":
+  version "0.23.10"
+  resolved "https://registry.yarnpkg.com/@types/react-slick/-/react-slick-0.23.10.tgz#56126e6e4e95cdce7771535b2811c2c1931a7caa"
+  integrity sha512-ZiqdencANDZy6sWOWJ54LDvebuXFEhDlHtXU9FFipQR2BcYU2QJxZhvJPW6YK7cocibUiNn+YvDTbt1HtCIBVA==
+  dependencies:
+    "@types/react" "*"
 
 "@types/react-transition-group@^4.4.4":
   version "4.4.5"
@@ -7582,6 +7620,13 @@ node-fetch@^2.6.7:
   version "2.6.9"
   resolved "https://registry.npmjs.org/node-fetch/-/node-fetch-2.6.9.tgz"
   integrity sha512-DJm/CJkZkRjKKj4Zi4BsKVZh3ValV5IR5s7LVZnW+6YMh0W1BfNA8XSs6DLMGYlId5F3KnA70uu2qepcR08Qqg==
+  dependencies:
+    whatwg-url "^5.0.0"
+
+node-fetch@^2.6.9:
+  version "2.6.11"
+  resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.11.tgz#cde7fc71deef3131ef80a738919f999e6edfff25"
+  integrity sha512-4I6pdBY1EthSqDmJkiNk3JIT8cswwR9nfeW/cPdUagJYEQG7R95WRH74wpz7ma8Gh/9dI9FP+OU+0E4FvtA55w==
   dependencies:
     whatwg-url "^5.0.0"
 

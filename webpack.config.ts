@@ -67,7 +67,7 @@ const config: Configuration = {
         new HtmlWebpackPlugin({ template: path.join(__dirname, 'public', 'index.html') }),
         new SourceMapDevToolPlugin({ filename: '[file].map' }),
         new ProvidePlugin({ Buffer: [ 'buffer', 'Buffer' ] }),
-        new ProvidePlugin({ process: 'process/browser' }),
+        new ProvidePlugin({ process: 'process/browser.js' }),
         new DefinePlugin({ 'process.env': JSON.stringify(process.env) }),
         new NormalModuleReplacementPlugin(/node:/, (resource) => {
             const mod = resource.request.replace(/^node:/, '')
@@ -82,7 +82,7 @@ const config: Configuration = {
     ],
     resolve: {
         extensions: [ '.ts', '.tsx', '.js' ],
-        alias: { process: 'process/browser' },
+        alias: { process: 'process/browser.js' },
         fallback: {
             util: require.resolve('util/'),
             crypto: require.resolve('crypto-browserify'),

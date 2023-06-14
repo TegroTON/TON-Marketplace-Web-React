@@ -1,20 +1,20 @@
-import {Address, Cell, contractAddress, StateInit} from "ton";
-import {NftItemCodeCell, NftSingleCodeCell} from "./NftItem.source";
-import BN from "bn.js";
-import {encodeOnChainContent, encodeOffChainContent} from "../../nft-content/nftContent";
-import {Queries as CollectionQueries} from '../nft-collection/NftCollection.data'
+import { Address, Cell, contractAddress, StateInit } from 'ton'
+import BN from 'bn.js'
+import { NftItemCodeCell, NftSingleCodeCell } from './NftItem.source'
+import { encodeOnChainContent, encodeOffChainContent } from '../../nft-content/nftContent'
+import { Queries as CollectionQueries } from '../nft-collection/NftCollection.data'
 
 export type NftItemData = {
-    index: number
-    collectionAddress: Address | null
-    ownerAddress: Address
+    index: number,
+    collectionAddress: Address | null,
+    ownerAddress: Address,
     content: string
 }
 
-export function buildNftItemDataCell(data: NftItemData) {
-    let dataCell = new Cell()
+export function buildNftItemDataCell (data: NftItemData) {
+    const dataCell = new Cell()
 
-    let contentCell = new Cell()
+    const contentCell = new Cell()
     // contentCell.bits.writeString(data.content)
     contentCell.bits.writeBuffer(Buffer.from(data.content))
 
@@ -26,8 +26,8 @@ export function buildNftItemDataCell(data: NftItemData) {
     return dataCell
 }
 
-export function buildNftItemDeployMessage(conf: { queryId?: number, collectionAddress: Address, passAmount: BN, itemIndex: number, itemOwnerAddress: Address, itemContent: string }) {
-    let msgBody = CollectionQueries.mint(conf)
+export function buildNftItemDeployMessage (conf: { queryId?: number, collectionAddress: Address, passAmount: BN, itemIndex: number, itemOwnerAddress: Address, itemContent: string }) {
+    const msgBody = CollectionQueries.mint(conf)
 
     return {
         messageBody: msgBody,
@@ -37,25 +37,25 @@ export function buildNftItemDeployMessage(conf: { queryId?: number, collectionAd
 
 export type RoyaltyParams = {
     // numerator
-    royaltyFactor: number
+    royaltyFactor: number,
     // denominator
-    royaltyBase: number
+    royaltyBase: number,
     royaltyAddress: Address
 }
 
 export type NftSingleData = {
-    ownerAddress: Address
-    editorAddress: Address
-    content: string
+    ownerAddress: Address,
+    editorAddress: Address,
+    content: string,
     royaltyParams: RoyaltyParams
 }
 
-export function buildSingleNftDataCell(data: NftSingleData) {
-    let dataCell = new Cell()
+export function buildSingleNftDataCell (data: NftSingleData) {
+    const dataCell = new Cell()
 
-    let contentCell = encodeOnChainContent(data.content)
+    const contentCell = encodeOnChainContent(data.content)
 
-    let royaltyCell = new Cell()
+    const royaltyCell = new Cell()
     royaltyCell.bits.writeUint(data.royaltyParams.royaltyFactor, 16)
     royaltyCell.bits.writeUint(data.royaltyParams.royaltyBase, 16)
     royaltyCell.bits.writeAddress(data.royaltyParams.royaltyAddress)
@@ -68,18 +68,18 @@ export function buildSingleNftDataCell(data: NftSingleData) {
     return dataCell
 }
 
-export function buildSingleNftStateInit(conf: NftSingleData) {
-    let dataCell = buildSingleNftDataCell(conf)
+export function buildSingleNftStateInit (conf: NftSingleData) {
+    const dataCell = buildSingleNftDataCell(conf)
 
-    let stateInit = new StateInit({
+    const stateInit = new StateInit({
         code: NftSingleCodeCell,
         data: dataCell
     })
 
-    let stateInitCell = new Cell()
+    const stateInitCell = new Cell()
     stateInit.writeTo(stateInitCell)
 
-    let address = contractAddress({workchain: 0, initialCode: NftSingleCodeCell, initialData: dataCell})
+    const address = contractAddress({ workchain: 0, initialCode: NftSingleCodeCell, initialData: dataCell })
 
     return {
         stateInit: stateInitCell,
@@ -100,7 +100,7 @@ export const OperationCodes = {
 
 export const Queries = {
     transfer: (params: { queryId?: number, newOwner: Address, responseTo?: Address, forwardAmount?: BN }) => {
-        let msgBody = new Cell()
+        const msgBody = new Cell()
         msgBody.bits.writeUint(OperationCodes.transfer, 32)
         msgBody.bits.writeUint(params.queryId || 0, 64)
         msgBody.bits.writeAddress(params.newOwner)
@@ -111,37 +111,37 @@ export const Queries = {
 
         return msgBody
     },
-    getStaticData: (params: {queryId?: number}) => {
-        let msgBody = new Cell()
+    getStaticData: (params: { queryId?: number }) => {
+        const msgBody = new Cell()
         msgBody.bits.writeUint(OperationCodes.getStaticData, 32)
         msgBody.bits.writeUint(params.queryId || 0, 64)
         return msgBody
     },
     getRoyaltyParams: (params: { queryId?: number }) => {
-        let msgBody = new Cell()
+        const msgBody = new Cell()
         msgBody.bits.writeUint(OperationCodes.GetRoyaltyParams, 32)
         msgBody.bits.writeUint(params.queryId || 0, 64)
         return msgBody
     },
-    editContent: (params: { queryId?: number,  content: string, royaltyParams: RoyaltyParams  }) => {
-        let msgBody = new Cell()
+    editContent: (params: { queryId?: number, content: string, royaltyParams: RoyaltyParams }) => {
+        const msgBody = new Cell()
         msgBody.bits.writeUint(OperationCodes.EditContent, 32)
         msgBody.bits.writeUint(params.queryId || 0, 64)
 
-        let royaltyCell = new Cell()
+        const royaltyCell = new Cell()
         royaltyCell.bits.writeUint(params.royaltyParams.royaltyFactor, 16)
         royaltyCell.bits.writeUint(params.royaltyParams.royaltyBase, 16)
         royaltyCell.bits.writeAddress(params.royaltyParams.royaltyAddress)
 
-        let contentCell = encodeOffChainContent(params.content)
+        const contentCell = encodeOffChainContent(params.content)
 
         msgBody.refs.push(contentCell)
         msgBody.refs.push(royaltyCell)
 
         return msgBody
     },
-    transferEditorship: (params: { queryId?: number, newEditor: Address, responseTo: Address|null, forwardAmount?: BN }) => {
-        let msgBody = new Cell()
+    transferEditorship: (params: { queryId?: number, newEditor: Address, responseTo: Address | null, forwardAmount?: BN }) => {
+        const msgBody = new Cell()
         msgBody.bits.writeUint(OperationCodes.TransferEditorship, 32)
         msgBody.bits.writeUint(params.queryId || 0, 64)
         msgBody.bits.writeAddress(params.newEditor)
@@ -151,5 +151,5 @@ export const Queries = {
         msgBody.bits.writeBit(0) // no forward_payload yet
 
         return msgBody
-    },
+    }
 }

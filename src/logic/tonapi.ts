@@ -1,4 +1,4 @@
-import axios from "axios"
+import axios from 'axios'
 
 interface Attribute {
     trait_type: undefined | string,
@@ -99,14 +99,12 @@ interface Account {
 export class TonApi {
     private _url: string = 'https://tonapi.io/v1/'
 
-    private _token: string = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIxMjI0Iiwic2NvcGUiOiJjbGllbnQifQ.vvtwTq9kO89CNP2635wImtrzshdrAM9AYaIbQNqfJHQ'
+    // private _token: string = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIxMjI0Iiwic2NvcGUiOiJjbGllbnQifQ.vvtwTq9kO89CNP2635wImtrzshdrAM9AYaIbQNqfJHQ'
+
+    private _token: string = 'AFXRKLZM2YCJ67AAAAAE4XDRSACSYEOYKQKOSUVUKMXNMP2AKUTWJ2UVBPTTQZWRGZMLALY'
 
     public async send (url: string, data: any): Promise<any | undefined> {
-        const res = await axios.get(`${this._url}${url}?${new URLSearchParams(data)}`,{
-            headers: {
-                'Authorization': `Bearer ${this._token}`
-            }
-        })
+        const res = await axios.get(`${this._url}${url}?${new URLSearchParams(data)}`, { headers: { Authorization: `Bearer ${this._token}` } })
 
         if (res.data.error) {
             console.error(res.data.result)
@@ -115,50 +113,50 @@ export class TonApi {
         return res.data
     }
 
-    public async getItems (address: string): Promise<Items | undefined>  {
-        const data = await this.send('nft/getItems', { addresses: address } )
+    public async getItems (address: string): Promise<Items | undefined> {
+        const data = await this.send('nft/getItems', { addresses: address })
 
         console.log(data)
         return data
     }
 
     public async getCollection (address: string): Promise<Collection | undefined> {
-        const data = await this.send('nft/getCollection', { account: address } )
+        const data = await this.send('nft/getCollection', { account: address })
 
         console.log(data)
         return data
     }
 
     public async getCollections (limit:number = 100, offset: number = 0): Promise<Collections | undefined> {
-        const data = await this.send('nft/getCollections', { limit, offset } )
+        const data = await this.send('nft/getCollections', { limit, offset })
 
         console.log(data)
         return data
     }
 
-    public async searchItems (address: string, limit:number = 100, offset: number = 0 ): Promise<Items | undefined> {
-        const data = await this.send('nft/searchItems', { collection: address, limit, offset } )
+    public async searchItems (address: string, limit:number = 100, offset: number = 0): Promise<Items | undefined> {
+        const data = await this.send('nft/searchItems', { collection: address, limit, offset })
 
         console.log(data)
         return data
     }
 
-    public async searchItemsFromUser (address: string, limit:number = 100, offset: number = 0 ): Promise<Items | undefined> {
-        const data = await this.send('nft/searchItems', { owner: address, limit, offset, include_on_sale: true } )
+    public async searchItemsFromUser (address: string, limit:number = 100, offset: number = 0): Promise<Items | undefined> {
+        const data = await this.send('nft/searchItems', { owner: address, limit, offset, include_on_sale: true })
 
         console.log(data)
         return data
     }
 
-    public async searchItemsfull ( limit:number = 100, offset: number = 0 ): Promise<Items | undefined> {
-        const data = await this.send('nft/searchItems', { limit, offset} )
+    public async searchItemsfull (limit:number = 100, offset: number = 0): Promise<Items | undefined> {
+        const data = await this.send('nft/searchItems', { limit, offset })
 
         console.log(data)
         return data
     }
 
     public async getInfoUser (address: string): Promise<Account | undefined> {
-        const data = await this.send('account/getInfo', { account: address } )
+        const data = await this.send('account/getInfo', { account: address })
 
         console.log(data)
         return data
