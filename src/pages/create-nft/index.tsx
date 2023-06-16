@@ -10,9 +10,19 @@ import { PageProps } from '../../types/interfaces'
 import { CustomNft, CustomNftSingleData } from '../../logic/nft'
 import { rawToTon } from '../../logic/utils'
 import { CustomIpfs } from '../../logic/ipfs'
+import { MarketNft } from '../../logic/loadnft'
+
+interface Attribute {
+    trait_type: string,
+    value: string
+}
 
 export const CreateNft: React.FC<PageProps> = (props: PageProps) => {
     const [ firstRender, setFirstRender ] = React.useState<boolean>(false)
+
+    const [ img, setImg ] = React.useState<string | undefined>(undefined)
+
+    const [ attributes, setAttributes ] = React.useState<Attribute[]>([])
 
     const name = new VldBuilder()
         .with(vlds.VLen, 0, 60)
@@ -24,21 +34,50 @@ export const CreateNft: React.FC<PageProps> = (props: PageProps) => {
 
     const history = useNavigate()
 
-    async function loadIpfsData () {}
+    const marketNFT = new MarketNft()
+
+    async function uploadImg (e: any) {
+        const _file = e.target.files[0]
+        console.log(_file)
+        //   setFile(_file)
+        const url = await CustomIpfs.infuraUploadImg(_file)
+
+        setImg(url)
+        return url
+    }
+
+    async function loadCollections (address2: string) {
+        if (address2 === '') {
+            return undefined
+        }
+        const data = await marketNFT.getItemsFromUser(address2, 0)
+        if (!data) {
+            return undefined
+        }
+
+      //   setPage(page + 1)
+
+      //   setItems(data)
+        return true
+    }
 
     async function createSingleNft () {
         if (!props.address) {
             return
         }
 
+        if (name.value === '' || desc.value === '') {
+            return
+        }
+
         const ipfs = new CustomIpfs()
 
         const metadata = {
-            name: 'Test 2',
-            description: 'test text',
+            name: name.value,
+            description: desc.value,
             marketplace: 'libermall.com',
             attributes: [],
-            image: 'https://s.getgems.io/nft/c/63e2ed43bd25302bbe4887d1/1000002/image.png'
+            image: `ipfs://${img}?filename=logo.png`
         }
         const ipfsData = await ipfs.uploadDataJson(JSON.stringify(metadata))
         if (!ipfsData) {
@@ -46,8 +85,8 @@ export const CreateNft: React.FC<PageProps> = (props: PageProps) => {
         }
         const data: CustomNftSingleData = {
             ownerAddress: props.address,
-            // content: Buffer.from('ipfs://' + ipfsData, 'utf8').toString('base64'),
-            content: `ipfs://${ipfsData}`,
+            // content: Buffer.from(`ipfs://${ipfsData}`, 'utf8').toString('base64'),
+            content: `ipfs://${ipfsData}/metadata.json`,
             royaltyParams: {
                 royaltyFactor: 0,
                 royaltyBase: 0,
@@ -63,7 +102,7 @@ export const CreateNft: React.FC<PageProps> = (props: PageProps) => {
         console.log('msg.address.toFriendly()', msg.address.toFriendly())
 
         const trans: DeLabTransaction = {
-            to: msg.address.toFriendly(),
+            to: msg.address.toFriendly({ bounceable: true }),
             value: new Coins('0.01').toNano(),
             stateInit: toBoc
         }
@@ -91,13 +130,18 @@ export const CreateNft: React.FC<PageProps> = (props: PageProps) => {
                             <Row>
                                 <Col lg="5" className="mb-4 mb-lg-0">
                                     <div className="upload-nft__box position-sticky" style={{ top: '140px' }}>
-                                        <Col lg="6">
-                                            <i className="fa-regular fa-cloud-arrow-up fa-3x mb-4" />
-                                            <p className="mb-4">File types supported: JPG, PNG, SVG, GIF, WEBP and MP4 Max. size: 15MB Max. resolution: 2000x2000px</p>
-                                            <Form.Group controlId="formFile">
-                                                <Form.Label forHtml="formFile" className="btn btn-secondary">Upload Files</Form.Label>
-                                                <Form.Control type="file" className="d-none" />
-                                            </Form.Group>
+                                        <Col lg={img ? '11' : '6'}>
+                                            {img
+                                                ? <img src={`https://cloudflare-ipfs.com/ipfs/${img}`} style={{ width: '100%' }} />
+                                                : <div>
+                                                    <i className="fa-regular fa-cloud-arrow-up fa-3x mb-4" />
+                                                    <p className="mb-4">File types supported: JPG, PNG, SVG, GIF, WEBP and MP4 Max. size: 15MB Max. resolution: 2000x2000px</p>
+                                                    <Form.Group controlId="formFile">
+                                                        <Form.Label forHtml="formFile" className="btn btn-secondary">Upload Files</Form.Label>
+                                                        <Form.Control type="file" className="d-none" onChange={e => uploadImg(e)} />
+                                                    </Form.Group>
+                                                </div>
+                                            }
                                         </Col>
                                     </div>
                                 </Col>
@@ -297,6 +341,7 @@ export const CreateNft: React.FC<PageProps> = (props: PageProps) => {
                                         variant="primary fs-18 w-100"
                                         data-bs-toggle="modal"
                                         data-bs-target="#TransactionModal"
+                                        disabled={name.error !== '' || desc.error !== '' || name.value === '' || desc.value === ''}
                                         onClick={() => createSingleNft()}
                                     >Create NFT</Button>
                                 </Col>

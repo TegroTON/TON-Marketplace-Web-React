@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { Address, Coins } from 'ton3'
+import {Address as Address2} from 'ton'
 
 export function getParameterByName (name: string, url = window.location.href) {
     const name1 = name.replace(/[\[\]]/g, '\\$&')
@@ -31,11 +32,13 @@ export function rawToTon (address: string | undefined) {
     return addr
 }
 
-export function smlAddr (address: string | undefined) {
+export function smlAddr (address: string | undefined): string {
     if (!address) {
         return ''
     }
-    return `${address.slice(0, 7)}...${address.slice(address.length - 4, address.length)}`
+    const addr = Address2.parse(address)
+    const string = addr.toFriendly({ bounceable: true })
+    return `${string.slice(0, 5)}...${string.slice(string.length - 4, string.length)}`
 }
 
 // https://app.tonkeeper.com/v1/txrequest-inline/eyJ2ZXJzaW9uIjoiMCIsImJvZHkiOnsidHlwZSI6InNpZ24tcmF3LXBheWxvYWQiLCJwYXJhbXMiOnsibWVzc2FnZXMiOlt7ImFkZHJlc3MiOiJFUURLbEprSFF5RzMwcHgwU2Z0ZjVpX19hdDR0SG9vdl9hbndmeHA2WXJCZTI5UzciLCJhbW91bnQiOiI2MGUyMzUzYzAifV19fX0

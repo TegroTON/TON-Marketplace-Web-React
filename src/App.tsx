@@ -51,11 +51,12 @@ import { HeaderBlock } from './layout/header'
 import { FooterBlock } from './layout/footer'
 
 import { Modals } from './block/modal'
-import { Item } from './logic/tonapi'
+import { AccountV2, Item } from './logic/tonapi'
 import { rawToTon } from './logic/utils'
+import { MarketNft } from './logic/loadnft'
 
 const DeLabConnector = new DeLabConnect(
-    'https://example.com',
+    'https://libermall.com',
     'Libermall',
     'mainnet'
 )
@@ -79,11 +80,15 @@ export const App: React.FC = () => {
 
     const [ modalData, setModalData ] = React.useState<any | undefined>(undefined)
 
+    const [ account, setAccount ] = React.useState<AccountV2 | undefined>(undefined)
+
     const isDesktop = window.innerWidth >= 1200
 
     const location = useLocation()
 
     const history = useNavigate()
+
+    const marketNFT = new MarketNft()
 
     function openPop () {
         setPopout(<ScreenSpinner state="loading" />)
@@ -122,6 +127,16 @@ export const App: React.FC = () => {
         link2.click()
     }
 
+    async function loadUser (address2: string) {
+        const data = await marketNFT.getUserV2(address2)
+
+        if (!data) {
+            return undefined
+        }
+        setAccount(data)
+        return true
+    }
+
     function regListen () {
         DeLabConnector.on('link', (data: DeLabEvent) => {
             setDelabLink(data.data ?? '')
@@ -156,6 +171,8 @@ export const App: React.FC = () => {
             setNetwork(connectConfig.network)
 
             if (connectConfig.address) {
+                loadUser(connectConfig.address as string)
+
                 const client = new TonClient({ endpoint: 'https://mainnet.tonhubapi.com/jsonRPC' })
                 const bl = await client.getBalance(Address.parse(connectConfig.address))
                 setBalance(bl.toString())
@@ -308,6 +325,7 @@ export const App: React.FC = () => {
                     address={address}
                     DelabObject={DeLabConnector}
                     balance={balance}
+                    account={account}
                 />
 
                 <Routes>

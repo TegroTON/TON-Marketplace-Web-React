@@ -96,15 +96,87 @@ interface Account {
     status: string
 }
 
+interface AccountV2 {
+    address: string,
+    balance: number,
+    icon: undefined | string,
+    interfaces: any[],
+    is_scam: boolean,
+    last_activity: number,
+    memo_required: boolean,
+    name: undefined | string,
+    status: string,
+    get_methods: any[]
+}
+
+interface AccountSmall {
+    address: string,
+    name?: string,
+    is_scam: boolean,
+    icon?: string
+}
+
+interface Message {
+    created_lt: string,
+    ihr_disabled: boolean,
+    bounce: boolean,
+    bounced: boolean,
+    value: string,
+    fwd_fee: number,
+    ihr_fee: number,
+    destination?: AccountSmall,
+    source?: AccountSmall,
+    import_fee: number,
+    created_at: number,
+    op_code?: string,
+    init?: { boc: string },
+    raw_body?: string,
+    decoded_op_name?: string,
+    decoded_body: any
+}
+
+interface Transaction {
+    hash: string,
+    lt: string,
+    account: AccountSmall,
+    success: boolean,
+    utime: number,
+    orig_status: string,
+    end_status: string,
+    total_fees: number,
+    transaction_type: string,
+    state_update_old: string,
+    state_update_new: string,
+    in_msg?: Message,
+    out_msgs?: Message[],
+    block: string,
+    prev_trans_hash?: string,
+    prev_trans_lt?: string,
+    compute_phase?: any,
+    storage_phase?: any,
+    credit_phase?: any,
+    action_phase?: any,
+    bounce_phase?: any,
+    aborted: boolean,
+    destroyed: boolean
+}
+
+interface Transactions {
+    transactions: Transaction[]
+}
+
 export class TonApi {
     private _url: string = 'https://tonapi.io/v1/'
+
+    private _url2: string = 'https://tonapi.io/v2/'
 
     // private _token: string = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIxMjI0Iiwic2NvcGUiOiJjbGllbnQifQ.vvtwTq9kO89CNP2635wImtrzshdrAM9AYaIbQNqfJHQ'
 
     private _token: string = 'AFXRKLZM2YCJ67AAAAAE4XDRSACSYEOYKQKOSUVUKMXNMP2AKUTWJ2UVBPTTQZWRGZMLALY'
 
-    public async send (url: string, data: any): Promise<any | undefined> {
-        const res = await axios.get(`${this._url}${url}?${new URLSearchParams(data)}`, { headers: { Authorization: `Bearer ${this._token}` } })
+    public async send (url: string, data: any, type = false): Promise<any | undefined> {
+        const urlLocal = type ? this._url2 : this._url
+        const res = await axios.get(`${urlLocal}${url}?${new URLSearchParams(data)}`, { headers: { Authorization: `Bearer ${this._token}` } })
 
         if (res.data.error) {
             console.error(res.data.result)
@@ -127,8 +199,22 @@ export class TonApi {
         return data
     }
 
+    public async getCollectionV2 (address: string): Promise<Collection | undefined> {
+        const data = await this.send(`nfts/collections/${address}`, { }, true)
+
+        console.log(data)
+        return data
+    }
+
     public async getCollections (limit:number = 100, offset: number = 0): Promise<Collections | undefined> {
         const data = await this.send('nft/getCollections', { limit, offset })
+
+        console.log(data)
+        return data
+    }
+
+    public async getCollectionsV2 (limit:number = 100, offset: number = 0): Promise<Collections | undefined> {
+        const data = await this.send('nfts/collections', { limit, offset }, true)
 
         console.log(data)
         return data
@@ -161,6 +247,20 @@ export class TonApi {
         console.log(data)
         return data
     }
+
+    public async getInfoUserV2 (address: string): Promise<AccountV2 | undefined> {
+        const data = await this.send(`accounts/${address}`, { }, true)
+
+        console.log(data)
+        return data
+    }
+
+    public async getTransactionsV2 (address: string): Promise<Transactions | undefined> {
+        const data = await this.send(`blockchain/accounts/${address}/transactions`, { before_lt: 0, limit: 100 }, true)
+
+        console.log(data)
+        return data
+    }
 }
 
-export type { Items, Item, Collection, Collections, Account }
+export type { Items, Item, Collection, Collections, Account, AccountV2, Transactions, Transaction }

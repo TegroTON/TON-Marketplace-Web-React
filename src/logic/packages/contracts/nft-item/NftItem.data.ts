@@ -53,7 +53,7 @@ export type NftSingleData = {
 export function buildSingleNftDataCell (data: NftSingleData) {
     const dataCell = new Cell()
 
-    const contentCell = encodeOnChainContent(data.content)
+    const contentCell = encodeOffChainContent(data.content)
 
     const royaltyCell = new Cell()
     royaltyCell.bits.writeUint(data.royaltyParams.royaltyFactor, 16)

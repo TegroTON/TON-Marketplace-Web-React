@@ -1,7 +1,6 @@
-import { Account, Collection, Collections, Item, TonApi } from "./tonapi"
+import { Account, Collection, Collections, Item, TonApi, AccountV2, Transactions } from './tonapi'
 
 export class MarketNft {
-
     private _tonApi
 
     private _ipfs = 'https://cloudflare-ipfs.com/ipfs/'
@@ -10,7 +9,7 @@ export class MarketNft {
         this._tonApi = new TonApi()
     }
 
-    public async getOneNft (address: string): Promise<{ nft: Item, collection: Collection | undefined} | undefined>  {
+    public async getOneNft (address: string): Promise<{ nft: Item, collection: Collection | undefined } | undefined> {
         const data = await this._tonApi.getItems(address)
 
         if (!data) {
@@ -18,11 +17,11 @@ export class MarketNft {
         }
 
         if (data.nft_items.length > 0) {
-            const collection = data.nft_items[0].collection ? 
-            await this._tonApi.getCollection(data.nft_items[0].collection.address) : undefined
+            const collection = data.nft_items[0].collection
+                ? await this._tonApi.getCollection(data.nft_items[0].collection.address) : undefined
 
-            let replaceData = data.nft_items
-            for (let i=0;i<replaceData.length;i++) {
+            const replaceData = data.nft_items
+            for (let i = 0; i < replaceData.length; i++) {
                 const oneData = replaceData[i]
                 if (oneData.metadata === undefined) {
                     continue
@@ -36,12 +35,12 @@ export class MarketNft {
                 if (collection.metadata) collection.metadata.image = collection.metadata?.image?.replace('ipfs://', this._ipfs)
             }
 
-            return { nft: data.nft_items[0], collection: collection }
+            return { nft: data.nft_items[0], collection }
         }
         return undefined
     }
 
-    public async getCollection (address: string): Promise<Collection | undefined>  {
+    public async getCollection (address: string): Promise<Collection | undefined> {
         const data = await this._tonApi.getCollection(address)
 
         if (!data) {
@@ -53,7 +52,7 @@ export class MarketNft {
         return data
     }
 
-    public async getUser (address: string): Promise<Account | undefined>  {
+    public async getUser (address: string): Promise<Account | undefined> {
         const data = await this._tonApi.getInfoUser(address)
 
         if (!data) {
@@ -62,19 +61,36 @@ export class MarketNft {
         return data
     }
 
-    public async getCollections (page: number = 0): Promise<Collection[] | undefined>  {
+    public async getUserV2 (address: string): Promise<AccountV2 | undefined> {
+        const data = await this._tonApi.getInfoUserV2(address)
+
+        if (!data) {
+            return undefined
+        }
+        return data
+    }
+
+    public async getTransactionsV2 (address: string): Promise<Transactions | undefined> {
+        const data = await this._tonApi.getTransactionsV2(address)
+
+        if (!data) {
+            return undefined
+        }
+        return data
+    }
+
+    public async getCollections (page: number = 0): Promise<Collection[] | undefined> {
         const limit = 100
         const off = page * limit
-        const data = await this._tonApi.getCollections(limit, off)
+        const data = await this._tonApi.getCollectionsV2(limit, off) // ---
 
         if (!data) {
             return undefined
         }
 
         if (data.nft_collections.length > 0) {
-
-            let replaceData = data.nft_collections
-            for (let i=0;i<replaceData.length;i++) {
+            const replaceData = data.nft_collections
+            for (let i = 0; i < replaceData.length; i++) {
                 const oneData = replaceData[i]
                 if (oneData.metadata === undefined) {
                     continue
@@ -89,7 +105,7 @@ export class MarketNft {
         return undefined
     }
 
-    public async getItemsFromCollection (address: string, page: number = 0): Promise<Item[] | undefined>  {
+    public async getItemsFromCollection (address: string, page: number = 0): Promise<Item[] | undefined> {
         const limit = 100
         const off = page * limit
         const data = await this._tonApi.searchItems(address, limit, off)
@@ -99,9 +115,8 @@ export class MarketNft {
         }
 
         if (data.nft_items.length > 0) {
-
-            let replaceData = data.nft_items
-            for (let i=0;i<replaceData.length;i++) {
+            const replaceData = data.nft_items
+            for (let i = 0; i < replaceData.length; i++) {
                 const oneData = replaceData[i]
                 if (oneData.metadata === undefined) {
                     continue
@@ -114,7 +129,7 @@ export class MarketNft {
         return undefined
     }
 
-    public async getItemsFromUser (address: string, page: number = 0): Promise<Item[] | undefined>  {
+    public async getItemsFromUser (address: string, page: number = 0): Promise<Item[] | undefined> {
         const limit = 100
         const off = page * limit
         const data = await this._tonApi.searchItemsFromUser(address, limit, off)
@@ -124,8 +139,8 @@ export class MarketNft {
         }
 
         if (data.nft_items.length > 0) {
-            let replaceData = data.nft_items
-            for (let i=0;i<replaceData.length;i++) {
+            const replaceData = data.nft_items
+            for (let i = 0; i < replaceData.length; i++) {
                 const oneData = replaceData[i]
                 if (oneData.metadata === undefined) {
                     continue
@@ -138,7 +153,7 @@ export class MarketNft {
         return undefined
     }
 
-    public async getAllItems ( page: number = 0): Promise<Item[] | undefined>  {
+    public async getAllItems (page: number = 0): Promise<Item[] | undefined> {
         const limit = 15
         const off = page * limit
         const data = await this._tonApi.searchItemsfull(limit, off)
@@ -148,8 +163,8 @@ export class MarketNft {
         }
 
         if (data.nft_items.length > 0) {
-            let replaceData = data.nft_items
-            for (let i=0;i<replaceData.length;i++) {
+            const replaceData = data.nft_items
+            for (let i = 0; i < replaceData.length; i++) {
                 const oneData = replaceData[i]
                 if (oneData.metadata === undefined) {
                     continue

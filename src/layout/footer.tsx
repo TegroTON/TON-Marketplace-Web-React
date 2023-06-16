@@ -21,6 +21,7 @@ export const FooterBlock: React.FC<FooterType> = (props: FooterType) => {
     }, [])
 
     return (
+      
         <div>
             <section className="partners section bg-secondary" style={{display: 'none'}}>
                 <Container fluid>

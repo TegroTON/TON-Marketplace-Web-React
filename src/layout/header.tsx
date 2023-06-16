@@ -15,12 +15,14 @@ import {
     Modal
 } from 'react-bootstrap'
 import { fixAmount, smlAddr } from '../logic/utils'
+import { AccountV2 } from '../logic/tonapi'
 
 interface HeaderType {
     openModalConnect: Function,
     address: DeLabAddress,
     DelabObject: DeLabConnect,
-    balance: string | undefined
+    balance: string | undefined,
+    account: AccountV2 | undefined
 }
 
 export const HeaderBlock: React.FC<HeaderType> = (props: HeaderType) => {
@@ -66,16 +68,16 @@ export const HeaderBlock: React.FC<HeaderType> = (props: HeaderType) => {
                     ) : (
                         <div className="dropdown ms-auto d-block d-lg-none">
                             <Button id="dropdownMenuProfile" variant="none p-0 border-0" data-bs-toggle="dropdown" aria-expanded="false">
-                                <img src="./assets/img/no-user-pic.png" alt="" className="profile-image" width="42" height="42" />
+                                <img src={props.account?.icon !== '' ? props.account?.icon : './assets/img/no-user-pic.png'} alt="" className="profile-image" width="42" height="42" />
                             </Button>
                             <ul className="dropdown-menu me-0 end-0" aria-labelledby="dropdownMenuProfile">
                                 <a className="dropdown-item py-3 px-2" href="/my-profile">
                                     <div className="d-flex align-items-center ps-2">
-                                        <img src="./assets/img/no-user-pic.png" alt="" className="profile-image me-3" width="42" height="42" />
+                                        <img src={props.account?.icon !== '' ? props.account?.icon : './assets/img/no-user-pic.png'} alt="" className="profile-image me-3" width="42" height="42" />
                                         <div className="__body">
                                             <div className="mb-2 text-white fw-medium fs-16">{smlAddr(props.address ?? '')}</div>
                                             <div className="small d-flex align-items-center">
-                                                <span className="icon-ton me-1" /> {fixAmount(props.balance ?? '0')} TON 
+                                                <span className="icon-ton me-1" /> {fixAmount(props.balance ?? '0')} TON
                                                 {/* <span className="color-grey ms-1">~ 0.56$</span> */}
                                             </div>
                                         </div>
@@ -217,7 +219,7 @@ export const HeaderBlock: React.FC<HeaderType> = (props: HeaderType) => {
                             ) : (
                                 <NavDropdown title={
                                     <>
-                                        <img src="./assets/img/no-user-pic.png" alt="" className="profile-image" width="42" height="42" />
+                                        <img src={props.account?.icon !== '' ? props.account?.icon : './assets/img/no-user-pic.png'} alt="" className="profile-image" width="42" height="42" />
                                     </>
                                 }
                                 id="profile-nav-dropdown"
@@ -225,11 +227,11 @@ export const HeaderBlock: React.FC<HeaderType> = (props: HeaderType) => {
                                 >
                                     <NavDropdown.Item href={`/user?a=${props.address ?? ''}`}>
                                         <div className="d-flex align-items-center ps-2">
-                                            <img src="./assets/img/no-user-pic.png" alt="" className="profile-image me-3" width="42" height="42" />
+                                            <img src={props.account?.icon !== '' ? props.account?.icon : './assets/img/no-user-pic.png'} alt="" className="profile-image me-3" width="42" height="42" />
                                             <div className="__body">
                                                 <div className="mb-2 text-white fw-medium fs-16">{smlAddr(props.address ?? '')}</div>
                                                 <div className="small d-flex align-items-center">
-                                                    <span className="icon-ton me-1" /> {fixAmount(props.balance ?? '0')} TON 
+                                                    <span className="icon-ton me-1" /> {fixAmount(props.balance ?? '0')} TON
                                                     {/* <span className="color-grey ms-1">~ 0.56$</span> */}
                                                 </div>
                                             </div>

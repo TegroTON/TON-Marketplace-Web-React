@@ -1,12 +1,12 @@
-import { Address } from "ton"
-import { NftSingleData, buildNftItemDeployMessage, buildSingleNftStateInit } from "./packages/contracts/nft-item/NftItem.data"
-import { Queries } from "./packages/contracts/nft-collection/NftCollection.data"
-import BN from "bn.js"
+import { Address } from 'ton'
+import BN from 'bn.js'
+import { NftSingleData, buildNftItemDeployMessage, buildSingleNftStateInit } from './packages/contracts/nft-item/NftItem.data'
+import { Queries } from './packages/contracts/nft-collection/NftCollection.data'
 
 export interface CustomRoyaltyParams {
-    royaltyFactor: number
+    royaltyFactor: number,
     // denominator
-    royaltyBase: number
+    royaltyBase: number,
     royaltyAddress: string
 }
 
@@ -17,14 +17,14 @@ export interface CustomNftSingleData {
 }
 
 export class CustomNft {
-
     constructor () {
-        
+
     }
 
     public static async getBOCForSingleNft () {
 
     }
+
     public static async deploySingleNft (data: CustomNftSingleData) {
         const config: NftSingleData = {
             ownerAddress: Address.parse(data.ownerAddress),

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
 import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
@@ -7,8 +8,8 @@ import Slider, { Settings } from 'react-slick'
 import { PageProps } from '../../types/interfaces'
 import { MarketNft } from '../../logic/loadnft'
 
-import { getParameterByName, fixAmount, rawToTon } from '../../logic/utils'
-import { Account, Collection, Item } from '../../logic/tonapi'
+import { getParameterByName, fixAmount, rawToTon, smlAddr } from '../../logic/utils'
+import { Account, AccountV2, Collection, Item, Transaction } from '../../logic/tonapi'
 
 export const CollectionItem: React.FC<PageProps> = (props: PageProps) => {
     const [ firstRender, setFirstRender ] = React.useState<boolean>(false)
@@ -18,7 +19,8 @@ export const CollectionItem: React.FC<PageProps> = (props: PageProps) => {
 
     const [ items, setItems ] = React.useState<Item[] | undefined>(undefined)
 
-    const [ account, setAccount ] = React.useState<Account | undefined>(undefined)
+    const [ account, setAccount ] = React.useState<AccountV2 | undefined>(undefined)
+    const [ transactions, setTransactions ] = React.useState<Transaction[] | undefined>(undefined)
 
     const history = useNavigate()
 
@@ -36,7 +38,7 @@ export const CollectionItem: React.FC<PageProps> = (props: PageProps) => {
     }
 
     async function loadUser (address: string) {
-        const data = await marketNFT.getUser(address)
+        const data = await marketNFT.getUserV2(address)
 
         if (!data) {
             return undefined
@@ -57,6 +59,8 @@ export const CollectionItem: React.FC<PageProps> = (props: PageProps) => {
 
         if (!data.nft.previews) history('/')
 
+        await loadTransactions(address)
+
         if (data.collection) await loadItems(data.collection?.address)
 
         props.installScripts()
@@ -76,6 +80,19 @@ export const CollectionItem: React.FC<PageProps> = (props: PageProps) => {
         }
 
         setItems(data)
+        return true
+    }
+
+    async function loadTransactions (address: string = collection?.address ?? '') {
+        if (address === '') {
+            return undefined
+        }
+        const data = await marketNFT.getTransactionsV2(address)
+        if (!data) {
+            return undefined
+        }
+
+        setTransactions(data.transactions)
         return true
     }
 
@@ -297,7 +314,7 @@ export const CollectionItem: React.FC<PageProps> = (props: PageProps) => {
                                                 <Card.Title className="mb-3">Owner</Card.Title>
                                                 <Card className="p-3 p-sm-0 border mb-3">
                                                     <Card.Link href={`/user?a=${rawToTon(oneItem.owner?.address)}`} className="d-block d-sm-flex align-items-center text-center text-sm-start">
-                                                        <Card.Img variant="collection m-3 m-lg-0" src="/assets/img/user-avatar.png" />
+                                                        <Card.Img variant="collection m-3 m-lg-0" src={account.icon ?? '/assets/img/user-avatar.png'} />
                                                         <Card.Title className="mb-0 ms-3 fs-18">
                                                             {account.name ? account.name : rawToTon(oneItem.owner?.address)}
                                                         </Card.Title>
@@ -441,7 +458,51 @@ export const CollectionItem: React.FC<PageProps> = (props: PageProps) => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
+                                        {transactions ? transactions.map((trans, key) => (
+                                            <tr key={key}>
+                                                <td>
+                                                    <div className="table-stats d-flex align-items-center">
+                                                        <div className="table-stats__icon fs-18 me-3">
+                                                            {trans.in_msg?.decoded_op_name ? <i className="fa-regular fa-circle-plus" /> : null }
+
+                                                            {trans.in_msg?.op_code === '0x80138152' ? <i className="fa-regular fa-paintbrush-fine" /> : null}
+                                                            {trans.in_msg?.op_code === '0x800ec513' ? <i className="fa-regular fa-paintbrush-fine" /> : null}
+                                                        </div>
+                                                        <span className="table-stats__name fw-medium">
+                                                            {trans.in_msg?.decoded_op_name?.replace('nft_transfer', 'Transfer')}
+                                                            {trans.in_msg?.op_code === '0x80138152' ? 'Mint' : null}
+                                                            {trans.in_msg?.op_code === '0x800ec513' ? 'Mint' : null}
+                                                        </span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="table-stats__price text-end">
+                                                        <div className="mb-1">{fixAmount(trans.in_msg?.value ?? '0')} TON</div>
+                                                        {/* <div className="fs-14 color-grey">$2,45</div> */}
+                                                    </div>
+                                                </td>
+                                                <td className="text-end">
+                                                    <a href={`/user?a=${trans.in_msg?.source?.address}`} className="table-stats__from d-flex align-items-center justify-content-end" target="_blank">
+                                                        <img src={trans.in_msg?.source?.icon ?? './assets/img/user-avatar.png'} className="table-stats__avatar" alt="" />
+                                                        <div className="table-stats__address ms-2">{trans.in_msg?.source?.name ?? smlAddr(trans.in_msg?.source?.address ?? '')}</div>
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    {trans.out_msgs && trans.out_msgs.length > 0
+                                                        ? trans.out_msgs.slice(trans.out_msgs.length - 1, trans.out_msgs.length).map((out, key2) => (
+                                                            <a key={key2} href={`/user?a=${out?.destination?.address}`} className="table-stats__from d-flex align-items-center" target="_blank">
+                                                                <img src={out?.destination?.icon ?? './assets/img/user-avatar.png'} className="table-stats__avatar" alt="" />
+                                                                <div className="table-stats__address ms-2">{out?.destination?.name ?? smlAddr(out?.destination?.address ?? '')}</div>
+                                                            </a>
+                                                        )) : '-'
+                                                    }
+                                                </td>
+                                                <td className="text-end">
+                                                    {trans.utime}
+                                                </td>
+                                            </tr>
+                                        )) : null}
+                                        {/* <tr>
                                             <td>
                                                 <div className="table-stats d-flex align-items-center">
                                                     <div className="table-stats__icon fs-18 me-3">
@@ -580,7 +641,7 @@ export const CollectionItem: React.FC<PageProps> = (props: PageProps) => {
                                             <td className="text-end">
                                  12 hours ago
                                             </td>
-                                        </tr>
+                                        </tr> */}
                                     </tbody>
                                 </Table>
                             </Card>
