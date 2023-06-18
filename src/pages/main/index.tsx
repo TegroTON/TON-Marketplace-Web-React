@@ -21,17 +21,6 @@ export const Main: React.FC<PageProps> = (props: PageProps) => {
 
     const marketNFT = new MarketNft()
 
-    const settings: Settings = {
-        dots: true,
-        infinite: false,
-        speed: 300,
-        slidesToShow: 4,
-        slidesToScroll: 1,
-        slidesPerRow: 1,
-        rows: 1,
-        lazyLoad: 'progressive'
-    }
-
     async function load () {
         const data = await marketNFT.getAllItems(page)
 
@@ -210,7 +199,7 @@ export const Main: React.FC<PageProps> = (props: PageProps) => {
                         justifyContent: 'space-between'
                      }}> */}
                         {items
-                            ? <Slider {...settings}>
+                            ? <Slider {...props.settings}>
                                 {items.filter(i => i.previews).slice(0, 12).map((item, key) => (
                                     <Card key={key} style={{
                                         // width: '350px',
@@ -710,7 +699,7 @@ export const Main: React.FC<PageProps> = (props: PageProps) => {
                      Browse <span className="color-yellow">by category</span>
                         </h2>
                         {/* <div className="category-slider pt-3"> */}
-                        <Slider {...settings}>
+                        <Slider {...props.settings}>
                             <Card>
                                 <Card.Link href="/collection" className="card-link">
                                     <Card.Img variant="top card-image" src="./assets/img/category/cat-1.jpg" />

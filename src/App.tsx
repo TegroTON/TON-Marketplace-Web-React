@@ -54,6 +54,7 @@ import { Modals } from './block/modal'
 import { AccountV2, Item } from './logic/tonapi'
 import { rawToTon } from './logic/utils'
 import { MarketNft } from './logic/loadnft'
+import { Settings } from 'react-slick'
 
 const DeLabConnector = new DeLabConnect(
     'https://libermall.com',
@@ -83,6 +84,59 @@ export const App: React.FC = () => {
     const [ account, setAccount ] = React.useState<AccountV2 | undefined>(undefined)
 
     const isDesktop = window.innerWidth >= 1200
+
+    const settings: Settings = {
+        dots: true,
+        infinite: false,
+        speed: 300,
+        slidesToShow: 5,
+        slidesToScroll: 1,
+        slidesPerRow: 1,
+        rows: 1,
+        lazyLoad: 'progressive',
+        responsive: [
+            {
+                breakpoint: 1500,
+                settings: {
+                    slidesToShow: 4,
+                    slidesToScroll: 2,
+                    infinite: true,
+                    dots: true
+                }
+            },
+            {
+                breakpoint: 1280,
+                settings: {
+                    slidesToShow: 3,
+                    slidesToScroll: 3,
+                    infinite: true,
+                    dots: true
+                }
+            },
+            {
+                breakpoint: 1024,
+                settings: {
+                    slidesToShow: 2.4,
+                    slidesToScroll: 2
+                }
+            },
+            {
+                breakpoint: 768,
+                settings: {
+                    slidesToShow: 1.5,
+                    slidesToScroll: 1
+                }
+            },
+            {
+                breakpoint: 500,
+                settings: {
+                    slidesToShow: 1,
+                    slidesToScroll: 1,
+                    dots: true
+                }
+            }
+        ]
+    }
 
     const location = useLocation()
 
@@ -341,6 +395,7 @@ export const App: React.FC = () => {
                                 openModalData={openModalData}
                                 address={address}
                                 DeLabConnector={DeLabConnector}
+                                settings={settings}
                             />
                         }
                     />
@@ -356,6 +411,7 @@ export const App: React.FC = () => {
                                 openModalData={openModalData}
                                 address={address}
                                 DeLabConnector={DeLabConnector}
+                                settings={settings}
                             />
                         }
                     />
@@ -371,6 +427,7 @@ export const App: React.FC = () => {
                                 openModalData={openModalData}
                                 address={address}
                                 DeLabConnector={DeLabConnector}
+                                settings={settings}
                             />
                         }
                     />
@@ -386,6 +443,7 @@ export const App: React.FC = () => {
                                 openModalData={openModalData}
                                 address={address}
                                 DeLabConnector={DeLabConnector}
+                                settings={settings}
                             />
                         }
                     />
@@ -402,6 +460,7 @@ export const App: React.FC = () => {
                                 openModalData={openModalData}
                                 address={address}
                                 DeLabConnector={DeLabConnector}
+                                settings={settings}
                             />
                         }
                     />
@@ -418,6 +477,7 @@ export const App: React.FC = () => {
                                 openModalData={openModalData}
                                 address={address}
                                 DeLabConnector={DeLabConnector}
+                                settings={settings}
                             />
                         }
                     />
@@ -434,6 +494,7 @@ export const App: React.FC = () => {
                                 openModalData={openModalData}
                                 address={address}
                                 DeLabConnector={DeLabConnector}
+                                settings={settings}
                             />
                         }
                     />
@@ -450,6 +511,7 @@ export const App: React.FC = () => {
                                 openModalData={openModalData}
                                 address={address}
                                 DeLabConnector={DeLabConnector}
+                                settings={settings}
                             />
                         }
                     />
@@ -466,6 +528,7 @@ export const App: React.FC = () => {
                                 openModalData={openModalData}
                                 address={address}
                                 DeLabConnector={DeLabConnector}
+                                settings={settings}
                             />
                         }
                     />
@@ -481,6 +544,7 @@ export const App: React.FC = () => {
                                 openModalData={openModalData}
                                 address={address}
                                 DeLabConnector={DeLabConnector}
+                                settings={settings}
                             />
                         }
                     />
@@ -497,6 +561,7 @@ export const App: React.FC = () => {
                                 openModalData={openModalData}
                                 address={address}
                                 DeLabConnector={DeLabConnector}
+                                settings={settings}
                             />
                         }
                     />
@@ -513,6 +578,7 @@ export const App: React.FC = () => {
                                 openModalData={openModalData}
                                 address={address}
                                 DeLabConnector={DeLabConnector}
+                                settings={settings}
                             />
                         }
                     />

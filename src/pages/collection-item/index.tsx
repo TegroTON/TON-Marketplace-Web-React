@@ -26,17 +26,6 @@ export const CollectionItem: React.FC<PageProps> = (props: PageProps) => {
 
     const marketNFT = new MarketNft()
 
-    const settings: Settings = {
-        dots: true,
-        infinite: false,
-        speed: 300,
-        slidesToShow: 4,
-        slidesToScroll: 1,
-        slidesPerRow: 1,
-        rows: 1,
-        lazyLoad: 'progressive'
-    }
-
     async function loadUser (address: string) {
         const data = await marketNFT.getUserV2(address)
 
@@ -650,7 +639,7 @@ export const CollectionItem: React.FC<PageProps> = (props: PageProps) => {
                      More From This Collection
                             </h2>
                             {items && items.length > 0 && collection
-                                ? <Slider {...settings}>
+                                ? <Slider {...props.settings}>
                                     {items.map((item, key) => (
                                         <Card key={key}>
                                             <Card.Link href={`/collection-item?a=${rawToTon(item.address)}`} className="card-link">

@@ -1,4 +1,5 @@
-import { DeLabAddress, DeLabConnect } from "@delab-team/connect";
+import { DeLabAddress, DeLabConnect } from '@delab-team/connect'
+import { Settings } from 'react-slick'
 
 export interface PageProps {
     id: string,
@@ -8,5 +9,6 @@ export interface PageProps {
     installScripts: Function,
     openModalData: Function,
     address: DeLabAddress,
-    DeLabConnector: DeLabConnect
+    DeLabConnector: DeLabConnect,
+    settings: Settings
 }
