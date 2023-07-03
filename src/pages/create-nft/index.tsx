@@ -324,12 +324,15 @@ export const CreateNft: React.FC<PageProps> = (props: PageProps) => {
                         <Tab.Pane eventKey="FixedPrice" className="pt-4">
                           <Form.Group className="mb-3">
                             <Form.Label className="fw-medium">Price</Form.Label>
-                            <Form.Control
-                              type="number"
-                              placeholder="Enter price for one piece"
-                              value={price.value}
-                              onChange={(e) => price.change(e.target.value)}
-                            />
+                            <InputGroup>
+                              <Form.Control
+                                type="number"
+                                placeholder="Enter price for one piece"
+                                value={price.value}
+                                onChange={(e) => price.change(e.target.value)}
+                              />
+                              <InputGroup.Text id="basic-addon1">TON</InputGroup.Text>
+                            </InputGroup>
                           </Form.Group>
                           <ListGroup>
                             <ListGroup.Item className="d-flex">
