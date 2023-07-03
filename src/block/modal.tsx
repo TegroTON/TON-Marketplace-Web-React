@@ -654,21 +654,28 @@ export const Modals: React.FC<ModalType> = (props: ModalType) => {
                 <div className="d-flex">
                   <Form.Label className="fw-medium">Display Name</Form.Label>
                   <div className="ms-auto color-grey">
-                    <span>0</span>/60
+                    <span>{name.value.length}</span>/60
                   </div>
                 </div>
-                <Form.Control type="text" placeholder="Name your NFT" />
+                <Form.Control
+                  type="text"
+                  value={name.value}
+                  onChange={(e) => name.change(e.target.value)}
+                  placeholder="Name your NFT"
+                />
               </Form.Group>
               <Form.Group className="mb-4">
                 <div className="d-flex">
                   <Form.Label className="fw-medium">Description</Form.Label>
                   <div className="ms-auto color-grey">
-                    <span>0</span>/700
+                    <span>{desc.value.length}</span>/700
                   </div>
                 </div>
                 <Form.Control
                   as="textarea"
                   rows={4}
+                  value={desc.value}
+                  onChange={(e) => desc.change(e.target.value)}
                   placeholder="Describe the idea behind your NFT and explain how it stands out from the rest."
                 />
               </Form.Group>
@@ -722,7 +729,14 @@ export const Modals: React.FC<ModalType> = (props: ModalType) => {
                   <Form.Control placeholder="Any link" aria-label="Anylink" />
                 </InputGroup>
               </Form.Group>
-              <Button variant="primary w-100">Save</Button>
+              <Button
+                variant="primary w-100"
+                disabled={
+                  name.error !== '' || desc.error !== '' || (name.value === '' && desc.value === '')
+                }
+              >
+                Save
+              </Button>
             </Form>
           </Modal.Body>
         </Modal.Dialog>
