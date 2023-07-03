@@ -41,6 +41,8 @@ export const CreateNft: React.FC<PageProps> = (props: PageProps) => {
 
   const desc = new VldBuilder().with(vlds.VLen, 0, 700).withFname('Desciption');
 
+  const price = new VldBuilder().with(vlds.VNumber, 0, 1000000000).withFname('Price');
+
   const history = useNavigate();
 
   const marketNFT = new MarketNft();
@@ -75,7 +77,7 @@ export const CreateNft: React.FC<PageProps> = (props: PageProps) => {
       return;
     }
 
-    if (name.value === '' || desc.value === '') {
+    if (name.value === '' || desc.value === '' || price.value === '') {
       return;
     }
 
@@ -322,10 +324,12 @@ export const CreateNft: React.FC<PageProps> = (props: PageProps) => {
                         <Tab.Pane eventKey="FixedPrice" className="pt-4">
                           <Form.Group className="mb-3">
                             <Form.Label className="fw-medium">Price</Form.Label>
-                            <InputGroup>
-                              <Form.Control type="number" placeholder="Enter price for one piece" />
-                              <InputGroup.Text id="basic-addon1">TON</InputGroup.Text>
-                            </InputGroup>
+                            <Form.Control
+                              type="number"
+                              placeholder="Enter price for one piece"
+                              value={price.value}
+                              onChange={(e) => price.change(e.target.value)}
+                            />
                           </Form.Group>
                           <ListGroup>
                             <ListGroup.Item className="d-flex">
@@ -401,7 +405,9 @@ export const CreateNft: React.FC<PageProps> = (props: PageProps) => {
                     disabled={
                       name.error !== '' ||
                       desc.error !== '' ||
+                      price.error !== '' ||
                       name.value === '' ||
+                      price.value === '' ||
                       desc.value === ''
                     }
                     onClick={() => createSingleNft()}

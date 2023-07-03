@@ -36,6 +36,8 @@ interface ModalType {
 export const Modals: React.FC<ModalType> = (props: ModalType) => {
   const [firstRender, setFirstRender] = React.useState<boolean>(false);
 
+  console.log('DelabObject', props.DelabObject);
+
   const [percentage, setPercentage] = React.useState<string>('10%');
 
   const [img, setImg] = React.useState<string | undefined>(undefined);
@@ -305,23 +307,27 @@ export const Modals: React.FC<ModalType> = (props: ModalType) => {
                 className="upload-nft__box py-5 position-sticky mb-4"
                 style={{ maxHeight: '30vh' }}
               >
-                <div>
-                  <i className="fa-regular fa-cloud-arrow-up fa-3x mb-4" />
-                  <p className="mb-4">
-                    File types supported: JPG, PNG, SVG, GIF and WEBP Optimal dimensions 2500×650.
-                    Max. size: 15MB
-                  </p>
-                  <Form.Group controlId="formFile">
-                    <Form.Label
-                      forHtml="formFile"
-                      className="btn btn-secondary"
-                      onChange={(e) => uploadImg(e)}
-                    >
-                      Upload Files
-                    </Form.Label>
-                    <Form.Control type="file" className="d-none" />
-                  </Form.Group>
-                </div>
+                {img ? (
+                  <img
+                    src={`https://cloudflare-ipfs.com/ipfs/${img}`}
+                    style={{ width: '100%' }}
+                    alt="Preview"
+                  />
+                ) : (
+                  <div>
+                    <i className="fa-regular fa-cloud-arrow-up fa-3x mb-4" />
+                    <p className="mb-4">
+                      File types supported: JPG, PNG, SVG, GIF and WEBP Optimal dimensions 2500×650.
+                      Max. size: 15MB
+                    </p>
+                    <Form.Group controlId="formFile">
+                      <Form.Label htmlFor="formFile" className="btn btn-secondary">
+                        Upload Files
+                      </Form.Label>
+                      <Form.Control type="file" className="d-none" onChange={uploadImg} />
+                    </Form.Group>
+                  </div>
+                )}
               </div>
               <Form.Group controlId="formFile" className="mb-4">
                 <Form.Label forHtml="formFile" className="d-flex align-items-center">
