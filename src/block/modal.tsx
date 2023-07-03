@@ -46,6 +46,8 @@ export const Modals: React.FC<ModalType> = (props: ModalType) => {
 
   const desc = new VldBuilder().with(vlds.VLen, 0, 700).withFname('Desciption');
 
+  const price = new VldBuilder().with(vlds.VNumber, 0, 1000000000).withFname('Price');
+
   const history = useNavigate();
 
   async function uploadImg(e: React.FormEvent<HTMLElement>) {
@@ -494,6 +496,8 @@ export const Modals: React.FC<ModalType> = (props: ModalType) => {
                   <Form.Control
                     placeholder="Enter offer price"
                     aria-label="Enter offer price"
+                    value={price.value}
+                    onChange={(e) => price.change(e.target.value)}
                     required
                   />
                   <InputGroup.Text>TON</InputGroup.Text>
@@ -529,6 +533,7 @@ export const Modals: React.FC<ModalType> = (props: ModalType) => {
                 variant="primary w-100"
                 data-bs-toggle="modal"
                 data-bs-target="#TransactionModal"
+                disabled={price.error !== '' || price.value === ''}
               >
                 Send
               </Button>
