@@ -23,8 +23,12 @@ export const Collection: React.FC<PageProps> = (props: PageProps) => {
   const [firstRender, setFirstRender] = React.useState<boolean>(false);
 
   const [collection, setCollection] = React.useState<Coll | undefined>(undefined);
+  console.log('🚀 ~ file: index.tsx:26 ~ collection:', collection);
 
   const [items, setItems] = React.useState<Item[] | undefined>(undefined);
+
+  const [error, setError] = useState<boolean>(false);
+  const [showFullText, setShowFullText] = useState<boolean>(false);
 
   const [page, setPage] = React.useState<number>(0);
 
@@ -79,7 +83,7 @@ export const Collection: React.FC<PageProps> = (props: PageProps) => {
       <section className="nft-hero">
         <img
           src={
-            collection && collection.metadata && collection.metadata.cover_image
+            collection?.metadata?.cover_image && !error
               ? collection.metadata.cover_image
               : '/assets/img/hero-image.jpg'
           }
@@ -87,6 +91,7 @@ export const Collection: React.FC<PageProps> = (props: PageProps) => {
           loading="lazy"
           width="340"
           height="275"
+          onError={() => setError(true)}
         />
       </section>
       <main className="main-page" style={{ marginTop: '-65px' }}>
@@ -126,15 +131,24 @@ export const Collection: React.FC<PageProps> = (props: PageProps) => {
                           </Card.Text>
                         </div>
                       </div>
+
                       <div className="mb-4">
                         <div className="mb-2">
-                          {collection.metadata?.description?.slice(0, 128)} ...
+                          {showFullText
+                            ? collection.metadata?.description
+                            : collection.metadata?.description?.slice(0, 128)}
                         </div>
-                        <Button variant="link">
-                          See More <i className="fa-solid fa-angle-down ms-2" />
-                        </Button>
+                        {collection.metadata?.description &&
+                          collection.metadata?.description.length > 128 &&
+                          !showFullText && (
+                            <Button variant="link" onClick={() => setShowFullText(true)}>
+                              See More <i className="fa-solid fa-angle-down ms-2" />
+                            </Button>
+                          )}
                       </div>
-                      <Dropdown>
+
+                      {/* Profile Social links */}
+                      {/* <Dropdown>
                         <div className="libermall__soclinks flex-wrap">
                           <a href="#!" className="libermall__soclinks-item m-1">
                             <i className="fa-brands fa-telegram" />
@@ -168,14 +182,17 @@ export const Collection: React.FC<PageProps> = (props: PageProps) => {
                             @tegrocatnft
                           </Dropdown.Item>
                         </Dropdown.Menu>
-                      </Dropdown>
+                      </Dropdown> */}
                     </Card.Body>
-                    <Card.Footer className="d-flex aling-items-center p-4">
+                    <Card.Footer className="d-flex align-items-center p-4">
                       Created by
-                      <Card.Link href="#" className="ms-2">
+                      <Card.Body
+                        className="ms-2 d-flex align-items-center"
+                        style={{ color: '#a7a7a7' }}
+                      >
                         {collection.metadata?.name}
-                      </Card.Link>
-                      <span className="verified-icon ms-2" />
+                        <span className="verified-icon ms-2 d-inline-block" />
+                      </Card.Body>
                     </Card.Footer>
                   </Card>
                   <div id="open-filters" className="modal-mobile">
@@ -928,7 +945,10 @@ export const Collection: React.FC<PageProps> = (props: PageProps) => {
                   </div>
                 </Col>
                 <Col lg="8" xxl="9">
-                  <Card className="card-blur mb-4 overflow-auto" id="mouseScroll">
+                  <Card
+                    className="card-blur mb-4 overflow-auto d-flex align-items-center"
+                    id="mouseScroll"
+                  >
                     <div className="d-flex align-items-center justify-content-between">
                       <div className="card-blur__item p-4 border-end text-center">
                         <h5
