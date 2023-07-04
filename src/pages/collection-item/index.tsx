@@ -97,6 +97,18 @@ export const CollectionItem: React.FC<PageProps> = (props: PageProps) => {
     return true;
   }
 
+  const handleCopyLink = () => {
+    const currentURL = window.location.href;
+    navigator.clipboard
+      .writeText(currentURL)
+      .then(() => {
+        console.log('Link copied!');
+      })
+      .catch((error) => {
+        console.error('Copy error: ', error);
+      });
+  };
+
   useEffect(() => {
     if (!firstRender) {
       setFirstRender(true);
@@ -164,7 +176,7 @@ export const CollectionItem: React.FC<PageProps> = (props: PageProps) => {
                           <Dropdown.Item href="#" className="border-0">
                             <i className="fa-solid fa-arrows-rotate me-3" /> Refresh Metadata
                           </Dropdown.Item>
-                          <Dropdown.Item href="#">
+                          <Dropdown.Item href="#" onClick={handleCopyLink}>
                             <i className="fa-regular fa-copy fs-16 me-3" /> Copy Link
                           </Dropdown.Item>
                         </Dropdown.Menu>
