@@ -27,6 +27,8 @@ export const CollectionItem: React.FC<PageProps> = (props: PageProps) => {
   const [firstRender, setFirstRender] = React.useState<boolean>(false);
 
   const [oneItem, setOneItem] = React.useState<Item | undefined>(undefined);
+  console.log('🚀 ~ file: index.tsx:30 ~ oneItem:', oneItem);
+
   const [collection, setCollection] = React.useState<Collection | undefined>(undefined);
 
   const [items, setItems] = React.useState<Item[] | undefined>(undefined);
@@ -457,9 +459,9 @@ export const CollectionItem: React.FC<PageProps> = (props: PageProps) => {
                     </ListGroup>
                   </Card>
 
-                  <Card className="border p-4">
-                    <Card.Title className="fs-22 mb-4">Attributes</Card.Title>
-                    {oneItem.metadata.attributes && oneItem.metadata.attributes.length > 0 ? (
+                  {oneItem.metadata.attributes && oneItem.metadata.attributes.length > 0 ? (
+                    <Card className="border p-4">
+                      <Card.Title className="fs-22 mb-4">Attributes</Card.Title>
                       <Row>
                         {oneItem.metadata.attributes.map((attr, key) => (
                           <Col lg="6" className="mb-3" key={key}>
@@ -512,8 +514,8 @@ export const CollectionItem: React.FC<PageProps> = (props: PageProps) => {
                                  </a>
                               </Col> */}
                       </Row>
-                    ) : null}
-                  </Card>
+                    </Card>
+                  ) : null}
                 </Col>
               </Row>
               <Card className="border p-0 mb-5">
