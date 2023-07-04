@@ -810,9 +810,6 @@ export const CollectionItem: React.FC<PageProps> = (props: PageProps) => {
                           <Dropdown.Item href="#" className="border-0">
                             <i className="fa-solid fa-arrows-rotate me-3" /> Refresh Metadata
                           </Dropdown.Item>
-                          <Dropdown.Item href="#">
-                            <i className="fa-regular fa-heart fs-18 me-2" /> Like
-                          </Dropdown.Item>
                         </Dropdown.Menu>
                       </Dropdown>
                       <Button variant="icon btn-like btn-like__card">

@@ -141,14 +141,14 @@ export const CreateNft: React.FC<PageProps> = (props: PageProps) => {
               <Row>
                 <Col lg="5" className="mb-4 mb-lg-0">
                   <div className="upload-nft__box position-sticky" style={{ top: '140px' }}>
-                    <Col lg={img ? '11' : '6'}>
+                    <Col lg={`${img ? '11' : '6'}`} className="w-100 h-100">
                       {img ? (
                         <img
                           src={`https://cloudflare-ipfs.com/ipfs/${img}`}
-                          style={{ width: '100%' }}
+                          style={{ width: '100%', height: '100%', objectFit: 'contain' }}
                         />
                       ) : (
-                        <div>
+                        <div className="d-flex align-items-center justify-content-center flex-column h-100">
                           <i className="fa-regular fa-cloud-arrow-up fa-3x mb-4" />
                           <p className="mb-4">
                             File types supported: JPG, PNG, SVG, GIF, WEBP and MP4 Max. size: 15MB
