@@ -33,6 +33,8 @@ interface Attribute {
 export const CreateNft: React.FC<PageProps> = (props: PageProps) => {
   const [firstRender, setFirstRender] = React.useState<boolean>(false);
 
+  const [collectionAddress, setCollectionAddress] = React.useState<string>('');
+
   const [img, setImg] = React.useState<string | undefined>(undefined);
 
   const [attributes, setAttributes] = React.useState<Attribute[]>([]);
@@ -73,7 +75,7 @@ export const CreateNft: React.FC<PageProps> = (props: PageProps) => {
   }
 
   async function createSingleNft() {
-    if (!props.address) {
+    if (!props.address || !collectionAddress) {
       return;
     }
 
@@ -96,6 +98,7 @@ export const CreateNft: React.FC<PageProps> = (props: PageProps) => {
     }
     const data: CustomNftSingleData = {
       ownerAddress: props.address,
+
       // content: Buffer.from(`ipfs://${ipfsData}`, 'utf8').toString('base64'),
       content: `ipfs://${ipfsData}/metadata.json`,
       royaltyParams: {
@@ -127,6 +130,11 @@ export const CreateNft: React.FC<PageProps> = (props: PageProps) => {
       props.installScripts();
     }
   }, []);
+
+  const collectionAddresses = [
+    { id: 'address_1', title: 'address 1' },
+    { id: 'address_2', title: 'address 2' },
+  ];
 
   return (
     <div id={props.id}>
@@ -288,6 +296,22 @@ export const CreateNft: React.FC<PageProps> = (props: PageProps) => {
                       </Col>
                     </Row>
                     <Button variant="secondary btn-sm">Add attribute</Button>
+                  </Card>
+                  <Card className="border p-4 mb-4">
+                    <Card.Body className="p-0">
+                      <Card.Title className="fs-20 mb-4">Choose a collection address</Card.Title>
+                      <Form.Select
+                        value={collectionAddress}
+                        onChange={(e) => setCollectionAddress(e.target.value)}
+                        placeholder="Сollection address"
+                      >
+                        {collectionAddresses.map((address) => (
+                          <option key={address.id} value={address.id}>
+                            {address.title}
+                          </option>
+                        ))}
+                      </Form.Select>
+                    </Card.Body>
                   </Card>
                   <Card className="border p-4 mb-4">
                     <Card.Header className="d-flex mb-4">
