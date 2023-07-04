@@ -23,7 +23,6 @@ export const Collection: React.FC<PageProps> = (props: PageProps) => {
   const [firstRender, setFirstRender] = React.useState<boolean>(false);
 
   const [collection, setCollection] = React.useState<Coll | undefined>(undefined);
-  console.log('🚀 ~ file: index.tsx:26 ~ collection:', collection);
 
   const [items, setItems] = React.useState<Item[] | undefined>(undefined);
 
@@ -195,7 +194,9 @@ export const Collection: React.FC<PageProps> = (props: PageProps) => {
                       </Card.Body>
                     </Card.Footer>
                   </Card>
-                  <div id="open-filters" className="modal-mobile">
+
+                  {/* Filter */}
+                  {/* <div id="open-filters" className="modal-mobile">
                     <Card className="card-filters bg-transparent">
                       <div className="d-flex align-items-center py-4 border-bottom">
                         <Card.Title className="card-title fs-22 fw-bold m-0">Filters</Card.Title>
@@ -942,7 +943,7 @@ export const Collection: React.FC<PageProps> = (props: PageProps) => {
                         </div>
                       </Card.Body>
                     </Card>
-                  </div>
+                  </div> */}
                 </Col>
                 <Col lg="8" xxl="9">
                   <Card

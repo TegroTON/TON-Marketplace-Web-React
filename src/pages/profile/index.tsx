@@ -57,7 +57,19 @@ export const Profile: React.FC<PageProps> = (props: PageProps) => {
                         </Card.Text>
                       </div>
                     </div>
-                    <div className="libermall__soclinks flex-wrap">
+
+                    <div className="mb-4">
+                      <div className="mb-2">
+                        <p>Hey!</p>
+                        <p>I'm the creator of the Toned Ape Club! collection.</p>
+                      </div>
+                      <Button variant="link">
+                        See More <i className="fa-solid fa-angle-down ms-2" />
+                      </Button>
+                    </div>
+
+                    {/* Profile Social Links */}
+                    {/* <div className="libermall__soclinks flex-wrap">
                       <a href="#!" className="libermall__soclinks-item m-1">
                         <i className="fa-brands fa-telegram" />
                       </a>
@@ -67,7 +79,7 @@ export const Profile: React.FC<PageProps> = (props: PageProps) => {
                       <a href="#!" className="libermall__soclinks-item m-1">
                         <i className="fa-brands fa-reddit-alien" />
                       </a>
-                    </div>
+                    </div> */}
                   </Card.Body>
                   <Button
                     variant="secondary rounded-0"
@@ -78,7 +90,9 @@ export const Profile: React.FC<PageProps> = (props: PageProps) => {
                     <i className="fa-regular fa-pen-to-square ms-3" />
                   </Button>
                 </Card>
-                <div id="open-filters" className="modal-mobile">
+
+                {/* Filter */}
+                {/* <div id="open-filters" className="modal-mobile">
                   <Card className="card-filters bg-transparent">
                     <div className="d-flex align-items-center py-4 border-bottom">
                       <Card.Title className="card-title fs-22 fw-bold m-0">Filters</Card.Title>
@@ -251,7 +265,8 @@ export const Profile: React.FC<PageProps> = (props: PageProps) => {
                       </div>
                     </Card.Body>
                   </Card>
-                </div>
+                </div> */}
+                
               </Col>
               <Col lg="8" xxl="9">
                 <Tabs
@@ -631,7 +646,6 @@ export const Profile: React.FC<PageProps> = (props: PageProps) => {
                               <Dropdown.Item href="#" className="border-0">
                                 <i className="fa-solid fa-arrows-rotate me-3" /> Refresh Metadata
                               </Dropdown.Item>
-
                             </Dropdown.Menu>
                           </Dropdown>
                           <Button variant="icon btn-like btn-like__card">

@@ -27,6 +27,7 @@ export const User1: React.FC<PageProps> = (props: PageProps) => {
   const [address, setAddress] = React.useState<string | undefined>(undefined);
 
   const [account, setAccount] = React.useState<AccountV2 | undefined>(undefined);
+  console.log('🚀 ~ file: index.tsx:30 ~ account:', account);
 
   const [page, setPage] = React.useState<number>(0);
 
@@ -94,10 +95,11 @@ export const User1: React.FC<PageProps> = (props: PageProps) => {
                   <Card.Body className="p-2 p-xl-4">
                     {account && address ? (
                       <div className="d-flex mb-4">
-                        <Card.Img
-                          variant="profile__avatar"
-                          src={account.icon !== '' ? account.icon : './assets/img/user-avatar.png'}
-                        />
+                        {account.icon ? (
+                          <Card.Img variant="profile__avatar" src={account.icon} />
+                        ) : (
+                          <Card.Img variant="profile__avatar" src="./assets/img/user-avatar.png" />
+                        )}
                         <div className="ms-3 w-100">
                           <div className="d-flex">
                             <Card.Title className="fs-28 fw-bold mb-2 me-3 text-wrap">
@@ -135,7 +137,9 @@ export const User1: React.FC<PageProps> = (props: PageProps) => {
                         See More <i className="fa-solid fa-angle-down ms-2" />
                       </Button>
                     </div>
-                    <div className="libermall__soclinks flex-wrap">
+
+                    {/* Social links for profile */}
+                    {/* <div className="libermall__soclinks flex-wrap">
                       <a href="#!" className="libermall__soclinks-item m-1">
                         <i className="fa-brands fa-telegram" />
                       </a>
@@ -145,10 +149,12 @@ export const User1: React.FC<PageProps> = (props: PageProps) => {
                       <a href="#!" className="libermall__soclinks-item m-1">
                         <i className="fa-brands fa-reddit-alien" />
                       </a>
-                    </div>
+                    </div> */}
                   </Card.Body>
                 </Card>
-                <div id="open-filters" className="modal-mobile">
+
+                {/* Filters */}
+                {/* <div id="open-filters" className="modal-mobile">
                   <Card className="card-filters bg-transparent">
                     <div className="d-flex align-items-center py-4 border-bottom">
                       <Card.Title className="card-title fs-22 fw-bold m-0">Filters</Card.Title>
@@ -321,7 +327,7 @@ export const User1: React.FC<PageProps> = (props: PageProps) => {
                       </div>
                     </Card.Body>
                   </Card>
-                </div>
+                </div> */}
               </Col>
               <Col lg="8" xxl="9">
                 <Tabs
@@ -626,5 +632,5 @@ export const User1: React.FC<PageProps> = (props: PageProps) => {
         </section>
       </main>
     </div>
-  )
+  );
 };
