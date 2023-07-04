@@ -557,86 +557,93 @@ export const CollectionItem: React.FC<PageProps> = (props: PageProps) => {
                   </thead>
                   <tbody>
                     {transactions
-                      ? transactions.map((trans, key) => (
-                          <tr key={key}>
-                            <td>
-                              <div className="table-stats d-flex align-items-center">
-                                <div className="table-stats__icon fs-18 me-3">
-                                  {trans.in_msg?.decoded_op_name ? (
-                                    <i className="fa-regular fa-circle-plus" />
-                                  ) : null}
+                      ? transactions.map((trans, key) => {
+                          const transData = new Date(trans.utime * 1000).toLocaleString();
 
-                                  {trans.in_msg?.op_code === '0x80138152' ? (
-                                    <i className="fa-regular fa-paintbrush-fine" />
-                                  ) : null}
-                                  {trans.in_msg?.op_code === '0x800ec513' ? (
-                                    <i className="fa-regular fa-paintbrush-fine" />
-                                  ) : null}
+                          return (
+                            <tr key={key}>
+                              <td>
+                                <div className="table-stats d-flex align-items-center">
+                                  <div className="table-stats__icon fs-18 me-3">
+                                    {trans.in_msg?.decoded_op_name ? (
+                                      <i className="fa-regular fa-circle-plus" />
+                                    ) : null}
+
+                                    {trans.in_msg?.op_code === '0x80138152' ? (
+                                      <i className="fa-regular fa-paintbrush-fine" />
+                                    ) : null}
+                                    {trans.in_msg?.op_code === '0x800ec513' ? (
+                                      <i className="fa-regular fa-paintbrush-fine" />
+                                    ) : null}
+                                  </div>
+                                  <span className="table-stats__name fw-medium">
+                                    {trans.in_msg?.decoded_op_name?.replace(
+                                      'nft_transfer',
+                                      'Transfer',
+                                    )}
+                                    {trans.in_msg?.op_code === '0x80138152' ? 'Mint' : null}
+                                    {trans.in_msg?.op_code === '0x800ec513' ? 'Mint' : null}
+                                  </span>
                                 </div>
-                                <span className="table-stats__name fw-medium">
-                                  {trans.in_msg?.decoded_op_name?.replace(
-                                    'nft_transfer',
-                                    'Transfer',
-                                  )}
-                                  {trans.in_msg?.op_code === '0x80138152' ? 'Mint' : null}
-                                  {trans.in_msg?.op_code === '0x800ec513' ? 'Mint' : null}
-                                </span>
-                              </div>
-                            </td>
-                            <td>
-                              <div className="table-stats__price text-end">
-                                <div className="mb-1">
-                                  {fixAmount(trans.in_msg?.value ?? '0')} TON
+                              </td>
+                              <td>
+                                <div className="table-stats__price text-end">
+                                  <div className="mb-1">
+                                    {fixAmount(trans.in_msg?.value ?? '0')} TON
+                                  </div>
+                                  {/* <div className="fs-14 color-grey">$2,45</div> */}
                                 </div>
-                                {/* <div className="fs-14 color-grey">$2,45</div> */}
-                              </div>
-                            </td>
-                            <td className="text-end">
-                              <a
-                                href={`/user?a=${trans.in_msg?.source?.address}`}
-                                className="table-stats__from d-flex align-items-center justify-content-end"
-                                target="_blank"
-                              >
-                                <img
-                                  src={trans.in_msg?.source?.icon ?? './assets/img/user-avatar.png'}
-                                  className="table-stats__avatar"
-                                  alt=""
-                                />
-                                <div className="table-stats__address ms-2">
-                                  {trans.in_msg?.source?.name ??
-                                    smlAddr(trans.in_msg?.source?.address ?? '')}
-                                </div>
-                              </a>
-                            </td>
-                            <td>
-                              {trans.out_msgs && trans.out_msgs.length > 0
-                                ? trans.out_msgs
-                                    .slice(trans.out_msgs.length - 1, trans.out_msgs.length)
-                                    .map((out, key2) => (
-                                      <a
-                                        key={key2}
-                                        href={`/user?a=${out?.destination?.address}`}
-                                        className="table-stats__from d-flex align-items-center"
-                                        target="_blank"
-                                      >
-                                        <img
-                                          src={
-                                            out?.destination?.icon ?? './assets/img/user-avatar.png'
-                                          }
-                                          className="table-stats__avatar"
-                                          alt=""
-                                        />
-                                        <div className="table-stats__address ms-2">
-                                          {out?.destination?.name ??
-                                            smlAddr(out?.destination?.address ?? '')}
-                                        </div>
-                                      </a>
-                                    ))
-                                : '-'}
-                            </td>
-                            <td className="text-end">{trans.utime}</td>
-                          </tr>
-                        ))
+                              </td>
+                              <td className="text-end">
+                                <a
+                                  href={`/user?a=${trans.in_msg?.source?.address}`}
+                                  className="table-stats__from d-flex align-items-center justify-content-end"
+                                  target="_blank"
+                                >
+                                  <img
+                                    src={
+                                      trans.in_msg?.source?.icon ?? './assets/img/user-avatar.png'
+                                    }
+                                    className="table-stats__avatar"
+                                    alt=""
+                                  />
+                                  <div className="table-stats__address ms-2">
+                                    {trans.in_msg?.source?.name ??
+                                      smlAddr(trans.in_msg?.source?.address ?? '')}
+                                  </div>
+                                </a>
+                              </td>
+                              <td>
+                                {trans.out_msgs && trans.out_msgs.length > 0
+                                  ? trans.out_msgs
+                                      .slice(trans.out_msgs.length - 1, trans.out_msgs.length)
+                                      .map((out, key2) => (
+                                        <a
+                                          key={key2}
+                                          href={`/user?a=${out?.destination?.address}`}
+                                          className="table-stats__from d-flex align-items-center"
+                                          target="_blank"
+                                        >
+                                          <img
+                                            src={
+                                              out?.destination?.icon ??
+                                              './assets/img/user-avatar.png'
+                                            }
+                                            className="table-stats__avatar"
+                                            alt=""
+                                          />
+                                          <div className="table-stats__address ms-2">
+                                            {out?.destination?.name ??
+                                              smlAddr(out?.destination?.address ?? '')}
+                                          </div>
+                                        </a>
+                                      ))
+                                  : '-'}
+                              </td>
+                              <td className="text-end">{transData}</td>
+                            </tr>
+                          );
+                        })
                       : null}
                     {/* <tr>
                                             <td>
