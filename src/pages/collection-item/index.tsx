@@ -22,12 +22,12 @@ import { MarketNft } from '../../logic/loadnft';
 
 import { getParameterByName, fixAmount, rawToTon, smlAddr } from '../../logic/utils';
 import { Account, AccountV2, Collection, Item, Transaction } from '../../logic/tonapi';
+import TokenPriceHook from '../../hooks/TokenPriceHook';
 
 export const CollectionItem: React.FC<PageProps> = (props: PageProps) => {
   const [firstRender, setFirstRender] = React.useState<boolean>(false);
 
   const [oneItem, setOneItem] = React.useState<Item | undefined>(undefined);
-  console.log('🚀 ~ file: index.tsx:30 ~ oneItem:', oneItem);
 
   const [collection, setCollection] = React.useState<Collection | undefined>(undefined);
 
@@ -204,7 +204,7 @@ export const CollectionItem: React.FC<PageProps> = (props: PageProps) => {
                       <div className="d-flex align-items-center">
                         <div className="d-block fs-24 fw-bold">Price:</div>
                         <div className="price-item__ton fs-24 fw-bold ms-auto">
-                          {fixAmount(oneItem.sale?.price.value ?? 0)}{' '}
+                          {fixAmount(oneItem.sale?.price.value ?? 0)}
                           {oneItem.sale?.price.token_name}
                         </div>
                       </div>
@@ -224,7 +224,11 @@ export const CollectionItem: React.FC<PageProps> = (props: PageProps) => {
                             <i className="fa-regular fa-circle-info ms-2"></i>
                           </OverlayTrigger>
                         </div>
-                        <div className="price-item__dollar d-block color-grey ms-auto">$64.09</div>
+                        <div className="price-item__dollar d-block color-grey ms-auto">
+                          <TokenPriceHook
+                            tokenAmount={Number(fixAmount(oneItem.sale?.price.value))}
+                          />
+                        </div>
                       </div>
                       <div className="d-flex flex-wrap mt-4">
                         <Button
