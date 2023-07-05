@@ -19,6 +19,7 @@ import { PageProps } from '../../types/interfaces';
 import { MarketNft } from '../../logic/loadnft';
 import { getParameterByName, rawToTon, fixAmount } from '../../logic/utils';
 import { Collection, Item } from '../../logic/tonapi';
+import TokenPriceHook from '../../hooks/TokenPriceHook';
 
 export const Main: React.FC<PageProps> = (props: PageProps) => {
   const [firstRender, setFirstRender] = React.useState<boolean>(false);
@@ -382,7 +383,8 @@ export const Main: React.FC<PageProps> = (props: PageProps) => {
                         908.5k TON
                       </div>
                       <div className="fw-medium small color-grey">
-                        $2M -<span className="color-green ms-2">+8.78%</span>
+                        <TokenPriceHook tokenAmount={908500} />
+                        <span className="color-green ms-2">+8.78%</span>
                       </div>
                     </Card.Body>
                   </Card.Link>
@@ -420,7 +422,8 @@ export const Main: React.FC<PageProps> = (props: PageProps) => {
                         204.7k TON
                       </div>
                       <div className="fw-medium small color-grey">
-                        $470.8K -<span className="color-green ms-2">+1.33%</span>
+                        <TokenPriceHook tokenAmount={204700} /> -
+                        <span className="color-green ms-2">+1.33%</span>
                       </div>
                     </Card.Body>
                   </Card.Link>
@@ -458,7 +461,7 @@ export const Main: React.FC<PageProps> = (props: PageProps) => {
                         43.1k TON
                       </div>
                       <div className="fw-medium small color-grey">
-                        $95.6K
+                        <TokenPriceHook tokenAmount={43100} />
                         <span className="color-green ms-2">+2.01%</span>
                       </div>
                     </Card.Body>
@@ -536,7 +539,7 @@ export const Main: React.FC<PageProps> = (props: PageProps) => {
                         12.8k TON
                       </div>
                       <div className="fw-medium small color-grey">
-                        $29.6K
+                        <TokenPriceHook tokenAmount={12800} />
                         <span className="color-green ms-2">+5.35%</span>
                       </div>
                     </Card.Body>
@@ -614,7 +617,7 @@ export const Main: React.FC<PageProps> = (props: PageProps) => {
                         11.1k TON
                       </div>
                       <div className="fw-medium small color-grey">
-                        $25.6K
+                        <TokenPriceHook tokenAmount={11100} />
                         <span className="color-green ms-2">+8.84%</span>
                       </div>
                     </Card.Body>
@@ -653,7 +656,7 @@ export const Main: React.FC<PageProps> = (props: PageProps) => {
                         43.1k TON
                       </div>
                       <div className="fw-medium small color-grey">
-                        $95.6K
+                        <TokenPriceHook tokenAmount={43100} />
                         <span className="color-green ms-2">+8.84%</span>
                       </div>
                     </Card.Body>
@@ -692,7 +695,7 @@ export const Main: React.FC<PageProps> = (props: PageProps) => {
                         84.9k TON
                       </div>
                       <div className="fw-medium small color-grey">
-                        $195.2K
+                        <TokenPriceHook tokenAmount={84900} />
                         <span className="color-green ms-2">+4K%</span>
                       </div>
                     </Card.Body>
@@ -770,7 +773,7 @@ export const Main: React.FC<PageProps> = (props: PageProps) => {
                         17.8K TON
                       </div>
                       <div className="fw-medium small color-grey">
-                        $41.1K
+                        <TokenPriceHook tokenAmount={17800} />
                         <span className="color-green ms-2">+4K%</span>
                       </div>
                     </Card.Body>
@@ -809,7 +812,7 @@ export const Main: React.FC<PageProps> = (props: PageProps) => {
                         3k TON
                       </div>
                       <div className="fw-medium small color-grey">
-                        $7K
+                        <TokenPriceHook tokenAmount={3000} />
                         <span className="color-green ms-2">+4K%</span>
                       </div>
                     </Card.Body>
@@ -926,7 +929,7 @@ export const Main: React.FC<PageProps> = (props: PageProps) => {
                         3k TON
                       </div>
                       <div className="fw-medium small color-grey">
-                        $7K
+                        <TokenPriceHook tokenAmount={3000} />
                         <span className="color-green ms-2">+4K%</span>
                       </div>
                     </Card.Body>
