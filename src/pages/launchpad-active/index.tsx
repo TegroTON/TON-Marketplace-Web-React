@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import {
   Button,
@@ -13,9 +13,9 @@ import {
   ProgressBar,
   Form,
   InputGroup,
-} from "react-bootstrap";
+} from 'react-bootstrap';
 
-import { PageProps } from "../../types/interfaces";
+import { PageProps } from '../../types/interfaces';
 
 export const LaunchpadActive: React.FC<PageProps> = (props: PageProps) => {
   const [firstRender, setFirstRender] = React.useState<boolean>(false);
@@ -42,10 +42,7 @@ export const LaunchpadActive: React.FC<PageProps> = (props: PageProps) => {
             </Breadcrumb>
             <Row className="justify-content-center mb-4">
               <Col lg="5" className="mb-4 mb-lg-0">
-                <div
-                  className="text-center position-sticky me-0 me-lg-3"
-                  style={{ top: "110px" }}
-                >
+                <div className="text-center position-sticky me-0 me-lg-3" style={{ top: '110px' }}>
                   <div className="launchpad-slider">
                     <div className="m-1">
                       <img
@@ -77,24 +74,21 @@ export const LaunchpadActive: React.FC<PageProps> = (props: PageProps) => {
               <Col lg="7" className="ms-auto">
                 <div className="card-item-details mb-5">
                   <div className="card-item-head d-flex mb-4">
-                    <div className="item-details__badge badge__green me-auto">
-                      Open Sale
-                    </div>
+                    <div className="item-details__badge badge__green me-auto">Open Sale</div>
                   </div>
                   <h1 className="item-details__title mb-3">Cute Monters</h1>
                   <p className="item-details__desc col-xxl-9 mb-0">
-                    Cute Monters are unique NFTs with cats created only for the
-                    TON network. Our TON NFT "Cats" is a community of 9,999
-                    super-rare, artfully crafted, collectible cats.
+                    Cute Monters are unique NFTs with cats created only for the TON network. Our TON
+                    NFT "Cats" is a community of 9,999 super-rare, artfully crafted, collectible
+                    cats.
                   </p>
                   <div className="d-flex flex-wrap justify-content-center justify-content-md-start mt-4">
-                    <Button
-                      variant="secondary flex-fill m-1"
-                      style={{ maxWidth: "220px" }}
-                    >
+                    <Button variant="secondary flex-fill m-1" style={{ maxWidth: '220px' }}>
                       See Collection
                     </Button>
-                    <Dropdown>
+
+                    {/* Social Links */}
+                    {/* <Dropdown>
                       <div className="libermall__soclinks flex-wrap">
                         <a href="#!" className="libermall__soclinks-item m-1">
                           <i className="fa-brands fa-telegram" />
@@ -122,25 +116,17 @@ export const LaunchpadActive: React.FC<PageProps> = (props: PageProps) => {
                           @tegrocatnft
                         </Dropdown.Item>
                       </Dropdown.Menu>
-                    </Dropdown>
+                    </Dropdown> */}
                   </div>
                 </div>
                 <Card className="border p-4 mb-4">
                   <Card.Header className="mb-3">
-                    <Card.Title className="fs-22 fw-bold mb-1">
-                      NFT Sales
-                    </Card.Title>
-                    <div className="color-grey">
-                      Will end in: 05 may, 12:00 PM
-                    </div>
+                    <Card.Title className="fs-22 fw-bold mb-1">NFT Sales</Card.Title>
+                    <div className="color-grey">Will end in: 05 may, 12:00 PM</div>
                   </Card.Header>
                   <Card.Body className="p-0 d-flex flex-wrap mb-4">
-                    <div className="item-details__badge badge__yellow small m-1">
-                      Public Mint
-                    </div>
-                    <div className="item-details__badge badge__yellow small m-1">
-                      Price 0,5 TON
-                    </div>
+                    <div className="item-details__badge badge__yellow small m-1">Public Mint</div>
+                    <div className="item-details__badge badge__yellow small m-1">Price 0,5 TON</div>
                     <div className="item-details__badge badge__yellow small m-1">
                       Up to 600 NFTs
                     </div>
@@ -176,9 +162,7 @@ export const LaunchpadActive: React.FC<PageProps> = (props: PageProps) => {
                     <div className="progress-box mb-4">
                       <div className="d-flex mb-2 small fw-500">
                         <span>15%</span>
-                        <span className="ms-auto color-grey">
-                          Sold 90 from 600
-                        </span>
+                        <span className="ms-auto color-grey">Sold 90 from 600</span>
                       </div>
                       <ProgressBar animated variant="warning" now={15} />
                     </div>
@@ -198,7 +182,7 @@ export const LaunchpadActive: React.FC<PageProps> = (props: PageProps) => {
                             type="number"
                             placeholder="Amount"
                             defaultValue={1}
-                            min={1} 
+                            min={1}
                             max={10}
                           />
                           <InputGroup.Text className="p-0">
@@ -236,16 +220,13 @@ export const LaunchpadActive: React.FC<PageProps> = (props: PageProps) => {
                     />
                     <div className="px-3">
                       <Card.Title className="mb-1 fs-18">Simon Grey</Card.Title>
-                      <Card.Text className="mb-2">
-                        The Heal App Director
-                      </Card.Text>
+                      <Card.Text className="mb-2">The Heal App Director</Card.Text>
                       <Card.Text className="fs-14 color-grey mb-0">
-                        Simon Grey, a serial entrepreneur "Soul Enhancer", with
-                        a background in professional consulting and coaching. He
-                        is a certified Integrative Nutritionist and speaker who
-                        built a business mentoring over 350 coaches in the
-                        health and wellness space. Lana is dedicated to help
-                        others turn their dreams into reality.
+                        Simon Grey, a serial entrepreneur "Soul Enhancer", with a background in
+                        professional consulting and coaching. He is a certified Integrative
+                        Nutritionist and speaker who built a business mentoring over 350 coaches in
+                        the health and wellness space. Lana is dedicated to help others turn their
+                        dreams into reality.
                       </Card.Text>
                     </div>
                     <i className="fa-solid fa-angle-right ms-auto d-none d-lg-block me-3" />
@@ -254,7 +235,7 @@ export const LaunchpadActive: React.FC<PageProps> = (props: PageProps) => {
                     className="card__blur-bg-hover"
                     style={{
                       background:
-                        "url(/assets/img/user-avatar.png)  no-repeat center center / cover",
+                        'url(/assets/img/user-avatar.png)  no-repeat center center / cover',
                     }}
                   />
                 </Card>
@@ -269,20 +250,14 @@ export const LaunchpadActive: React.FC<PageProps> = (props: PageProps) => {
                         src="./assets/img/my-avatar.png"
                       />
                       <div className="px-3">
-                        <Card.Title className="mb-1 fs-18">
-                          Erion Soma
-                        </Card.Title>
-                        <Card.Text className="mb-2">
-                          The Heal App Director
-                        </Card.Text>
+                        <Card.Title className="mb-1 fs-18">Erion Soma</Card.Title>
+                        <Card.Text className="mb-2">The Heal App Director</Card.Text>
                         <Card.Text className="fs-14 color-grey mb-0">
-                          Erion Soma, a serial entrepreneur "Soul Enhancer",
-                          with a background in professional consulting and
-                          coaching. He is a certified Integrative Nutritionist
-                          and speaker who built a business mentoring over 350
-                          coaches in the health and wellness space. Lana is
-                          dedicated to help others turn their dreams into
-                          reality.
+                          Erion Soma, a serial entrepreneur "Soul Enhancer", with a background in
+                          professional consulting and coaching. He is a certified Integrative
+                          Nutritionist and speaker who built a business mentoring over 350 coaches
+                          in the health and wellness space. Lana is dedicated to help others turn
+                          their dreams into reality.
                         </Card.Text>
                       </div>
                       <i className="fa-solid fa-angle-right ms-auto d-none d-lg-block me-3" />
@@ -291,7 +266,7 @@ export const LaunchpadActive: React.FC<PageProps> = (props: PageProps) => {
                       className="card__blur-bg-hover"
                       style={{
                         background:
-                          "url(./assets/img/my-avatar.png)  no-repeat center center / cover",
+                          'url(./assets/img/my-avatar.png)  no-repeat center center / cover',
                       }}
                     />
                   </Card>
@@ -299,16 +274,14 @@ export const LaunchpadActive: React.FC<PageProps> = (props: PageProps) => {
                 {/* Launchpad */}
                 <Card className="border p-4 mb-4">
                   <Card.Title className="fs-22 mb-4">Launchpad</Card.Title>
-                  <Card.Text className="fw-medium mb-1">
-                    Phase 1: False Liber Holders
-                  </Card.Text>
+                  <Card.Text className="fw-medium mb-1">Phase 1: False Liber Holders</Card.Text>
                   <Card.Text className="color-grey mb-2">
                     10 NFTs per wallet at 0,5 $TON each
                   </Card.Text>
                   <Card.Text className="color-grey pe-0 pe-lg-5">
-                    Only holders of False Liber NFTs have access to the initial
-                    sale. They are eligible to buy up to 10 NFTs per wallet at a
-                    price of 0.5 TON each - Start time to be revealed.
+                    Only holders of False Liber NFTs have access to the initial sale. They are
+                    eligible to buy up to 10 NFTs per wallet at a price of 0.5 TON each - Start time
+                    to be revealed.
                   </Card.Text>
                 </Card>
               </Col>
