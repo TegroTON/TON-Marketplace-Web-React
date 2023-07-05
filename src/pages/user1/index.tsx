@@ -27,7 +27,6 @@ export const User1: React.FC<PageProps> = (props: PageProps) => {
   const [address, setAddress] = React.useState<string | undefined>(undefined);
 
   const [account, setAccount] = React.useState<AccountV2 | undefined>(undefined);
-  console.log('🚀 ~ file: index.tsx:30 ~ account:', account);
 
   const [page, setPage] = React.useState<number>(0);
 

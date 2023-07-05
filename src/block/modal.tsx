@@ -12,6 +12,7 @@ import {
   Alert,
   OverlayTrigger,
   Tooltip,
+  Spinner,
 } from 'react-bootstrap';
 
 import { DeLabConnect, DeLabModal } from '@delab-team/connect';
@@ -40,7 +41,8 @@ export const Modals: React.FC<ModalType> = (props: ModalType) => {
 
   const [percentage, setPercentage] = React.useState<string>('10%');
 
-  const [img, setImg] = React.useState<string | undefined>(undefined);
+  const [modalImg, setModalImg] = React.useState<string | null>(null);
+  const [uploading, setUploading] = React.useState<boolean>(false);
 
   const name = new VldBuilder().with(vlds.VLen, 0, 60).withFname('Name');
 
@@ -50,14 +52,12 @@ export const Modals: React.FC<ModalType> = (props: ModalType) => {
 
   const history = useNavigate();
 
-  async function uploadImg(e: React.FormEvent<HTMLElement>) {
+  async function uploadModalImg(e: React.ChangeEvent<HTMLInputElement>) {
     const _file: File | null = (e.target as HTMLInputElement).files?.[0] || null;
 
     const url = await CustomIpfs.infuraUploadImg(_file);
-    console.log('🚀 ~ file: modal.tsx:53 ~ uploadImg ~ url:', url);
-
-    setImg(url);
-    return url;
+    setModalImg(url || null);
+    return url || null;
   }
 
   async function createCollection() {
@@ -65,6 +65,15 @@ export const Modals: React.FC<ModalType> = (props: ModalType) => {
       return;
     }
   }
+
+  const handleImgChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    setUploading(true);
+    const url = await uploadModalImg(e);
+    setUploading(false);
+    if (url !== null) {
+      setModalImg(url);
+    }
+  };
 
   useEffect(() => {
     if (!firstRender) {
@@ -306,45 +315,66 @@ export const Modals: React.FC<ModalType> = (props: ModalType) => {
           <Modal.Body>
             <Form>
               <div
-                className="upload-nft__box py-5 position-sticky mb-4"
-                style={{ maxHeight: '30vh' }}
+                className="upload-nft__box py-3 position-sticky mb-4"
+                style={{ maxHeight: '40vh' }}
               >
-                {img ? (
+                {modalImg ? (
                   <img
-                    src={`https://cloudflare-ipfs.com/ipfs/${img}`}
-                    style={{ width: '100%' }}
+                    src={`https://cloudflare-ipfs.com/ipfs/${modalImg}`}
+                    style={{ width: '100%', height: '100%', objectFit: 'contain' }}
                     alt="Preview"
                   />
                 ) : (
                   <div>
-                    <i className="fa-regular fa-cloud-arrow-up fa-3x mb-4" />
-                    <p className="mb-4">
-                      File types supported: JPG, PNG, SVG, GIF and WEBP Optimal dimensions 2500×650.
-                      Max. size: 15MB
-                    </p>
-                    <Form.Group controlId="formFile">
-                      <Form.Label htmlFor="formFile" className="btn btn-secondary">
-                        Upload Files
-                      </Form.Label>
-                      <Form.Control type="file" className="d-none" onChange={uploadImg} />
-                    </Form.Group>
+                    {uploading ? (
+                      <Spinner
+                        animation="border"
+                        role="status"
+                        style={{ width: '5rem', height: '5rem' }}
+                      >
+                        <span className="visually-hidden">Loading...</span>
+                      </Spinner>
+                    ) : (
+                      <>
+                        <i className="fa-regular fa-cloud-arrow-up fa-3x mb-4" />
+                        <p className="mb-4">
+                          File types supported: JPG, PNG, SVG, GIF and WEBP Optimal dimensions
+                          2500×650. Max. size: 15MB
+                        </p>
+                        <Form.Group controlId="formFileColl">
+                          <Form.Label htmlFor="formFileColl" className="btn btn-secondary">
+                            Upload Files
+                          </Form.Label>
+                          <Form.Control
+                            type="file"
+                            className="d-none"
+                            id="formFileColl"
+                            onChange={handleImgChange}
+                          />
+                        </Form.Group>
+                      </>
+                    )}
                   </div>
                 )}
               </div>
-              <Form.Group controlId="formFile" className="mb-4">
-                <Form.Label forHtml="formFile" className="d-flex align-items-center">
-                  <div className="bg-soft rounded p-4 me-4" style={{ minHeight: '76px' }}>
-                    <i className="fa-regular fa-cloud-arrow-up fs-24" />
-                  </div>
-                  <Form.Text>
-                    <div className="fs-16 text-white fw-medium mb-2">Upload Collection Avatar</div>
-                    <div className="fs-14 color-grey">
-                      File types supported: JPG, PNG, SVG, GIF and WEBP Size: 512×512
+              {!modalImg && (
+                <Form.Group controlId="formFile" className="mb-4">
+                  <Form.Label forHtml="formFile" className="d-flex align-items-center">
+                    <div className="bg-soft rounded p-4 me-4" style={{ minHeight: '76px' }}>
+                      <i className="fa-regular fa-cloud-arrow-up fs-24" />
                     </div>
-                  </Form.Text>
-                </Form.Label>
-                <Form.Control type="file" className="d-none" />
-              </Form.Group>
+                    <Form.Text>
+                      <div className="fs-16 text-white fw-medium mb-2">
+                        Upload Collection Avatar
+                      </div>
+                      <div className="fs-14 color-grey">
+                        File types supported: JPG, PNG, SVG, GIF and WEBP Size: 512×512
+                      </div>
+                    </Form.Text>
+                  </Form.Label>
+                  <Form.Control type="file" className="d-none" />
+                </Form.Group>
+              )}
               <Form.Group className="mb-4">
                 <div className="d-flex">
                   <Form.Label className="fw-medium">Display Name</Form.Label>
@@ -459,7 +489,12 @@ export const Modals: React.FC<ModalType> = (props: ModalType) => {
                 data-bs-toggle="modal"
                 data-bs-target="#TransactionModal"
                 disabled={
-                  name.error !== '' || desc.error !== '' || name.value === '' || desc.value === ''
+                  name.error !== '' ||
+                  desc.error !== '' ||
+                  name.value === '' ||
+                  desc.value === '' ||
+                  !modalImg ||
+                  uploading
                 }
                 onClick={() => createCollection()}
               >

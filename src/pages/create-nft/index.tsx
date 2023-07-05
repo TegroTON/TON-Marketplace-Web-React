@@ -17,6 +17,7 @@ import {
   Breadcrumb,
   Card,
   InputGroup,
+  Spinner,
 } from 'react-bootstrap';
 import { PageProps } from '../../types/interfaces';
 
@@ -33,9 +34,11 @@ interface Attribute {
 export const CreateNft: React.FC<PageProps> = (props: PageProps) => {
   const [firstRender, setFirstRender] = React.useState<boolean>(false);
 
+  const [uploading, setUploading] = React.useState<boolean>(false);
+
   const [collectionAddress, setCollectionAddress] = React.useState<string>('');
 
-  const [img, setImg] = React.useState<string | undefined>(undefined);
+  const [img1, setImg1] = React.useState<string | null>(null);
 
   const [attributes, setAttributes] = React.useState<Attribute[]>([]);
 
@@ -49,15 +52,25 @@ export const CreateNft: React.FC<PageProps> = (props: PageProps) => {
 
   const marketNFT = new MarketNft();
 
-  async function uploadImg(e: any) {
-    const _file = e.target.files[0];
-    console.log(_file);
-    //   setFile(_file)
-    const url = await CustomIpfs.infuraUploadImg(_file);
+  async function uploadImg(e: React.ChangeEvent<HTMLInputElement>): Promise<string | null> {
+    const _file = e.target.files?.[0];
+    if (!_file) {
+      return null;
+    }
 
-    setImg(url);
-    return url;
+    // setFile(_file)
+    const url = await CustomIpfs.infuraUploadImg(_file);
+    return url || null;
   }
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    setUploading(true);
+    const url = await uploadImg(e);
+    setUploading(false);
+    if (url !== null) {
+      setImg1(url);
+    }
+  };
 
   async function loadCollections(address2: string) {
     if (address2 === '') {
@@ -90,7 +103,7 @@ export const CreateNft: React.FC<PageProps> = (props: PageProps) => {
       description: desc.value,
       marketplace: 'libermall.com',
       attributes: [],
-      image: `ipfs://${img}?filename=logo.png`,
+      image: `ipfs://${img1}?filename=logo.png`,
     };
     const ipfsData = await ipfs.uploadDataJson(JSON.stringify(metadata));
     if (!ipfsData) {
@@ -149,29 +162,42 @@ export const CreateNft: React.FC<PageProps> = (props: PageProps) => {
               <Row>
                 <Col lg="5" className="mb-4 mb-lg-0">
                   <div className="upload-nft__box position-sticky" style={{ top: '140px' }}>
-                    <Col lg={`${img ? '11' : '6'}`} className="w-100 h-100">
-                      {img ? (
+                    <Col lg={`${img1 ? '11' : '6'}`} className="w-100 h-100">
+                      {img1 ? (
                         <img
-                          src={`https://cloudflare-ipfs.com/ipfs/${img}`}
+                          src={`https://cloudflare-ipfs.com/ipfs/${img1}`}
                           style={{ width: '100%', height: '100%', objectFit: 'contain' }}
                         />
                       ) : (
                         <div className="d-flex align-items-center justify-content-center flex-column h-100">
-                          <i className="fa-regular fa-cloud-arrow-up fa-3x mb-4" />
-                          <p className="mb-4">
-                            File types supported: JPG, PNG, SVG, GIF, WEBP and MP4 Max. size: 15MB
-                            Max. resolution: 2000x2000px
-                          </p>
-                          <Form.Group controlId="formFile">
-                            <Form.Label forHtml="formFile" className="btn btn-secondary">
-                              Upload Files
-                            </Form.Label>
-                            <Form.Control
-                              type="file"
-                              className="d-none"
-                              onChange={(e) => uploadImg(e)}
-                            />
-                          </Form.Group>
+                          {uploading ? (
+                            <Spinner
+                              animation="border"
+                              role="status"
+                              style={{ width: '5rem', height: '5rem' }}
+                            >
+                              <span className="visually-hidden">Loading...</span>
+                            </Spinner>
+                          ) : (
+                            <>
+                              <i className="fa-regular fa-cloud-arrow-up fa-3x mb-4" />
+                              <p className="mb-4">
+                                File types supported: JPG, PNG, SVG, GIF, WEBP and MP4 Max. size:
+                                15MB Max. resolution: 2000x2000px
+                              </p>
+                              <Form.Group controlId="formFileNFT">
+                                <Form.Label htmlFor="formFileNFT" className="btn btn-secondary">
+                                  Upload Files
+                                </Form.Label>
+                                <Form.Control
+                                  type="file"
+                                  className="d-none"
+                                  id="formFileNFT"
+                                  onChange={handleFileChange}
+                                />
+                              </Form.Group>
+                            </>
+                          )}
                         </div>
                       )}
                     </Col>
@@ -435,7 +461,9 @@ export const CreateNft: React.FC<PageProps> = (props: PageProps) => {
                       price.error !== '' ||
                       name.value === '' ||
                       price.value === '' ||
-                      desc.value === ''
+                      desc.value === '' ||
+                      uploading ||
+                      !img1
                     }
                     onClick={() => createSingleNft()}
                   >
