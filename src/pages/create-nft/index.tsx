@@ -144,11 +144,6 @@ export const CreateNft: React.FC<PageProps> = (props: PageProps) => {
     }
   }, []);
 
-  const collectionAddresses = [
-    { id: 'address_1', title: 'address 1' },
-    { id: 'address_2', title: 'address 2' },
-  ];
-
   return (
     <div id={props.id}>
       <main className="main-page border-top">
@@ -324,23 +319,7 @@ export const CreateNft: React.FC<PageProps> = (props: PageProps) => {
                     <Button variant="secondary btn-sm">Add attribute</Button>
                   </Card>
                   <Card className="border p-4 mb-4">
-                    <Card.Body className="p-0">
-                      <Card.Title className="fs-20 mb-4">Choose a collection address</Card.Title>
-                      <Form.Select
-                        value={collectionAddress}
-                        onChange={(e) => setCollectionAddress(e.target.value)}
-                        placeholder="Сollection address"
-                      >
-                        {collectionAddresses.map((address) => (
-                          <option key={address.id} value={address.id}>
-                            {address.title}
-                          </option>
-                        ))}
-                      </Form.Select>
-                    </Card.Body>
-                  </Card>
-                  <Card className="border p-4 mb-4">
-                    <Card.Header className="d-flex mb-4">
+                    <Card.Header className="d-flex mb-2">
                       <div className="me-auto">
                         <Card.Title className="fs-20 mb-2">Put on marketplace</Card.Title>
                         <Card.Text className="color-grey mb-0">
@@ -349,7 +328,8 @@ export const CreateNft: React.FC<PageProps> = (props: PageProps) => {
                       </div>
                       <Form.Check type="switch" id="custom-switch" defaultChecked />
                     </Card.Header>
-                    <Tab.Container id="price-tabs" defaultActiveKey="FixedPrice">
+
+                    {/* <Tab.Container id="price-tabs" defaultActiveKey="FixedPrice">
                       <Nav variant="pills nav-fill border rounded flex-column flex-sm-row">
                         <Nav.Item>
                           <Nav.Link eventKey="FixedPrice">
@@ -449,7 +429,32 @@ export const CreateNft: React.FC<PageProps> = (props: PageProps) => {
                           </Alert>
                         </Tab.Pane>
                       </Tab.Content>
-                    </Tab.Container>
+                    </Tab.Container> */}
+
+                    <div className="pt-2">
+                      <Form.Group className="mb-3">
+                        <Form.Label className="fw-medium">Price</Form.Label>
+                        <InputGroup>
+                          <Form.Control
+                            type="number"
+                            placeholder="Enter price for one piece"
+                            value={price.value}
+                            onChange={(e) => price.change(e.target.value)}
+                          />
+                          <InputGroup.Text id="basic-addon1">TON</InputGroup.Text>
+                        </InputGroup>
+                      </Form.Group>
+                      <ListGroup>
+                        <ListGroup.Item className="d-flex">
+                          <div className="fw-medium color-grey">Service fee</div>
+                          <div className="ms-auto">1%</div>
+                        </ListGroup.Item>
+                        <ListGroup.Item className="d-flex">
+                          <div className="fw-medium color-grey">You will receive</div>
+                          <div className="ms-auto">—</div>
+                        </ListGroup.Item>
+                      </ListGroup>
+                    </div>
                   </Card>
                   <Button
                     variant="primary fs-18 w-100"

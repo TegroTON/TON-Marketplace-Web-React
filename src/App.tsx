@@ -516,7 +516,7 @@ export const App: React.FC = () => {
                         }
                     />
 
-                    <Route
+                    {/* <Route
                         path="/launchpad"
                         element={
                             <Launchpad
@@ -532,6 +532,7 @@ export const App: React.FC = () => {
                             />
                         }
                     />
+
                     <Route
                         path="/launchpad-active"
                         element={
@@ -547,9 +548,9 @@ export const App: React.FC = () => {
                                 settings={settings}
                             />
                         }
-                    />
+                    /> */}
 
-                    <Route
+                    {/* <Route
                         path="/profile"
                         element={
                             <Profile
@@ -564,7 +565,7 @@ export const App: React.FC = () => {
                                 settings={settings}
                             />
                         }
-                    />
+                    /> */}
 
                     <Route
                         path="/404"

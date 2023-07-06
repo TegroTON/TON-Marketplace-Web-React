@@ -434,7 +434,9 @@ export const Modals: React.FC<ModalType> = (props: ModalType) => {
                   final sale price and sent to your address.
                 </Form.Text>
               </Form.Group>
-              <Form.Group className="mb-4">
+
+              {/* Social Links */}
+              {/* <Form.Group className="mb-4">
                 <Form.Label className="fw-medium">Links to your collection</Form.Label>
                 <InputGroup className="mb-3">
                   <InputGroup.Text className="d-flex align-items-center pe-0">
@@ -483,7 +485,8 @@ export const Modals: React.FC<ModalType> = (props: ModalType) => {
                   </InputGroup.Text>
                   <Form.Control placeholder="Any link" aria-label="Anylink" />
                 </InputGroup>
-              </Form.Group>
+              </Form.Group> */}
+
               <Button
                 variant="primary w-100"
                 data-bs-toggle="modal"
