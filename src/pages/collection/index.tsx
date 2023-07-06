@@ -947,7 +947,7 @@ export const Collection: React.FC<PageProps> = (props: PageProps) => {
                 </Col>
                 <Col lg="8" xxl="9">
                   <Card
-                    className="card-blur mb-4 overflow-auto d-flex align-items-center"
+                    className="card-blur mb-4 overflow-auto d-flex"
                     id="mouseScroll"
                   >
                     <div className="d-flex align-items-center justify-content-between">

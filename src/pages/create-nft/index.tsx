@@ -46,9 +46,7 @@ export const CreateNft: React.FC<PageProps> = (props: PageProps) => {
 
   const price = new VldBuilder().with(vlds.VNumber, 0, 1000000000).withFname('Price');
 
-  const collectionAddress = new VldBuilder().with(vlds.VLen, 0, 100).withFname('CollectionAddress')
-
-  // const 
+  const collectionAddress = new VldBuilder().with(vlds.VLen, 0, 100).withFname('CollectionAddress');
 
   const history = useNavigate();
 

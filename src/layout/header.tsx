@@ -80,7 +80,7 @@ export const HeaderBlock: React.FC<HeaderType> = (props: HeaderType) => {
                 className="dropdown-menu-list dropdown-menu me-0 end-0 mobile-header-dropdown"
                 aria-labelledby="dropdownMenuProfile"
               >
-                <a className="dropdown-item py-3 px-2" href="/my-profile">
+                <a className="dropdown-item py-3 px-2" href={`/user?a=${props.address ?? ''}`}>
                   <div className="d-flex align-items-center ps-2">
                     <img
                       src={
@@ -108,7 +108,7 @@ export const HeaderBlock: React.FC<HeaderType> = (props: HeaderType) => {
                 </a>
                 <a
                   className="dropdown-item dropdown-menu-list-item border-0"
-                  href="#"
+                  href={`/user?a=${props.address ?? ''}`}
                   onClick={() => props.DelabObject.disconnect()}
                 >
                   <i className="fa-regular fa-link-simple-slash me-3 dropdown-menu-list-icon" />{' '}

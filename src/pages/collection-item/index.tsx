@@ -403,9 +403,16 @@ export const CollectionItem: React.FC<PageProps> = (props: PageProps) => {
                               <Card.Title className="mb-0 fs-18">
                                 {oneItem.collection?.name}
                               </Card.Title>
-                              <Card.Text className="color-grey">
-                                Floor: <span className="icon-ton mx-1"></span>{' '}
-                                <span className="ms-1 text-uppercase">21,08 TON</span>
+
+                              <Card.Text className="color-grey d-flex align-items-center">
+                                Floor:
+                                <div
+                                  className="d-flex align-items-center"
+                                  style={{ marginLeft: '7px' }}
+                                >
+                                  <span className="icon-ton mx-1"></span>
+                                  <span className="ms-1 text-uppercase">21,08 TON</span>
+                                </div>
                               </Card.Text>
                             </div>
                             <i className="fa-solid fa-angle-right ms-auto d-none d-lg-block me-3" />

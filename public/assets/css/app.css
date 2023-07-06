@@ -1319,7 +1319,7 @@ h4 {
   z-index: 1;
   border-radius: 24px;
   background-color: var(--bg-secondary);
-  padding: 100px;
+  padding: 70px;
   overflow: hidden;
   max-height: 620px;
 }
@@ -1417,6 +1417,13 @@ h4 {
   color: var(--text-secondary);
 }
 
+@media (max-width: 1560px) {
+  .hero__title {
+    font-size: 45px;
+    margin-bottom: 1.5rem;
+  }
+}
+
 @media (max-width: 1024px) {
   .hero__image {
     width: 100%;
@@ -1439,11 +1446,13 @@ h4 {
 
   .hero__title {
     font-size: 40px;
+    margin-bottom: 1rem;
   }
 
   .hero__desc {
     font-size: 18px;
     font-weight: 400;
+    margin-bottom: 1.5rem;
   }
 
   .hero__image {
@@ -1701,7 +1710,7 @@ h4 {
 }
 
 .card-blur__item {
-  min-width: 202px;
+  min-width: 180px;
 }
 
 .card__show-effect {
