@@ -1095,7 +1095,6 @@ h4 {
   animation-fill-mode: both;
   -webkit-animation-fill-mode: both;
   left: auto;
-  right: 0;
 }
 
 .header__search .dropdown-menu {
@@ -1105,8 +1104,22 @@ h4 {
 @media (max-width: 991px) {
   .header .dropdown-menu {
     position: absolute;
-    left: 0 !important;
+    left: 0;
     right: auto;
+  }
+  .header .dropdown-menu-list {
+    position: absolute;
+    left: -140px !important;
+    right: auto;
+  }
+  .header .dropdown-menu-list-icon {
+    display: block;
+    height: 16px;
+    width: 16px;
+  }
+  .header .dropdown-menu-list-item {
+    display: flex;
+    align-items: center;
   }
 }
 

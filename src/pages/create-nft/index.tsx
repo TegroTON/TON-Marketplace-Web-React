@@ -36,8 +36,6 @@ export const CreateNft: React.FC<PageProps> = (props: PageProps) => {
 
   const [uploading, setUploading] = React.useState<boolean>(false);
 
-  const [collectionAddress, setCollectionAddress] = React.useState<string>('');
-
   const [img1, setImg1] = React.useState<string | null>(null);
 
   const [attributes, setAttributes] = React.useState<Attribute[]>([]);
@@ -47,6 +45,10 @@ export const CreateNft: React.FC<PageProps> = (props: PageProps) => {
   const desc = new VldBuilder().with(vlds.VLen, 0, 700).withFname('Desciption');
 
   const price = new VldBuilder().with(vlds.VNumber, 0, 1000000000).withFname('Price');
+
+  const collectionAddress = new VldBuilder().with(vlds.VLen, 0, 100).withFname('CollectionAddress')
+
+  // const 
 
   const history = useNavigate();
 
@@ -88,7 +90,7 @@ export const CreateNft: React.FC<PageProps> = (props: PageProps) => {
   }
 
   async function createSingleNft() {
-    if (!props.address || !collectionAddress) {
+    if (!props.address) {
       return;
     }
 

@@ -28,6 +28,7 @@ interface HeaderType {
 export const HeaderBlock: React.FC<HeaderType> = (props: HeaderType) => {
   const [firstRender, setFirstRender] = React.useState<boolean>(false);
 
+  console.log('🚀 ~ file: header.tsx:26 ~ account:', props.account);
   const location = useLocation();
   const history = useNavigate();
 
@@ -68,25 +69,22 @@ export const HeaderBlock: React.FC<HeaderType> = (props: HeaderType) => {
                 aria-expanded="false"
               >
                 <img
-                  src={
-                    props.account?.icon !== ''
-                      ? props.account?.icon
-                      : './assets/img/no-user-pic.png'
-                  }
+                  src={props.account?.icon ? props.account.icon : './assets/img/no-user-pic.png'}
                   alt=""
                   className="profile-image"
                   width="42"
                   height="42"
                 />
               </Button>
-              <ul className="dropdown-menu me-0 end-0" aria-labelledby="dropdownMenuProfile">
+              <ul
+                className="dropdown-menu-list dropdown-menu me-0 end-0 mobile-header-dropdown"
+                aria-labelledby="dropdownMenuProfile"
+              >
                 <a className="dropdown-item py-3 px-2" href="/my-profile">
                   <div className="d-flex align-items-center ps-2">
                     <img
                       src={
-                        props.account?.icon !== ''
-                          ? props.account?.icon
-                          : './assets/img/no-user-pic.png'
+                        props.account?.icon ? props.account.icon : './assets/img/no-user-pic.png'
                       }
                       alt=""
                       className="profile-image me-3"
@@ -104,16 +102,17 @@ export const HeaderBlock: React.FC<HeaderType> = (props: HeaderType) => {
                     </div>
                   </div>
                 </a>
-                <a className="dropdown-item" href="/create-nft">
-                  <i className="fa-regular fa-hexagon-vertical-nft me-3" />
+                <a className="dropdown-item dropdown-menu-list-item" href="/create-nft">
+                  <i className="fa-regular fa-hexagon-vertical-nft me-3 dropdown-menu-list-icon" />
                   Create NFT
                 </a>
                 <a
-                  className="dropdown-item border-0"
+                  className="dropdown-item dropdown-menu-list-item border-0"
                   href="#"
                   onClick={() => props.DelabObject.disconnect()}
                 >
-                  <i className="fa-regular fa-link-simple-slash me-3" /> Disconnect{' '}
+                  <i className="fa-regular fa-link-simple-slash me-3 dropdown-menu-list-icon" />{' '}
+                  Disconnect{' '}
                 </a>
               </ul>
             </div>
@@ -246,7 +245,7 @@ export const HeaderBlock: React.FC<HeaderType> = (props: HeaderType) => {
                 </NavDropdown.Item>
               </NavDropdown>
               <Nav.Link href="/rankings">Stats</Nav.Link>
-              <Nav.Link href="/create-nft">Create</Nav.Link>
+              {props.address && <Nav.Link href="/create-nft">Create</Nav.Link>}
               {!props.address ? (
                 <Button
                   variant="secondary ms-4 d-none d-lg-flex align-items-center"
@@ -264,9 +263,7 @@ export const HeaderBlock: React.FC<HeaderType> = (props: HeaderType) => {
                     <>
                       <img
                         src={
-                          props.account?.icon !== ''
-                            ? props.account?.icon
-                            : './assets/img/no-user-pic.png'
+                          props.account?.icon ? props.account.icon : './assets/img/no-user-pic.png'
                         }
                         alt=""
                         className="profile-image"
@@ -282,9 +279,7 @@ export const HeaderBlock: React.FC<HeaderType> = (props: HeaderType) => {
                     <div className="d-flex align-items-center ps-2">
                       <img
                         src={
-                          props.account?.icon !== ''
-                            ? props.account?.icon
-                            : './assets/img/no-user-pic.png'
+                          props.account?.icon ? props.account.icon : './assets/img/no-user-pic.png'
                         }
                         alt=""
                         className="profile-image me-3"
@@ -302,9 +297,8 @@ export const HeaderBlock: React.FC<HeaderType> = (props: HeaderType) => {
                       </div>
                     </div>
                   </NavDropdown.Item>
-                  <NavDropdown.Item href="/create-nft">Create NFT</NavDropdown.Item>
-                  <NavDropdown.Item href="/create-nft">Edit profile</NavDropdown.Item>
-                  <NavDropdown.Divider />
+                  {/* <NavDropdown.Item href="/create-nft">Create NFT</NavDropdown.Item> */}
+                  {/* <NavDropdown.Item href="/create-nft">Edit profile</NavDropdown.Item> */}
                   <NavDropdown.Item href="#" onClick={() => props.DelabObject.disconnect()}>
                     Disconnect
                   </NavDropdown.Item>

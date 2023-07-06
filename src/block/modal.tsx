@@ -16,6 +16,7 @@ import {
 } from 'react-bootstrap';
 
 import { DeLabConnect, DeLabModal } from '@delab-team/connect';
+
 import { WalletInfoRemote } from '@tonconnect/sdk';
 import { Item } from '../logic/tonapi';
 import { fixAmount } from '../logic/utils';
@@ -32,12 +33,14 @@ interface ModalType {
   DelabLink: string;
   modalData: Item | undefined;
   buyNft: Function;
+  typeConnect: string | undefined;
 }
 
 export const Modals: React.FC<ModalType> = (props: ModalType) => {
   const [firstRender, setFirstRender] = React.useState<boolean>(false);
 
   console.log('DelabObject', props.DelabObject);
+  console.log('🚀 ~ file: modal.tsx:43 ~ DeLabTypeConnect:', props.typeConnect);
 
   const [percentage, setPercentage] = React.useState<string>('10%');
 
@@ -611,7 +614,7 @@ export const Modals: React.FC<ModalType> = (props: ModalType) => {
                 <div className="color-grey fs-14 mb-3 pe-5">
                   Go to the {props.DelabObject.typeConnect} app and confirm the transaction
                 </div>
-                <Button variant="primary btn-sm small px-3 py-2">Go to [Wallet Name]</Button>
+                <Button variant="primary btn-sm small px-3 py-2">Go to {props.typeConnect}</Button>
               </div>
             </div>
             <div className="progress-list__step d-flex mb-4">

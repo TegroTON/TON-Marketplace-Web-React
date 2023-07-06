@@ -600,6 +600,7 @@ export const App: React.FC = () => {
                     DelabLink={DelabLink}
                     modalData={modalData}
                     buyNft={buyNft}
+                    typeConnect={typeConnect}
                 />
 
                 {snackbar}
