@@ -97,14 +97,14 @@ export const User1: React.FC<PageProps> = (props: PageProps) => {
                         {account.icon ? (
                           <Card.Img variant="profile__avatar" src={account.icon} />
                         ) : (
-                          <Card.Img variant="profile__avatar" src="./assets/img/user-avatar.png" />
+                          <Card.Img variant="profile__avatar" src="./assets/img/no-user-pic.png" />
                         )}
                         <div className="ms-3 w-100">
                           <div className="d-flex">
                             <Card.Title className="fs-28 fw-bold mb-2 me-3 text-wrap">
                               {account.name ?? smlAddr(address)}
                             </Card.Title>
-                            <Dropdown className="ms-auto">
+                            {/* <Dropdown className="ms-auto">
                               <Dropdown.Toggle variant="icon" id="dropdown-social">
                                 <i className="fa-solid fa-ellipsis-vertical" />
                               </Dropdown.Toggle>
@@ -113,7 +113,7 @@ export const User1: React.FC<PageProps> = (props: PageProps) => {
                                   <i className="fa-regular fa-flag me-3" /> Report
                                 </Dropdown.Item>
                               </Dropdown.Menu>
-                            </Dropdown>
+                            </Dropdown> */}
                           </div>
                           <Card.Text className="d-flex align-items-center color-grey">
                             <span>{smlAddr(address)}</span>

@@ -74,15 +74,18 @@ export const Main: React.FC<PageProps> = (props: PageProps) => {
                   Welcome to the future, you can buy and sell awesome artworks form here. The world
                   largest digital marketplace <br /> for non-fungible tokens.
                 </div>
-                <Button
-                  variant="primary"
-                  className="order-3 order-lg-4"
-                  data-bs-toggle="modal"
-                  data-bs-target="#ConnectModal"
-                >
-                  <i className="fa-regular fa-arrow-right-to-arc me-2" />
-                  Get Started
-                </Button>
+                {!props.address && (
+                  <Button
+                    variant="primary"
+                    className="order-3 order-lg-4"
+                    // data-bs-toggle="modal"
+                    // data-bs-target="#ConnectModal"
+                    onClick={() => props.DeLabConnector.openModal()}
+                  >
+                    <i className="fa-regular fa-arrow-right-to-arc me-2" />
+                    Get Started
+                  </Button>
+                )}
               </Col>
               <Col md="12" lg="3" xxl="5" className="d-none d-xxl-block ms-auto">
                 <div className="hero-animated__box">
