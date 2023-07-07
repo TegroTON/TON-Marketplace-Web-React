@@ -16,7 +16,7 @@ import {
 } from 'react-bootstrap';
 import { PageProps } from '../../types/interfaces';
 import { MarketNft } from '../../logic/loadnft';
-import { getParameterByName, rawToTon, fixAmount } from '../../logic/utils';
+import { getParameterByName, rawToTon, fixAmount, smlAddr } from '../../logic/utils';
 import { Collection as Coll, Item } from '../../logic/tonapi';
 
 export const Collection: React.FC<PageProps> = (props: PageProps) => {
@@ -28,8 +28,20 @@ export const Collection: React.FC<PageProps> = (props: PageProps) => {
 
   const [error, setError] = useState<boolean>(false);
   const [showFullText, setShowFullText] = useState<boolean>(false);
+  const [collectionAddress, setColectionAddress] = useState<string>('');
 
   const [page, setPage] = React.useState<number>(0);
+
+  const [isCopied, setIsCopied] = React.useState<boolean>(false);
+  const textareaRef = React.useRef<HTMLTextAreaElement>(null);
+
+  const handleCopyClick = () => {
+    if (textareaRef.current) {
+      textareaRef.current.select();
+      document.execCommand('copy');
+      setIsCopied(true);
+    }
+  };
 
   const history = useNavigate();
 
@@ -71,6 +83,7 @@ export const Collection: React.FC<PageProps> = (props: PageProps) => {
       if (address) {
         load(address);
         loadItems(address);
+        setColectionAddress(address);
       } else {
         history('/');
       }
@@ -123,9 +136,18 @@ export const Collection: React.FC<PageProps> = (props: PageProps) => {
                             </Dropdown>
                           </div>
                           <Card.Text className="d-flex align-items-center color-grey">
-                            <span>EQCioGF…mvYl</span>
-                            <a href="#!" className="ms-3">
-                              <i className="fa-regular fa-copy" />
+                            <textarea
+                              readOnly
+                              ref={textareaRef}
+                              value={collectionAddress}
+                              style={{ position: 'fixed', top: '-9999px' }}
+                            />
+                            <span>{smlAddr(collectionAddress)}</span>
+                            <a href="#!" className="ms-3" onClick={handleCopyClick}>
+                              <i
+                                className="fa-regular fa-copy"
+                                style={{ color: isCopied ? 'yellow' : '' }}
+                              />
                             </a>
                           </Card.Text>
                         </div>
@@ -135,7 +157,7 @@ export const Collection: React.FC<PageProps> = (props: PageProps) => {
                         <div className="mb-2">
                           {showFullText
                             ? collection.metadata?.description
-                            : collection.metadata?.description?.slice(0, 128)}
+                            : collection.metadata?.description?.slice(0, 128) + '...'}
                         </div>
                         {collection.metadata?.description &&
                           collection.metadata?.description.length > 128 &&
@@ -1079,72 +1101,76 @@ export const Collection: React.FC<PageProps> = (props: PageProps) => {
 
                       <Row className="flex-wrap collections__list">
                         {items && items.length > 0
-                          ? items.map((item, key) => (
-                              <Col sm="6" md="4" lg="6" xl="4" xxl="3" className="mb-4" key={key}>
-                                <Card>
-                                  <Card.Link
-                                    href={`/collection-item?a=${rawToTon(item.address)}`}
-                                    className="card-link"
-                                  >
-                                    <Card.Img
-                                      variant="top card-image"
-                                      src={item.previews ? item.previews[1].url : ''}
-                                    />
-                                    <Card.Body>
-                                      <div className="card-subtitle d-flex align-items-center mb-2">
-                                        {collection.metadata?.name}
-                                        <span className="verified-icon ms-2" />
-                                      </div>
-                                      <Card.Title className="mb-3">{item.metadata.name}</Card.Title>
-                                      {item.sale ? (
-                                        <Card.Text className="d-flex align-items-center color-grey fs-18">
-                                          <span className="icon-ton me-2"></span>{' '}
-                                          {fixAmount(item.sale?.price.value ?? 0)}
-                                          {/* <Badge bg="purple" className="ms-2">MIN.BID</Badge> */}
-                                        </Card.Text>
-                                      ) : (
-                                        <Card.Text className="d-flex align-items-center color-grey">
-                                          Not For Sale
-                                        </Card.Text>
-                                      )}
-                                    </Card.Body>
-                                  </Card.Link>
-                                  <Dropdown className="card-actions">
-                                    <Dropdown.Toggle variant="icon" id="dropdown-actions">
-                                      <i className="fa-solid fa-ellipsis-vertical" />
-                                    </Dropdown.Toggle>
-                                    <Dropdown.Menu className="mt-2 fs-14">
-                                      <Dropdown.Item href="#" className="border-0">
-                                        <i className="fa-solid fa-arrows-rotate me-3" /> Refresh
-                                        Metadata
-                                      </Dropdown.Item>
-                                    </Dropdown.Menu>
-                                  </Dropdown>
-                                  <Button variant="icon btn-like btn-like__card">
-                                    <i className="fa-regular fa-heart fs-18 me-2" />
-                                    16
-                                  </Button>
-                                  <Button
-                                    variant="primary btn-sm card__show-effect"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#BuyNowModal"
-                                  >
-                                    Buy Now
-                                  </Button>
-                                  {/* <div className="card-status fw-500">
+                          ? items.map((item, key) => {
+                              return (
+                                <Col sm="6" md="4" lg="6" xl="4" xxl="3" className="mb-4" key={key}>
+                                  <Card>
+                                    <Card.Link
+                                      href={`/collection-item?a=${rawToTon(item.address)}`}
+                                      className="card-link"
+                                    >
+                                      <Card.Img
+                                        variant="top card-image"
+                                        src={item.previews ? item.previews[1].url : ''}
+                                      />
+                                      <Card.Body>
+                                        <div className="card-subtitle d-flex align-items-center mb-2">
+                                          {collection.metadata?.name}
+                                          <span className="verified-icon ms-2" />
+                                        </div>
+                                        <Card.Title className="mb-3">
+                                          {item.metadata.name}
+                                        </Card.Title>
+                                        {item.sale ? (
+                                          <Card.Text className="d-flex align-items-center color-grey fs-18">
+                                            <span className="icon-ton me-2"></span>{' '}
+                                            {fixAmount(item.sale?.price.value ?? 0)}
+                                            {/* <Badge bg="purple" className="ms-2">MIN.BID</Badge> */}
+                                          </Card.Text>
+                                        ) : (
+                                          <Card.Text className="d-flex align-items-center color-grey">
+                                            Not For Sale
+                                          </Card.Text>
+                                        )}
+                                      </Card.Body>
+                                    </Card.Link>
+                                    <Dropdown className="card-actions">
+                                      <Dropdown.Toggle variant="icon" id="dropdown-actions">
+                                        <i className="fa-solid fa-ellipsis-vertical" />
+                                      </Dropdown.Toggle>
+                                      <Dropdown.Menu className="mt-2 fs-14">
+                                        <Dropdown.Item href="#" className="border-0">
+                                          <i className="fa-solid fa-arrows-rotate me-3" /> Refresh
+                                          Metadata
+                                        </Dropdown.Item>
+                                      </Dropdown.Menu>
+                                    </Dropdown>
+                                    <Button variant="icon btn-like btn-like__card">
+                                      <i className="fa-regular fa-heart fs-18 me-2" />
+                                      16
+                                    </Button>
+                                    <Button
+                                      variant="primary btn-sm card__show-effect"
+                                      data-bs-toggle="modal"
+                                      data-bs-target="#BuyNowModal"
+                                    >
+                                      Buy Now
+                                    </Button>
+                                    {/* <div className="card-status fw-500">
                                              <i className="fa-regular fa-gavel me-2 fs-18" />
                                              7 days
                                           </div> */}
-                                  <div
-                                    className="card__blur-bg-hover"
-                                    style={{
-                                      background:
-                                        'url(./assets/img/cats/1.png)  no-repeat center center / cover',
-                                    }}
-                                  />
-                                </Card>
-                              </Col>
-                            ))
+                                    <div
+                                      className="card__blur-bg-hover"
+                                      style={{
+                                        background:
+                                          'url(./assets/img/cats/1.png)  no-repeat center center / cover',
+                                      }}
+                                    />
+                                  </Card>
+                                </Col>
+                              );
+                            })
                           : null}
                         {/* <Col sm="6" md="4" lg="6" xl="4" xxl="3" className="mb-4">
                                                     <Card>

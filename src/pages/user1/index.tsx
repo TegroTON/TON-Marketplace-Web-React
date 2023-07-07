@@ -30,6 +30,17 @@ export const User1: React.FC<PageProps> = (props: PageProps) => {
 
   const [page, setPage] = React.useState<number>(0);
 
+  const [isCopied, setIsCopied] = React.useState<boolean>(false);
+  const textareaRef = React.useRef<HTMLTextAreaElement>(null);
+
+  const handleCopyClick = () => {
+    if (textareaRef.current) {
+      textareaRef.current.select();
+      document.execCommand('copy');
+      setIsCopied(true);
+    }
+  };
+
   const history = useNavigate();
 
   const marketNFT = new MarketNft();
@@ -116,9 +127,18 @@ export const User1: React.FC<PageProps> = (props: PageProps) => {
                             </Dropdown> */}
                           </div>
                           <Card.Text className="d-flex align-items-center color-grey">
+                            <textarea
+                              readOnly
+                              ref={textareaRef}
+                              value={address}
+                              style={{ position: 'fixed', top: '-9999px' }}
+                            />
                             <span>{smlAddr(address)}</span>
-                            <a href="#!" className="ms-3">
-                              <i className="fa-regular fa-copy" />
+                            <a href="#!" className="ms-3" onClick={handleCopyClick}>
+                              <i
+                                className={`fa-regular fa-copy`}
+                                style={{ color: isCopied ? 'yellow' : '' }}
+                              />
                             </a>
                           </Card.Text>
                         </div>
