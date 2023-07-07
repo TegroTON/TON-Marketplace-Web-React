@@ -13,6 +13,7 @@ import {
   Tabs,
   Tab,
   Table,
+  Spinner,
 } from 'react-bootstrap';
 import { PageProps } from '../../types/interfaces';
 import { MarketNft } from '../../logic/loadnft';
@@ -25,6 +26,7 @@ export const Collection: React.FC<PageProps> = (props: PageProps) => {
   const [collection, setCollection] = React.useState<Coll | undefined>(undefined);
 
   const [items, setItems] = React.useState<Item[] | undefined>(undefined);
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
   const [error, setError] = useState<boolean>(false);
   const [showFullText, setShowFullText] = useState<boolean>(false);
@@ -48,6 +50,7 @@ export const Collection: React.FC<PageProps> = (props: PageProps) => {
   const marketNFT = new MarketNft();
 
   async function load(address: string) {
+    setIsLoading(true);
     const data = await marketNFT.getCollection(address);
 
     if (!data) {
@@ -61,6 +64,7 @@ export const Collection: React.FC<PageProps> = (props: PageProps) => {
     if (address === '') {
       return undefined;
     }
+
     const data = await marketNFT.getItemsFromCollection(address, page);
     if (!data) {
       return undefined;
@@ -68,7 +72,27 @@ export const Collection: React.FC<PageProps> = (props: PageProps) => {
 
     setPage(page + 1);
 
-    setItems(data);
+    const updatedItems = await Promise.all(
+      data.map(async (item: Item) => {
+        if (item.previews && item.previews[1].url) {
+          try {
+            await new Promise<void>((resolve, reject) => {
+              const img = new Image();
+              img.onload = () => resolve();
+              img.onerror = reject;
+              img.src = item.previews![1].url;
+            });
+            return item;
+          } catch (error) {
+            return null;
+          }
+        } else {
+          return null;
+        }
+      }),
+    );
+    setItems(updatedItems.filter((item) => item !== null) as Item[]);
+    setIsLoading(false);
 
     return true;
   }
@@ -1100,78 +1124,86 @@ export const Collection: React.FC<PageProps> = (props: PageProps) => {
                       </div>
 
                       <Row className="flex-wrap collections__list">
-                        {items && items.length > 0
-                          ? items.map((item, key) => {
-                              return (
-                                <Col sm="6" md="4" lg="6" xl="4" xxl="3" className="mb-4" key={key}>
-                                  <Card>
-                                    <Card.Link
-                                      href={`/collection-item?a=${rawToTon(item.address)}`}
-                                      className="card-link"
-                                    >
-                                      <Card.Img
-                                        variant="top card-image"
-                                        src={item.previews ? item.previews[1].url : ''}
-                                      />
-                                      <Card.Body>
-                                        <div className="card-subtitle d-flex align-items-center mb-2">
-                                          {collection.metadata?.name}
-                                          <span className="verified-icon ms-2" />
-                                        </div>
-                                        <Card.Title className="mb-3">
-                                          {item.metadata.name}
-                                        </Card.Title>
-                                        {item.sale ? (
-                                          <Card.Text className="d-flex align-items-center color-grey fs-18">
-                                            <span className="icon-ton me-2"></span>{' '}
-                                            {fixAmount(item.sale?.price.value ?? 0)}
-                                            {/* <Badge bg="purple" className="ms-2">MIN.BID</Badge> */}
-                                          </Card.Text>
-                                        ) : (
-                                          <Card.Text className="d-flex align-items-center color-grey">
-                                            Not For Sale
-                                          </Card.Text>
-                                        )}
-                                      </Card.Body>
-                                    </Card.Link>
-                                    <Dropdown className="card-actions">
-                                      <Dropdown.Toggle variant="icon" id="dropdown-actions">
-                                        <i className="fa-solid fa-ellipsis-vertical" />
-                                      </Dropdown.Toggle>
-                                      <Dropdown.Menu className="mt-2 fs-14">
-                                        <Dropdown.Item href="#" className="border-0">
-                                          <i className="fa-solid fa-arrows-rotate me-3" /> Refresh
-                                          Metadata
-                                        </Dropdown.Item>
-                                      </Dropdown.Menu>
-                                    </Dropdown>
-                                    <Button variant="icon btn-like btn-like__card">
-                                      <i className="fa-regular fa-heart fs-18 me-2" />
-                                      16
-                                    </Button>
-                                    <Button
-                                      variant="primary btn-sm card__show-effect"
-                                      data-bs-toggle="modal"
-                                      data-bs-target="#BuyNowModal"
-                                    >
-                                      Buy Now
-                                    </Button>
-                                    {/* <div className="card-status fw-500">
-                                             <i className="fa-regular fa-gavel me-2 fs-18" />
-                                             7 days
-                                          </div> */}
-                                    <div
-                                      className="card__blur-bg-hover"
-                                      style={{
-                                        background:
-                                          'url(./assets/img/cats/1.png)  no-repeat center center / cover',
-                                      }}
+                        {isLoading ? (
+                          <div className="collections__spinner">
+                            <Spinner
+                              animation="border"
+                              role="status"
+                              style={{ width: '5rem', height: '5rem' }}
+                            >
+                              <span className="visually-hidden">Loading...</span>
+                            </Spinner>
+                          </div>
+                        ) : items && items.length > 0 ? (
+                          items.map((item, key) => {
+                            return (
+                              <Col sm="6" md="4" lg="6" xl="4" xxl="3" className="mb-4" key={key}>
+                                <Card>
+                                  <Card.Link
+                                    href={`/collection-item?a=${rawToTon(item.address)}`}
+                                    className="card-link"
+                                  >
+                                    <Card.Img
+                                      variant="top card-image"
+                                      src={item.previews ? item.previews[1].url : ''}
                                     />
-                                  </Card>
-                                </Col>
-                              );
-                            })
-                          : null}
+                                    <Card.Body>
+                                      <div className="card-subtitle d-flex align-items-center mb-2">
+                                        {collection.metadata?.name}
+                                        <span className="verified-icon ms-2" />
+                                      </div>
+                                      <Card.Title className="mb-3">{item.metadata.name}</Card.Title>
+                                      {item.sale ? (
+                                        <Card.Text className="d-flex align-items-center color-grey fs-18">
+                                          <span className="icon-ton me-2"></span>{' '}
+                                          {fixAmount(item.sale?.price.value ?? 0)}
+                                          {/* <Badge bg="purple" className="ms-2">MIN.BID</Badge> */}
+                                        </Card.Text>
+                                      ) : (
+                                        <Card.Text className="d-flex align-items-center color-grey">
+                                          Not For Sale
+                                        </Card.Text>
+                                      )}
+                                    </Card.Body>
+                                  </Card.Link>
+                                  <Dropdown className="card-actions">
+                                    <Dropdown.Toggle variant="icon" id="dropdown-actions">
+                                      <i className="fa-solid fa-ellipsis-vertical" />
+                                    </Dropdown.Toggle>
+                                    <Dropdown.Menu className="mt-2 fs-14">
+                                      <Dropdown.Item href="#" className="border-0">
+                                        <i className="fa-solid fa-arrows-rotate me-3" /> Refresh
+                                        Metadata
+                                      </Dropdown.Item>
+                                    </Dropdown.Menu>
+                                  </Dropdown>
+                                  <Button variant="icon btn-like btn-like__card">
+                                    <i className="fa-regular fa-heart fs-18 me-2" />
+                                    16
+                                  </Button>
+                                  <Button
+                                    variant="primary btn-sm card__show-effect"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#BuyNowModal"
+                                  >
+                                    Buy Now
+                                  </Button>
+                                  {/* <div className="card-status fw-500">
+                                               <i className="fa-regular fa-gavel me-2 fs-18" />
+                                               7 days
+                                            </div> */}
+                                  <div
+                                    className="card__blur-bg-hover"
+                                    style={{
+                                      background:
+                                        'url(./assets/img/cats/1.png)  no-repeat center center / cover',
+                                    }}
+                                  />
+                                </Card>
+                              </Col>
+                            );
+                          })
+                        ) : null}
                         {/* <Col sm="6" md="4" lg="6" xl="4" xxl="3" className="mb-4">
                                                     <Card>
                                                         <Card.Link href="/collection-item" className="card-link">
@@ -1460,9 +1492,11 @@ export const Collection: React.FC<PageProps> = (props: PageProps) => {
                                                     </Card>
                                                 </Col> */}
                       </Row>
-                      <div className="text-center mt-5">
-                        <Button>See More</Button>
-                      </div>
+                      {!isLoading && (
+                        <div className="text-center mt-5">
+                          <Button>See More</Button>
+                        </div>
+                      )}
                     </Tab>
                     <Tab eventKey="Activity" title="Activity">
                       <Card className="border p-0 mb-5">

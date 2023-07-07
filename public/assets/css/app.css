@@ -2060,6 +2060,13 @@ h4 {
   }
 }
 
+.collections__spinner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 8%;
+}
+
 .collections__nav {
   border-bottom: 1px solid var(--bg-secondary);
 }
