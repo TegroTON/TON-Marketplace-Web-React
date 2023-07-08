@@ -27,6 +27,7 @@ export const Collection: React.FC<PageProps> = (props: PageProps) => {
 
   const [items, setItems] = React.useState<Item[] | undefined>(undefined);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [isLoadingMore, setIsLoadingMore] = React.useState<boolean>(false);
 
   const [error, setError] = useState<boolean>(false);
   const [showFullText, setShowFullText] = useState<boolean>(false);
@@ -64,6 +65,7 @@ export const Collection: React.FC<PageProps> = (props: PageProps) => {
     if (address === '') {
       return undefined;
     }
+    setIsLoadingMore(true);
 
     const data = await marketNFT.getItemsFromCollection(address, page);
     if (!data) {
@@ -93,6 +95,7 @@ export const Collection: React.FC<PageProps> = (props: PageProps) => {
     );
     setItems(updatedItems.filter((item) => item !== null) as Item[]);
     setIsLoading(false);
+    setIsLoadingMore(false);
 
     return true;
   }
@@ -1503,9 +1506,11 @@ export const Collection: React.FC<PageProps> = (props: PageProps) => {
                                                     </Card>
                                                 </Col> */}
                       </Row>
-                      {!isLoading && (
+                      {!isLoading && items && (
                         <div className="text-center mt-5">
-                          <Button>See More</Button>
+                          <Button onClick={() => loadItems()} disabled={isLoadingMore}>
+                            See More
+                          </Button>
                         </div>
                       )}
                     </Tab>
