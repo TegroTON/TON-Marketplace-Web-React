@@ -111,6 +111,13 @@ export const CollectionItem: React.FC<PageProps> = (props: PageProps) => {
       });
   };
 
+  const refreshMetadata = React.useCallback(async () => {
+    if (collection) {
+      await loadItems(collection.address);
+      await loadTransactions(collection.address);
+    }
+  }, [collection, loadItems, loadTransactions]);
+
   useEffect(() => {
     if (!firstRender) {
       setFirstRender(true);
@@ -175,7 +182,7 @@ export const CollectionItem: React.FC<PageProps> = (props: PageProps) => {
                           <i className="fa-solid fa-ellipsis-vertical" />
                         </Dropdown.Toggle>
                         <Dropdown.Menu className="mt-2 fs-14">
-                          <Dropdown.Item href="#" className="border-0">
+                          <Dropdown.Item href="#" className="border-0" onClick={refreshMetadata}>
                             <i className="fa-solid fa-arrows-rotate me-3" /> Refresh Metadata
                           </Dropdown.Item>
                           <Dropdown.Item href="#" onClick={handleCopyLink}>

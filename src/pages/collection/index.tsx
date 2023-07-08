@@ -97,6 +97,13 @@ export const Collection: React.FC<PageProps> = (props: PageProps) => {
     return true;
   }
 
+  const refreshProfileMetaData = React.useCallback(async () => {
+    if (collectionAddress) {
+      await load(collectionAddress);
+      await loadItems(collectionAddress);
+    }
+  }, [collection, load, loadItems]);
+
   useEffect(() => {
     if (!firstRender) {
       setFirstRender(true);
@@ -153,7 +160,11 @@ export const Collection: React.FC<PageProps> = (props: PageProps) => {
                                 {/* <Dropdown.Item href="#">
                                   <i className="fa-regular fa-flag me-3" /> Report
                                 </Dropdown.Item> */}
-                                <Dropdown.Item href="#" className="border-0">
+                                <Dropdown.Item
+                                  href="#"
+                                  className="border-0"
+                                  onClick={refreshProfileMetaData}
+                                >
                                   <i className="fa-solid fa-arrows-rotate me-3" /> Refresh Metadata
                                 </Dropdown.Item>
                               </Dropdown.Menu>
@@ -1166,7 +1177,7 @@ export const Collection: React.FC<PageProps> = (props: PageProps) => {
                                       )}
                                     </Card.Body>
                                   </Card.Link>
-                                  <Dropdown className="card-actions">
+                                  {/* <Dropdown className="card-actions">
                                     <Dropdown.Toggle variant="icon" id="dropdown-actions">
                                       <i className="fa-solid fa-ellipsis-vertical" />
                                     </Dropdown.Toggle>
@@ -1176,7 +1187,7 @@ export const Collection: React.FC<PageProps> = (props: PageProps) => {
                                         Metadata
                                       </Dropdown.Item>
                                     </Dropdown.Menu>
-                                  </Dropdown>
+                                  </Dropdown> */}
                                   <Button variant="icon btn-like btn-like__card">
                                     <i className="fa-regular fa-heart fs-18 me-2" />
                                     16

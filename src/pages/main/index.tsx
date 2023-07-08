@@ -292,7 +292,7 @@ export const Main: React.FC<PageProps> = (props: PageProps) => {
                           )}
                         </Card.Body>
                       </Card.Link>
-                      <Dropdown className="card-actions">
+                      {/* <Dropdown className="card-actions">
                         <Dropdown.Toggle variant="icon" id="dropdown-actions">
                           <i className="fa-solid fa-ellipsis-vertical" />
                         </Dropdown.Toggle>
@@ -301,7 +301,7 @@ export const Main: React.FC<PageProps> = (props: PageProps) => {
                             <i className="fa-solid fa-arrows-rotate me-3" /> Refresh Metadata
                           </Dropdown.Item>
                         </Dropdown.Menu>
-                      </Dropdown>
+                      </Dropdown> */}
                       <Button variant="icon btn-like btn-like__card">
                         <i className="fa-regular fa-heart fs-18 me-2" />8
                       </Button>
