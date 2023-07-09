@@ -104,7 +104,7 @@ export const User1: React.FC<PageProps> = (props: PageProps) => {
                 <Card className="card-blur p-0 mb-4" style={{ marginTop: '-75px' }}>
                   <Card.Body className="p-2 p-xl-4">
                     {account && address ? (
-                      <div className="d-flex mb-4">
+                      <div className="d-flex">
                         {account.icon ? (
                           <Card.Img variant="profile__avatar" src={account.icon} />
                         ) : (
@@ -144,7 +144,9 @@ export const User1: React.FC<PageProps> = (props: PageProps) => {
                         </div>
                       </div>
                     ) : null}
-                    <div className="mb-4">
+
+                    {/* Description for profile */}
+                    {/* <div className="mb-4">
                       <div className="mb-2">
                         <p>Hey!</p>
                         <p>I'm the creator of the Toned Ape Club! collection.</p>
@@ -155,7 +157,7 @@ export const User1: React.FC<PageProps> = (props: PageProps) => {
                       <Button variant="link">
                         See More <i className="fa-solid fa-angle-down ms-2" />
                       </Button>
-                    </div>
+                    </div> */}
 
                     {/* Social links for profile */}
                     {/* <div className="libermall__soclinks flex-wrap">
