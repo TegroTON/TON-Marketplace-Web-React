@@ -500,6 +500,7 @@ export const App: React.FC = () => {
                 address={address}
                 DeLabConnector={DeLabConnector}
                 settings={settings}
+                ownerAddress={account?.address}
               />
             }
           />

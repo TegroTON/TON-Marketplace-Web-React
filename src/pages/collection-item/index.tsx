@@ -24,7 +24,11 @@ import { getParameterByName, fixAmount, rawToTon, smlAddr } from '../../logic/ut
 import { Account, AccountV2, Collection, Item, Transaction } from '../../logic/tonapi';
 import TokenPriceHook from '../../hooks/TokenPriceHook';
 
-export const CollectionItem: React.FC<PageProps> = (props: PageProps) => {
+interface CollProps extends PageProps {
+  ownerAddress: string | undefined;
+}
+
+export const CollectionItem = (props: CollProps) => {
   const [firstRender, setFirstRender] = React.useState<boolean>(false);
 
   const [oneItem, setOneItem] = React.useState<Item | undefined>(undefined);
@@ -68,7 +72,9 @@ export const CollectionItem: React.FC<PageProps> = (props: PageProps) => {
 
     props.installScripts();
 
-    if (data.nft.owner) await loadUser(data.nft.owner.address);
+    if (data.nft.owner) {
+      await loadUser(data.nft.owner.address);
+    }
 
     return true;
   }
@@ -170,8 +176,8 @@ export const CollectionItem: React.FC<PageProps> = (props: PageProps) => {
                         </div>
                       )}
                       {/*   @! Badge For Auction Page !@
-                                          <div className="item-details__badge badge__purple me-auto">Up for auction</div>
-                                    */}
+                        <div className="item-details__badge badge__purple me-auto">Up for auction</div>
+                      */}
 
                       <Button variant="icon btn-like me-3">
                         <i className="fa-regular fa-heart fs-18 me-2" />
@@ -198,23 +204,29 @@ export const CollectionItem: React.FC<PageProps> = (props: PageProps) => {
                   </div>
 
                   {/*  @! Block For "Not For Sale" Page !@
-                        <Card className="border mb-4">
-                           <Card.Body className="p-0 p-lg-3 d-flex flex-wrap">
-                              <Button variant="primary flex-fill m-2" data-bs-toggle="modal" data-bs-target="#PutonSaleModal">Put on Sale</Button>
-                              <Button variant="secondary flex-fill m-2" data-bs-toggle="modal" data-bs-target="#CreatNFTSuccessfullyModal">Transfer NFT</Button>
-                           </Card.Body>
-                        </Card>
-                        */}
+                      <Card className="border mb-4">
+                        <Card.Body className="p-0 p-lg-3 d-flex flex-wrap">
+                          <Button variant="primary flex-fill m-2" data-bs-toggle="modal" data-bs-target="#PutonSaleModal">Put on Sale</Button>
+                          <Button variant="secondary flex-fill m-2" data-bs-toggle="modal" data-bs-target="#CreatNFTSuccessfullyModal">Transfer NFT</Button>
+                        </Card.Body>
+                      </Card>
+                  */}
 
-                  {oneItem.sale ? (
-                    <Card className="border p-4 mb-4">
-                      <div className="d-flex align-items-center">
-                        <div className="d-block fs-24 fw-bold">Price:</div>
-                        <div className="price-item__ton fs-24 fw-bold ms-auto">
-                          {fixAmount(oneItem.sale?.price.value ?? 0)}
-                          {oneItem.sale?.price.token_name}
-                        </div>
+                  <Card className="border p-4 mb-4">
+                    <div className="d-flex align-items-center">
+                      <div className="d-block fs-24 fw-bold">Price:</div>
+                      <div className="price-item__ton fs-24 fw-bold ms-auto">
+                        {oneItem.sale ? (
+                          <>
+                            {fixAmount(oneItem.sale?.price.value ?? 0)}
+                            {oneItem.sale?.price.token_name}
+                          </>
+                        ) : (
+                          <div className="price-item__ton fs-24 fw-bold ms-auto">Not for sale</div>
+                        )}
                       </div>
+                    </div>
+                    {oneItem.sale ? (
                       <div className="d-flex align-items-center">
                         <div className="color-grey">
                           Plus a network fee of 1 TON
@@ -237,32 +249,49 @@ export const CollectionItem: React.FC<PageProps> = (props: PageProps) => {
                           />
                         </div>
                       </div>
-                      <div className="d-flex flex-wrap mt-4">
-                        <Button
-                          variant="primary flex-fill m-2"
-                          data-bs-toggle="modal"
-                          data-bs-target="#BuyNowModal"
-                          onClick={() => props.openModalData(undefined, oneItem)}
-                        >
-                          Buy Now
-                        </Button>
-                        <Button
-                          variant="secondary flex-fill m-2"
-                          data-bs-toggle="modal"
-                          data-bs-target="#MakeOfferModal"
-                        >
-                          <i className="fa-solid fa-tag me-3"></i>Make Offer
-                        </Button>
-                      </div>
-                    </Card>
-                  ) : (
-                    <Card className="border p-4 mb-4">
-                      <div className="d-flex align-items-center">
-                        <div className="d-block fs-24 fw-bold">Price:</div>
-                        <div className="price-item__ton fs-24 fw-bold ms-auto">Not for sale</div>
-                      </div>
-                    </Card>
-                  )}
+                    ) : null}
+
+                    <>
+                      {props.ownerAddress &&
+                      oneItem?.owner?.address &&
+                      oneItem?.owner?.address === props.ownerAddress ? (
+                        <div className="d-flex flex-wrap gap-3 mt-4 justify-content-between">
+                          {oneItem?.sale?.price ? (
+                            <Button variant="primary btn-half">Remove from sale</Button>
+                          ) : (
+                            <Button
+                              variant="primary btn-half"
+                              data-bs-toggle="modal"
+                              data-bs-target="#EnterPriceModal"
+                            >
+                              Put On Sale
+                            </Button>
+                          )}
+                          {!oneItem?.sale && <Button variant="secondary btn-half">Send</Button>}
+                        </div>
+                      ) : (
+                        oneItem?.sale?.price && (
+                          <div className="d-flex flex-wrap gap-3 mt-4 justify-content-between">
+                            <Button
+                              variant="primary btn-half"
+                              data-bs-toggle="modal"
+                              data-bs-target="#BuyNowModal"
+                              onClick={() => props.openModalData(undefined, oneItem)}
+                            >
+                              Buy Now
+                            </Button>
+                            <Button
+                              variant="secondary btn-half"
+                              data-bs-toggle="modal"
+                              data-bs-target="#MakeOfferModal"
+                            >
+                              <i className="fa-solid fa-tag me-3"></i>Make Offer
+                            </Button>
+                          </div>
+                        )
+                      )}
+                    </>
+                  </Card>
 
                   {/*  @! Block For "Auction" Page !@
 

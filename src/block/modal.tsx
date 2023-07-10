@@ -40,8 +40,7 @@ export const Modals: React.FC<ModalType> = (props: ModalType) => {
   const [firstRender, setFirstRender] = React.useState<boolean>(false);
 
   console.log('DelabObject', props.DelabObject);
-  console.log('🚀 ~ file: modal.tsx:43 ~ DeLabTypeConnect:', props.typeConnect);
-
+  
   const [percentage, setPercentage] = React.useState<string>('10%');
 
   const [modalImg, setModalImg] = React.useState<string | null>(null);
@@ -859,7 +858,11 @@ export const Modals: React.FC<ModalType> = (props: ModalType) => {
             <Form.Group className="mb-4">
               <Form.Label>Item’s Price</Form.Label>
               <InputGroup className="mb-3">
-                <Form.Control placeholder="Enter Price" />
+                <Form.Control
+                  placeholder="Enter Price"
+                  value={price.value}
+                  onChange={(e) => price.change(e.target.value)}
+                />
                 <InputGroup.Text id="basic-addon3">TON</InputGroup.Text>
               </InputGroup>
             </Form.Group>
@@ -914,6 +917,7 @@ export const Modals: React.FC<ModalType> = (props: ModalType) => {
               variant="primary w-100"
               data-bs-toggle="modal"
               data-bs-target="#TransactionModal"
+              disabled={price.error !== '' || price.value === ''}
             >
               Put on Sale
             </Button>
