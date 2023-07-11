@@ -74,7 +74,7 @@ export const Main: React.FC<PageProps> = (props: PageProps) => {
                   Welcome to the future, you can buy and sell awesome artworks form here. The world
                   largest digital marketplace <br /> for non-fungible tokens.
                 </div>
-                {!props.address && (
+                {!props.address ? (
                   <Button
                     variant="primary"
                     className="order-3 order-lg-4"
@@ -85,6 +85,12 @@ export const Main: React.FC<PageProps> = (props: PageProps) => {
                     <i className="fa-regular fa-arrow-right-to-arc me-2" />
                     Get Started
                   </Button>
+                ) : (
+                  <a href="/create-nft">
+                    <Button variant="primary" className="order-3 order-lg-4">
+                      Create NFT
+                    </Button>
+                  </a>
                 )}
               </Col>
               <Col md="12" lg="3" xxl="5" className="d-none d-xxl-block ms-auto">

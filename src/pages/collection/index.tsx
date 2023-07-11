@@ -195,7 +195,9 @@ export const Collection: React.FC<PageProps> = (props: PageProps) => {
                         <div className="mb-2">
                           {showFullText
                             ? collection.metadata?.description
-                            : collection.metadata?.description?.slice(0, 128) + '...'}
+                            : collection.metadata?.description && collection.metadata?.description.length > 128
+                            ? collection.metadata?.description?.slice(0, 128) + '...'
+                            : collection.metadata?.description}
                         </div>
                         {collection.metadata?.description &&
                           collection.metadata?.description.length > 128 &&

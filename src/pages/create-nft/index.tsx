@@ -38,7 +38,16 @@ export const CreateNft: React.FC<PageProps> = (props: PageProps) => {
 
   const [img1, setImg1] = React.useState<string | null>(null);
 
-  const [attributes, setAttributes] = React.useState<Attribute[]>([]);
+  const [attributes, setAttributes] = React.useState<Attribute[]>([
+    {
+      trait_type: '',
+      value: '',
+    },
+    {
+      trait_type: '',
+      value: '',
+    },
+  ]);
 
   const name = new VldBuilder().with(vlds.VLen, 0, 60).withFname('Name');
 
@@ -51,6 +60,18 @@ export const CreateNft: React.FC<PageProps> = (props: PageProps) => {
   const history = useNavigate();
 
   const marketNFT = new MarketNft();
+
+  const addAttribute = () => {
+    if (attributes.length < 10) {
+      setAttributes([...attributes, { trait_type: '', value: '' }]);
+    }
+  };
+
+  const handleAttributeChange = (index: number, field: keyof Attribute, value: string) => {
+    const updatedAttributes = [...attributes];
+    updatedAttributes[index][field] = value;
+    setAttributes(updatedAttributes);
+  };
 
   async function uploadImg(e: React.ChangeEvent<HTMLInputElement>): Promise<string | null> {
     const _file = e.target.files?.[0];
@@ -102,7 +123,7 @@ export const CreateNft: React.FC<PageProps> = (props: PageProps) => {
       name: name.value,
       description: desc.value,
       marketplace: 'libermall.com',
-      attributes: [],
+      attributes: attributes,
       image: `ipfs://${img1}?filename=logo.png`,
     };
     const ipfsData = await ipfs.uploadDataJson(JSON.stringify(metadata));
@@ -287,36 +308,38 @@ export const CreateNft: React.FC<PageProps> = (props: PageProps) => {
                   <Card className="border p-4 mb-4">
                     <Card.Title className="fs-20 mb-4">Attributes</Card.Title>
                     <Row>
-                      <Col lg="6" className="mb-3">
-                        <InputGroup className="mb-3 flex-column bg-transparent">
-                          <Form.Control
-                            placeholder="Trait type"
-                            aria-label="Trait type"
-                            className="bg-transparent rounded-0 border-bottom w-100"
-                          />
-                          <Form.Control
-                            placeholder="Value"
-                            aria-label="Value"
-                            className="bg-transparent rounded-0 border-bottom w-100"
-                          />
-                        </InputGroup>
-                      </Col>
-                      <Col lg="6" className="mb-3">
-                        <InputGroup className="mb-3 flex-column bg-transparent">
-                          <Form.Control
-                            placeholder="Trait type"
-                            aria-label="Trait type"
-                            className="bg-transparent rounded-0 border-bottom w-100"
-                          />
-                          <Form.Control
-                            placeholder="Value"
-                            aria-label="Value"
-                            className="bg-transparent rounded-0 border-bottom w-100"
-                          />
-                        </InputGroup>
-                      </Col>
+                      {attributes.map((attribute, index) => (
+                        <Col lg="6" className="mb-3" key={index}>
+                          <InputGroup className="mb-3 flex-column bg-transparent">
+                            <Form.Control
+                              placeholder="Trait type"
+                              aria-label="Trait type"
+                              className="bg-transparent rounded-0 border-bottom w-100"
+                              value={attribute.trait_type}
+                              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                                handleAttributeChange(index, 'trait_type', e.target.value)
+                              }
+                            />
+                            <Form.Control
+                              placeholder="Value"
+                              aria-label="Value"
+                              className="bg-transparent rounded-0 border-bottom w-100"
+                              value={attribute.value}
+                              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                                handleAttributeChange(index, 'value', e.target.value)
+                              }
+                            />
+                          </InputGroup>
+                        </Col>
+                      ))}
                     </Row>
-                    <Button variant="secondary btn-sm">Add attribute</Button>
+                    <Button
+                      variant="secondary btn-sm"
+                      disabled={attributes.length >= 10}
+                      onClick={addAttribute}
+                    >
+                      Add attribute
+                    </Button>
                   </Card>
                   <Card className="border p-4 mb-4">
                     <Card.Header className="d-flex mb-2">

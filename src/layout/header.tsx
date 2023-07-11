@@ -42,7 +42,7 @@ export const HeaderBlock: React.FC<HeaderType> = (props: HeaderType) => {
     <header className="header">
       <Container fluid>
         <Navbar expand="lg" className="d-flex align-items-center p-0">
-          <Navbar.Brand className="navbar-logo me-5" onClick={() => history('/')} href="#">
+          <Navbar.Brand className="navbar-logo me-5" onClick={() => history('/')}>
             <img
               className="navbar-logo__img"
               src="./assets/img/logo/apple-icon-57x57.png"
