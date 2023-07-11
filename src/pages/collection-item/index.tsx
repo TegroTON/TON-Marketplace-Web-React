@@ -179,10 +179,10 @@ export const CollectionItem = (props: CollProps) => {
                         <div className="item-details__badge badge__purple me-auto">Up for auction</div>
                       */}
 
-                      <Button variant="icon btn-like me-3">
+                      {/* <Button variant="icon btn-like me-3">
                         <i className="fa-regular fa-heart fs-18 me-2" />
                         <span className="d-block d-sm-inline fw-500">24</span>
-                      </Button>
+                      </Button> */}
                       <Dropdown>
                         <Dropdown.Toggle variant="icon" id="dropdown-actions">
                           <i className="fa-solid fa-ellipsis-vertical" />
@@ -406,7 +406,7 @@ export const CollectionItem = (props: CollProps) => {
                           >
                             <Card.Img
                               variant="collection m-3 m-lg-0"
-                              src={account.icon ?? '/assets/img/user-avatar.png'}
+                              src={account.icon ?? '/assets/img/no-user-pic.png'}
                             />
                             <Card.Title className="mb-0 ms-3 fs-18">
                               {account.name ? account.name : rawToTon(oneItem.owner?.address)}
@@ -870,7 +870,7 @@ export const CollectionItem = (props: CollProps) => {
                           )}
                         </Card.Body>
                       </Card.Link>
-                      <Dropdown className="card-actions">
+                      {/* <Dropdown className="card-actions">
                         <Dropdown.Toggle variant="icon" id="dropdown-actions">
                           <i className="fa-solid fa-ellipsis-vertical" />
                         </Dropdown.Toggle>
@@ -879,18 +879,14 @@ export const CollectionItem = (props: CollProps) => {
                             <i className="fa-solid fa-arrows-rotate me-3" /> Refresh Metadata
                           </Dropdown.Item>
                         </Dropdown.Menu>
-                      </Dropdown>
-                      <Button variant="icon btn-like btn-like__card">
+                      </Dropdown> */}
+                      {/* <Button variant="icon btn-like btn-like__card">
                         <i className="fa-regular fa-heart fs-18 me-2" />
                         16
-                      </Button>
-                      <Button
-                        variant="primary btn-sm card__show-effect"
-                        data-bs-toggle="modal"
-                        data-bs-target="#BuyNowModal"
-                      >
-                        Buy Now
-                      </Button>
+                      </Button> */}
+                      <a href={`/collection-item?a=${rawToTon(item.address)}`}>
+                        <Button variant="primary btn-sm card__show-effect">Buy Now</Button>
+                      </a>
                       {/* <div className="card-status fw-500">
                            <i className="fa-regular fa-gavel me-2 fs-18" />
                            7 days

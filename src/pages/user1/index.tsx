@@ -359,115 +359,122 @@ export const User1: React.FC<PageProps> = (props: PageProps) => {
                   variant="pills collections__nav mt-3"
                 >
                   <Tab eventKey="Collected" title="Collected">
-                    <div className="d-block d-lg-flex flex-wrap align-items-center my-4">
-                      <Form className="flex-fill mb-3 mb-lg-0">
-                        <InputGroup>
-                          <InputGroup.Text>
-                            <i className="fa-solid fa-magnifying-glass color-grey" />
-                          </InputGroup.Text>
-                          <Form.Control placeholder="Name or description" />
-                        </InputGroup>
-                      </Form>
-                      <div className="d-flex align-items-center ms-0 ms-lg-4">
-                        <Dropdown>
-                          <Dropdown.Toggle variant="secondary">
-                            Recently added
-                            <i className="fa-solid fa-angle-down ms-2" />
-                          </Dropdown.Toggle>
-                          <Dropdown.Menu className="w-100 mt-2">
-                            <Dropdown.Item href="#">Price: Low to Hight</Dropdown.Item>
-                            <Dropdown.Item href="#">Price: Hight to Low</Dropdown.Item>
-                            <Dropdown.Item href="#">Most Favorited</Dropdown.Item>
-                            <Dropdown.Item href="#" active>
+                    {items && items.length > 0 && (
+                      <div className="d-block d-lg-flex flex-wrap align-items-center my-4">
+                        <Form className="flex-fill mb-3 mb-lg-0">
+                          <InputGroup>
+                            <InputGroup.Text>
+                              <i className="fa-solid fa-magnifying-glass color-grey" />
+                            </InputGroup.Text>
+                            <Form.Control placeholder="Name or description" />
+                          </InputGroup>
+                        </Form>
+                        <div className="d-flex align-items-center ms-0 ms-lg-4">
+                          <Dropdown>
+                            <Dropdown.Toggle variant="secondary">
                               Recently added
-                            </Dropdown.Item>
-                            <Dropdown.Item href="#">Oldest</Dropdown.Item>
-                          </Dropdown.Menu>
-                        </Dropdown>
-                        <Button
-                          variant="none p-2 ms-auto d-flex align-items-center d-lg-none"
-                          href="#open-filters"
-                        >
-                          <i className="fa-regular fa-filter-list fs-24 me-0 me-sm-3" />
-                          <span className="d-none d-sm-inline fs-18">Filters</span>
-                        </Button>
+                              <i className="fa-solid fa-angle-down ms-2" />
+                            </Dropdown.Toggle>
+                            <Dropdown.Menu className="w-100 mt-2">
+                              <Dropdown.Item href="#">Price: Low to Hight</Dropdown.Item>
+                              <Dropdown.Item href="#">Price: Hight to Low</Dropdown.Item>
+                              <Dropdown.Item href="#">Most Favorited</Dropdown.Item>
+                              <Dropdown.Item href="#" active>
+                                Recently added
+                              </Dropdown.Item>
+                              <Dropdown.Item href="#">Oldest</Dropdown.Item>
+                            </Dropdown.Menu>
+                          </Dropdown>
+                          <Button
+                            variant="none p-2 ms-auto d-flex align-items-center d-lg-none"
+                            href="#open-filters"
+                          >
+                            <i className="fa-regular fa-filter-list fs-24 me-0 me-sm-3" />
+                            <span className="d-none d-sm-inline fs-18">Filters</span>
+                          </Button>
+                        </div>
                       </div>
-                    </div>
+                    )}
                     <Row className="flex-wrap collections__list">
-                      {items && items.length > 0
-                        ? items.map((item, key) => (
-                            <Col sm="6" md="4" lg="6" xl="4" xxl="3" className="mb-4" key={key}>
-                              <Card>
-                                <Card.Link
-                                  href={`/collection-item?a=${rawToTon(item.address)}`}
-                                  className="card-link"
-                                >
-                                  <Card.Img
-                                    variant="top card-image"
-                                    src={item.previews ? item.previews[1].url : ''}
-                                  />
-                                  <Card.Body>
-                                    {item.collection ? (
-                                      <div className="card-subtitle d-flex align-items-center mb-2">
-                                        {item.collection?.name}
-                                        <span className="verified-icon ms-2" />
-                                      </div>
-                                    ) : (
-                                      <div className="card-subtitle d-flex align-items-center mb-2">
-                                        Single
-                                      </div>
-                                    )}
-                                    <Card.Title className="mb-3">{item.metadata.name}</Card.Title>
-                                    {item.sale ? (
-                                      <Card.Text className="d-flex align-items-center color-grey fs-18">
-                                        <span className="icon-ton me-2"></span>{' '}
-                                        {fixAmount(item.sale?.price.value ?? 0)}
-                                        {/* <Badge bg="purple" className="ms-2">MIN.BID</Badge> */}
-                                      </Card.Text>
-                                    ) : (
-                                      <Card.Text className="d-flex align-items-center color-grey">
-                                        Not For Sale
-                                      </Card.Text>
-                                    )}
-                                  </Card.Body>
-                                </Card.Link>
-                                <Dropdown className="card-actions">
-                                  <Dropdown.Toggle variant="icon" id="dropdown-actions">
-                                    <i className="fa-solid fa-ellipsis-vertical" />
-                                  </Dropdown.Toggle>
-                                  <Dropdown.Menu className="mt-2 fs-14">
-                                    <Dropdown.Item href="#" className="border-0">
-                                      <i className="fa-solid fa-arrows-rotate me-3" /> Refresh
-                                      Metadata
-                                    </Dropdown.Item>
-                                  </Dropdown.Menu>
-                                </Dropdown>
-                                <Button variant="icon btn-like btn-like__card">
+                      {items && items.length > 0 ? (
+                        items.map((item, key) => (
+                          <Col sm="6" md="4" lg="6" xl="4" xxl="3" className="mb-4" key={key}>
+                            <Card>
+                              <Card.Link
+                                href={`/collection-item?a=${rawToTon(item.address)}`}
+                                className="card-link"
+                              >
+                                <Card.Img
+                                  variant="top card-image"
+                                  src={item.previews ? item.previews[1].url : ''}
+                                />
+                                <Card.Body>
+                                  {item.collection ? (
+                                    <div className="card-subtitle d-flex align-items-center mb-2">
+                                      {item.collection?.name}
+                                      <span className="verified-icon ms-2" />
+                                    </div>
+                                  ) : (
+                                    <div className="card-subtitle d-flex align-items-center mb-2">
+                                      Single
+                                    </div>
+                                  )}
+                                  <Card.Title className="mb-3">{item.metadata.name}</Card.Title>
+                                  {item.sale ? (
+                                    <Card.Text className="d-flex align-items-center color-grey fs-18">
+                                      <span className="icon-ton me-2"></span>{' '}
+                                      {fixAmount(item.sale?.price.value ?? 0)}
+                                      {/* <Badge bg="purple" className="ms-2">MIN.BID</Badge> */}
+                                    </Card.Text>
+                                  ) : (
+                                    <Card.Text className="d-flex align-items-center color-grey">
+                                      Not For Sale
+                                    </Card.Text>
+                                  )}
+                                </Card.Body>
+                              </Card.Link>
+                              <Dropdown className="card-actions">
+                                <Dropdown.Toggle variant="icon" id="dropdown-actions">
+                                  <i className="fa-solid fa-ellipsis-vertical" />
+                                </Dropdown.Toggle>
+                                <Dropdown.Menu className="mt-2 fs-14">
+                                  <Dropdown.Item href="#" className="border-0">
+                                    <i className="fa-solid fa-arrows-rotate me-3" /> Refresh
+                                    Metadata
+                                  </Dropdown.Item>
+                                </Dropdown.Menu>
+                              </Dropdown>
+                              {/* <Button variant="icon btn-like btn-like__card">
                                   <i className="fa-regular fa-heart fs-18 me-2" />
                                   16
-                                </Button>
-                                <Button
-                                  variant="primary btn-sm card__show-effect"
-                                  data-bs-toggle="modal"
-                                  data-bs-target="#BuyNowModal"
-                                >
-                                  Buy Now
-                                </Button>
-                                {/* <div className="card-status fw-500">
+                                </Button> */}
+                              <Button variant="primary btn-sm card__show-effect">Buy Now</Button>
+                              {/* <div className="card-status fw-500">
                                              <i className="fa-regular fa-gavel me-2 fs-18" />
                                              7 days
                                           </div> */}
-                                <div
-                                  className="card__blur-bg-hover"
-                                  style={{
-                                    background:
-                                      'url(./assets/img/cats/1.png)  no-repeat center center / cover',
-                                  }}
-                                />
-                              </Card>
-                            </Col>
-                          ))
-                        : null}
+                              <div
+                                className="card__blur-bg-hover"
+                                style={{
+                                  background:
+                                    'url(./assets/img/cats/1.png)  no-repeat center center / cover',
+                                }}
+                              />
+                            </Card>
+                          </Col>
+                        ))
+                      ) : (
+                        <Card className="text-center p-5">
+                          <div className="display-2 w-100 mb-4">😔</div>
+                          <div className="fs-28 fw-bold">
+                            The user has <br /> no collected NFTs.
+                          </div>
+                          <Card.Text className="color-grey mt-2">
+                            After minting, NFTs will be displayed in this section <br /> and visible
+                            to other users.
+                          </Card.Text>
+                        </Card>
+                      )}
                     </Row>
                   </Tab>
                   <Tab eventKey="Created" title="Created">
@@ -546,7 +553,9 @@ export const User1: React.FC<PageProps> = (props: PageProps) => {
                       </Col>
                     </Row>
                   </Tab>
-                  <Tab eventKey="Favorites" title="Favorites">
+
+                  {/* Favorites */}
+                  {/* <Tab eventKey="Favorites" title="Favorites">
                     <Row className="flex-wrap collections__list">
                       <Col sm="6" md="4" lg="6" xl="4" xxl="3" className="mb-4">
                         <Card>
@@ -645,7 +654,7 @@ export const User1: React.FC<PageProps> = (props: PageProps) => {
                         </Card>
                       </Col>
                     </Row>
-                  </Tab>
+                  </Tab> */}
                 </Tabs>
               </Col>
             </Row>

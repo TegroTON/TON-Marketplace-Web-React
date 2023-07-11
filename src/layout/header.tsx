@@ -171,17 +171,19 @@ export const HeaderBlock: React.FC<HeaderType> = (props: HeaderType) => {
               </NavDropdown.Item>
             </NavDropdown>
             <div className="dropdown order-4 order-lg-1">
-              <Button
-                variant="outline-primary align-items-center d-none d-lg-flex flex-nowrap"
-                type="button"
-                id="dropdownMenuCat"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                <i className="fa-regular fa-grid-2 me-2" />
-                Explore
-              </Button>
-              <div className="dropdown-menu animate slideIn mt-3" aria-labelledby="dropdownMenuCat">
+              <a href="/explore">
+                <Button
+                  variant="outline-primary align-items-center d-none d-lg-flex flex-nowrap"
+                  type="button"
+                  // id="dropdownMenuCat"
+                  // data-bs-toggle="dropdown"
+                  // aria-expanded="false"
+                >
+                  <i className="fa-regular fa-grid-2 me-2" />
+                  Explore
+                </Button>
+              </a>
+              {/* <div className="dropdown-menu animate slideIn mt-3" aria-labelledby="dropdownMenuCat">
                 <a className="dropdown-item" href="/explore">
                   <i className="fa-regular fa-hexagon-vertical-nft-slanted me-3" />
                   All NFTs
@@ -222,7 +224,7 @@ export const HeaderBlock: React.FC<HeaderType> = (props: HeaderType) => {
                   <i className="fa-regular fa-vr-cardboard me-3" />
                   Virtual Worlds
                 </a>
-              </div>
+              </div> */}
             </div>
             <Nav className="d-flex align-items-lg-center flex-row py-4 py-lg-0 ms-0 ms-lg-auto order-2 order-lg-3">
               <NavDropdown

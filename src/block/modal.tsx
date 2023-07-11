@@ -40,7 +40,7 @@ export const Modals: React.FC<ModalType> = (props: ModalType) => {
   const [firstRender, setFirstRender] = React.useState<boolean>(false);
 
   console.log('DelabObject', props.DelabObject);
-  
+
   const [percentage, setPercentage] = React.useState<string>('10%');
 
   const [modalImg, setModalImg] = React.useState<string | null>(null);
@@ -215,12 +215,12 @@ export const Modals: React.FC<ModalType> = (props: ModalType) => {
                   {fixAmount(props.modalData.sale?.price.value ?? 0)} TON
                 </div>
               </Card>
-              <Alert key="warning" variant="warning mb-4">
-                <p>
+              <Alert key="warning" variant="warning">
+                <p style={{ margin: '0' }}>
                   Libermall is unaffiliated with any NFT projects. We are not responsible for
                   possible losses. Invest at your own risk.
                 </p>
-                <Alert.Link href="#">Learn More</Alert.Link>
+                {/* <Alert.Link href="#">Learn More</Alert.Link> */}
               </Alert>
               <Button
                 variant="primary w-100"

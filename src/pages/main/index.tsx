@@ -292,6 +292,8 @@ export const Main: React.FC<PageProps> = (props: PageProps) => {
                           )}
                         </Card.Body>
                       </Card.Link>
+
+                      {/* Card-Actions */}
                       {/* <Dropdown className="card-actions">
                         <Dropdown.Toggle variant="icon" id="dropdown-actions">
                           <i className="fa-solid fa-ellipsis-vertical" />
@@ -302,16 +304,14 @@ export const Main: React.FC<PageProps> = (props: PageProps) => {
                           </Dropdown.Item>
                         </Dropdown.Menu>
                       </Dropdown> */}
-                      <Button variant="icon btn-like btn-like__card">
+
+                      {/* Card-btn-like */}
+                      {/* <Button variant="icon btn-like btn-like__card">
                         <i className="fa-regular fa-heart fs-18 me-2" />8
-                      </Button>
-                      <Button
-                        variant="primary btn-sm card__show-effect"
-                        data-bs-toggle="modal"
-                        data-bs-target="#BuyNowModal"
-                      >
-                        Buy Now
-                      </Button>
+                      </Button> */}
+                      <a href={`/collection-item?a=${rawToTon(item.address)}`}>
+                        <Button variant="primary btn-sm card__show-effect">Buy Now</Button>
+                      </a>
                       <div
                         className="card__blur-bg-hover"
                         style={{
@@ -984,12 +984,12 @@ export const Main: React.FC<PageProps> = (props: PageProps) => {
             </div>
           </Container>
         </section>
-        <section className="category section" id="category">
+        {/* <section className="category section" id="category">
           <Container className="category__container container-fluid">
             <h2 className="section__title mb-5">
               Browse <span className="color-yellow">by category</span>
             </h2>
-            {/* <div className="category-slider pt-3"> */}
+            <div className="category-slider pt-3">
             <Slider {...props.settings}>
               <Card>
                 <Card.Link href="/collection" className="card-link">
@@ -1082,9 +1082,9 @@ export const Main: React.FC<PageProps> = (props: PageProps) => {
                 />
               </Card>
             </Slider>
-            {/* </div> */}
+            </div>
           </Container>
-        </section>
+        </section> */}
       </main>
     </div>
   );

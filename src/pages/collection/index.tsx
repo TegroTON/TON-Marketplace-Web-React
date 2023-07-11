@@ -249,7 +249,7 @@ export const Collection: React.FC<PageProps> = (props: PageProps) => {
                         className="ms-2 d-flex align-items-center"
                         style={{ color: '#a7a7a7' }}
                       >
-                        {collection.metadata?.name}
+                        {collection.metadata?.name || 'No Name'}
                         <span className="verified-icon ms-2 d-inline-block" />
                       </Card.Body>
                     </Card.Footer>
@@ -1191,17 +1191,15 @@ export const Collection: React.FC<PageProps> = (props: PageProps) => {
                                       </Dropdown.Item>
                                     </Dropdown.Menu>
                                   </Dropdown> */}
-                                  <Button variant="icon btn-like btn-like__card">
+                                  {/* <Button variant="icon btn-like btn-like__card">
                                     <i className="fa-regular fa-heart fs-18 me-2" />
                                     16
-                                  </Button>
-                                  <Button
-                                    variant="primary btn-sm card__show-effect"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#BuyNowModal"
-                                  >
-                                    Buy Now
-                                  </Button>
+                                  </Button> */}
+                                  <a href={`collection-item?a=${rawToTon(item.address)}`}>
+                                    <Button variant="primary btn-sm card__show-effect">
+                                      Buy Now
+                                    </Button>
+                                  </a>
                                   {/* <div className="card-status fw-500">
                                                <i className="fa-regular fa-gavel me-2 fs-18" />
                                                7 days
