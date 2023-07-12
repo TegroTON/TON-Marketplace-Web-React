@@ -20,7 +20,11 @@ import { MarketNft } from '../../logic/loadnft';
 import { getParameterByName, rawToTon, fixAmount, smlAddr } from '../../logic/utils';
 import { Collection as Coll, Item } from '../../logic/tonapi';
 
-export const Collection: React.FC<PageProps> = (props: PageProps) => {
+interface CollectionProps extends PageProps {
+  ownerAddress: string | undefined;
+}
+
+export const Collection = (props: CollectionProps) => {
   const [firstRender, setFirstRender] = React.useState<boolean>(false);
 
   const [collection, setCollection] = React.useState<Coll | undefined>(undefined);
@@ -195,7 +199,8 @@ export const Collection: React.FC<PageProps> = (props: PageProps) => {
                         <div className="mb-2">
                           {showFullText
                             ? collection.metadata?.description
-                            : collection.metadata?.description && collection.metadata?.description.length > 128
+                            : collection.metadata?.description &&
+                              collection.metadata?.description.length > 128
                             ? collection.metadata?.description?.slice(0, 128) + '...'
                             : collection.metadata?.description}
                         </div>
@@ -1193,19 +1198,31 @@ export const Collection: React.FC<PageProps> = (props: PageProps) => {
                                       </Dropdown.Item>
                                     </Dropdown.Menu>
                                   </Dropdown> */}
+
                                   {/* <Button variant="icon btn-like btn-like__card">
                                     <i className="fa-regular fa-heart fs-18 me-2" />
                                     16
                                   </Button> */}
-                                  <a href={`collection-item?a=${rawToTon(item.address)}`}>
-                                    <Button variant="primary btn-sm card__show-effect">
-                                      Buy Now
-                                    </Button>
-                                  </a>
+
+                                  {props.ownerAddress &&
+                                  item?.owner?.address &&
+                                  item?.owner?.address === props.ownerAddress ? (
+                                    <></>
+                                  ) : item?.sale?.price ? (
+                                    <a href={`collection-item?a=${rawToTon(item.address)}`}>
+                                      <Button variant="primary btn-sm card__show-effect">
+                                        Buy Now
+                                      </Button>
+                                    </a>
+                                  ) : (
+                                    <></>
+                                  )}
+
                                   {/* <div className="card-status fw-500">
-                                               <i className="fa-regular fa-gavel me-2 fs-18" />
-                                               7 days
-                                            </div> */}
+                                        <i className="fa-regular fa-gavel me-2 fs-18" />
+                                        7 days
+                                      </div> 
+                                  */}
                                   <div
                                     className="card__blur-bg-hover"
                                     style={{

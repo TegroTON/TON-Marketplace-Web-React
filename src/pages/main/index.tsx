@@ -21,7 +21,11 @@ import { getParameterByName, rawToTon, fixAmount } from '../../logic/utils';
 import { Collection, Item } from '../../logic/tonapi';
 import TokenPriceHook from '../../hooks/TokenPriceHook';
 
-export const Main: React.FC<PageProps> = (props: PageProps) => {
+interface MainProps extends PageProps {
+  ownerAddress: string | undefined;
+}
+
+export const Main = (props: MainProps) => {
   const [firstRender, setFirstRender] = React.useState<boolean>(false);
 
   const [items, setItems] = React.useState<Item[] | undefined>(undefined);
@@ -315,9 +319,19 @@ export const Main: React.FC<PageProps> = (props: PageProps) => {
                       {/* <Button variant="icon btn-like btn-like__card">
                         <i className="fa-regular fa-heart fs-18 me-2" />8
                       </Button> */}
-                      <a href={`/collection-item?a=${rawToTon(item.address)}`}>
-                        <Button variant="primary btn-sm card__show-effect">Buy Now</Button>
-                      </a>
+                      
+                      {props.ownerAddress &&
+                      item?.owner?.address &&
+                      item?.owner?.address === props.ownerAddress ? (
+                        <></>
+                      ) : item?.sale?.price ? (
+                        <a href={`/collection-item?a=${rawToTon(item.address)}`}>
+                          <Button variant="primary btn-sm card__show-effect">Buy Now</Button>
+                        </a>
+                      ) : (
+                        <></>
+                      )}
+
                       <div
                         className="card__blur-bg-hover"
                         style={{

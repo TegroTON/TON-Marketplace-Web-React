@@ -859,7 +859,7 @@ export const CollectionItem = (props: CollProps) => {
                           <Card.Title className="mb-3">{item.metadata.name}</Card.Title>
                           {item.sale ? (
                             <Card.Text className="d-flex align-items-center color-grey fs-18">
-                              <span className="icon-ton me-2"></span>{' '}
+                              <span className="icon-ton me-2"></span>
                               {fixAmount(item.sale?.price.value ?? 0)}
                               {/* <Badge bg="purple" className="ms-2">MIN.BID</Badge> */}
                             </Card.Text>
@@ -884,9 +884,19 @@ export const CollectionItem = (props: CollProps) => {
                         <i className="fa-regular fa-heart fs-18 me-2" />
                         16
                       </Button> */}
-                      <a href={`/collection-item?a=${rawToTon(item.address)}`}>
-                        <Button variant="primary btn-sm card__show-effect">Buy Now</Button>
-                      </a>
+
+                      {props.ownerAddress &&
+                      item?.owner?.address &&
+                      item?.owner?.address === props.ownerAddress ? (
+                        <></>
+                      ) : item?.sale?.price ? (
+                        <a href={`/collection-item?a=${rawToTon(item.address)}`}>
+                          <Button variant="primary btn-sm card__show-effect">Buy Now</Button>
+                        </a>
+                      ) : (
+                        <></>
+                      )}
+
                       {/* <div className="card-status fw-500">
                            <i className="fa-regular fa-gavel me-2 fs-18" />
                            7 days

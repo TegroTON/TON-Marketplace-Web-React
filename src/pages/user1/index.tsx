@@ -20,7 +20,11 @@ import { Account, AccountV2, Item } from '../../logic/tonapi';
 import { getParameterByName, rawToTon, fixAmount, smlAddr } from '../../logic/utils';
 import { MarketNft } from '../../logic/loadnft';
 
-export const User1: React.FC<PageProps> = (props: PageProps) => {
+interface UserProps extends PageProps {
+  ownerAddress: string | undefined;
+}
+
+export const User1 = (props: UserProps) => {
   const [firstRender, setFirstRender] = React.useState<boolean>(false);
   const [items, setItems] = React.useState<Item[] | undefined>(undefined);
 
@@ -448,11 +452,27 @@ export const User1: React.FC<PageProps> = (props: PageProps) => {
                                   <i className="fa-regular fa-heart fs-18 me-2" />
                                   16
                                 </Button> */}
-                              <Button variant="primary btn-sm card__show-effect">Buy Now</Button>
+                              {props.ownerAddress &&
+                              item?.owner?.address &&
+                              props.ownerAddress === item?.owner.address ? (
+                                item?.sale?.price ? (
+                                  <Button variant="primary card__show-btn">Remove from sale</Button>
+                                ) : (
+                                  <Button variant="primary card__show-btn">Put on sale</Button>
+                                )
+                              ) : (
+                                item?.sale?.price && (
+                                  <Button variant="primary btn-sm card__show-effect">
+                                    Buy Now
+                                  </Button>
+                                )
+                              )}
+
                               {/* <div className="card-status fw-500">
-                                             <i className="fa-regular fa-gavel me-2 fs-18" />
-                                             7 days
-                                          </div> */}
+                                    <i className="fa-regular fa-gavel me-2 fs-18" />
+                                    7 days
+                                  </div> 
+                              */}
                               <div
                                 className="card__blur-bg-hover"
                                 style={{
