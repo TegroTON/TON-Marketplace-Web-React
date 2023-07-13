@@ -36,6 +36,8 @@ interface ModalType {
   typeConnect: string | undefined;
   transactionResponse: string;
   setTransactionResponse: (transactionResponse: string) => void;
+  transactionError: string;
+  setTransactionError: (transactionError: string) => void;
 }
 
 export const Modals: React.FC<ModalType> = (props: ModalType) => {
@@ -598,22 +600,31 @@ export const Modals: React.FC<ModalType> = (props: ModalType) => {
               variant="link border-0 p-0 modal-close"
               data-bs-dismiss="modal"
               aria-label="Close"
+              onClick={() => props.setTransactionError('')}
             >
               <i className="fa-solid fa-xmark fa-lg" />
             </Button>
           </Modal.Header>
           <Modal.Body className="progress-list">
             <div className="progress-list__step d-flex mb-4">
-              {props.transactionResponse.length < 1 ? (
+              {props.transactionResponse.length < 1 && props.transactionError.length < 1 && (
                 <div
                   className="progress-list__icon progress-list__icon--loading"
                   style={{ fontSize: '40px' }}
                 >
                   <i className="fa-duotone fa-spinner-third fa-spin color-yellow" />
                 </div>
-              ) : (
+              )}
+
+              {props.transactionResponse.length > 1 && (
                 <div className="progress-list__icon" style={{ fontSize: '40px' }}>
                   <i className="fa-solid fa-check color-green"></i>
+                </div>
+              )}
+
+              {props.transactionError.length > 1 && (
+                <div className="progress-list__icon" style={{ fontSize: '40px' }}>
+                  <i className="fa-solid fa-xmark color-red"></i>
                 </div>
               )}
 
@@ -622,7 +633,7 @@ export const Modals: React.FC<ModalType> = (props: ModalType) => {
                 <div className="color-grey fs-14 mb-3 pe-5">
                   Go to the {props.DelabObject.typeConnect} app and confirm the transaction
                 </div>
-                {props.transactionResponse.length < 1 && (
+                {props.transactionResponse.length < 1 && props.transactionError.length < 1 && (
                   <Button variant="primary btn-sm small px-3 py-2">
                     Go to {props.typeConnect}
                   </Button>
@@ -630,15 +641,24 @@ export const Modals: React.FC<ModalType> = (props: ModalType) => {
               </div>
             </div>
             <div className="progress-list__step d-flex mb-4">
-              {props.transactionResponse.length < 1 ? (
+              {props.transactionResponse.length < 1 && props.transactionError.length < 1 && (
                 <div className="progress-list__icon" style={{ fontSize: '40px' }}>
                   <i className="fa-duotone fa-circle" />
                 </div>
-              ) : (
+              )}
+
+              {props.transactionResponse.length > 1 && (
                 <div className="progress-list__icon" style={{ fontSize: '40px' }}>
                   <i className="fa-solid fa-check color-green"></i>
                 </div>
               )}
+
+              {props.transactionError.length > 1 && (
+                <div className="progress-list__icon" style={{ fontSize: '40px' }}>
+                  <i className="fa-solid fa-xmark color-red"></i>
+                </div>
+              )}
+
               <div className="__body ms-4">
                 <div className="fs-18 fw-medium mb-1">Checking Payment</div>
                 <div className="color-grey fs-14 mb-3 pe-5">
@@ -651,6 +671,7 @@ export const Modals: React.FC<ModalType> = (props: ModalType) => {
             variant="secondary"
             data-bs-dismiss="modal"
             aria-label="Close"
+            onClick={() => props.setTransactionError('')}
           >
             Cancel
           </Button>

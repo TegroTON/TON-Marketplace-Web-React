@@ -34,6 +34,8 @@ interface Attribute {
 interface CreateNftProps extends PageProps {
   transactionResponse: string;
   setTransactionResponse: (transactionResponse: string) => void;
+  transactionError: string;
+  setTransactionError: (transactionError: string) => void;
 }
 
 export const CreateNft = (props: CreateNftProps) => {
@@ -161,7 +163,9 @@ export const CreateNft = (props: CreateNftProps) => {
     };
 
     const response = await props.DeLabConnector.sendTransaction(trans);
-    props.setTransactionResponse(response?.boc || '');
+    response.error
+      ? props.setTransactionError(response?.error || '')
+      : props.setTransactionResponse(response?.boc || '');
   }
 
   useEffect(() => {

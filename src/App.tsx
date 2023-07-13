@@ -76,6 +76,7 @@ export const App: React.FC = () => {
   const [account, setAccount] = React.useState<AccountV2 | undefined>(undefined);
 
   const [transactionResponse, setTransactionResponse] = React.useState<string>('');
+  const [transactionError, setTransactionError] = React.useState<string>('');
 
   const isDesktop = window.innerWidth >= 1200;
 
@@ -489,6 +490,8 @@ export const App: React.FC = () => {
                   settings={settings}
                   setTransactionResponse={setTransactionResponse}
                   transactionResponse={transactionResponse}
+                  transactionError={transactionError}
+                  setTransactionError={setTransactionError}
                 />
               }
             />
@@ -600,6 +603,8 @@ export const App: React.FC = () => {
           typeConnect={typeConnect}
           transactionResponse={transactionResponse}
           setTransactionResponse={setTransactionResponse}
+          transactionError={transactionError}
+          setTransactionError={setTransactionError}
         />
 
         {snackbar}
