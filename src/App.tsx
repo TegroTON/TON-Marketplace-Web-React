@@ -75,6 +75,8 @@ export const App: React.FC = () => {
 
   const [account, setAccount] = React.useState<AccountV2 | undefined>(undefined);
 
+  const [transactionResponse, setTransactionResponse] = React.useState<string>('');
+
   const isDesktop = window.innerWidth >= 1200;
 
   const settings: Settings = {
@@ -485,6 +487,8 @@ export const App: React.FC = () => {
                   address={address}
                   DeLabConnector={DeLabConnector}
                   settings={settings}
+                  setTransactionResponse={setTransactionResponse}
+                  transactionResponse={transactionResponse}
                 />
               }
             />
@@ -594,6 +598,8 @@ export const App: React.FC = () => {
           modalData={modalData}
           buyNft={buyNft}
           typeConnect={typeConnect}
+          transactionResponse={transactionResponse}
+          setTransactionResponse={setTransactionResponse}
         />
 
         {snackbar}

@@ -1531,7 +1531,8 @@ export const Collection = (props: CollectionProps) => {
                         </div>
                       )}
                     </Tab>
-                    <Tab eventKey="Activity" title="Activity">
+                    {/* Activity */}
+                    {/* <Tab eventKey="Activity" title="Activity">
                       <Card className="border p-0 mb-5">
                         <Card.Header className="px-4 py-3 border-bottom d-flex align-items-center">
                           <Card.Title>
@@ -1792,7 +1793,7 @@ export const Collection = (props: CollectionProps) => {
                           </tbody>
                         </Table>
                       </Card>
-                    </Tab>
+                    </Tab> */}
                   </Tabs>
                 </Col>
               </Row>

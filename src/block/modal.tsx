@@ -34,6 +34,8 @@ interface ModalType {
   modalData: Item | undefined;
   buyNft: Function;
   typeConnect: string | undefined;
+  transactionResponse: string;
+  setTransactionResponse: (transactionResponse: string) => void;
 }
 
 export const Modals: React.FC<ModalType> = (props: ModalType) => {
@@ -602,24 +604,41 @@ export const Modals: React.FC<ModalType> = (props: ModalType) => {
           </Modal.Header>
           <Modal.Body className="progress-list">
             <div className="progress-list__step d-flex mb-4">
-              <div
-                className="progress-list__icon progress-list__icon--loading"
-                style={{ fontSize: '40px' }}
-              >
-                <i className="fa-duotone fa-spinner-third fa-spin color-yellow" />
-              </div>
+              {props.transactionResponse.length < 1 ? (
+                <div
+                  className="progress-list__icon progress-list__icon--loading"
+                  style={{ fontSize: '40px' }}
+                >
+                  <i className="fa-duotone fa-spinner-third fa-spin color-yellow" />
+                </div>
+              ) : (
+                <div className="progress-list__icon" style={{ fontSize: '40px' }}>
+                  <i className="fa-solid fa-check color-green"></i>
+                </div>
+              )}
+
               <div className="__body ms-4">
                 <div className="fs-18 fw-medium mb-1">Transaction</div>
                 <div className="color-grey fs-14 mb-3 pe-5">
                   Go to the {props.DelabObject.typeConnect} app and confirm the transaction
                 </div>
-                <Button variant="primary btn-sm small px-3 py-2">Go to {props.typeConnect}</Button>
+                {props.transactionResponse.length < 1 && (
+                  <Button variant="primary btn-sm small px-3 py-2">
+                    Go to {props.typeConnect}
+                  </Button>
+                )}
               </div>
             </div>
             <div className="progress-list__step d-flex mb-4">
-              <div className="progress-list__icon" style={{ fontSize: '40px' }}>
-                <i className="fa-duotone fa-circle" />
-              </div>
+              {props.transactionResponse.length < 1 ? (
+                <div className="progress-list__icon" style={{ fontSize: '40px' }}>
+                  <i className="fa-duotone fa-circle" />
+                </div>
+              ) : (
+                <div className="progress-list__icon" style={{ fontSize: '40px' }}>
+                  <i className="fa-solid fa-check color-green"></i>
+                </div>
+              )}
               <div className="__body ms-4">
                 <div className="fs-18 fw-medium mb-1">Checking Payment</div>
                 <div className="color-grey fs-14 mb-3 pe-5">
@@ -628,7 +647,11 @@ export const Modals: React.FC<ModalType> = (props: ModalType) => {
               </div>
             </div>
           </Modal.Body>
-          <Button variant="secondary" data-bs-dismiss="modal" aria-label="Close">
+          <Button
+            variant="secondary"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          >
             Cancel
           </Button>
         </Modal.Dialog>

@@ -16,7 +16,7 @@ const config: Configuration = {
     devServer: {
         static: { directory: path.join(__dirname, 'public') },
         compress: true,
-        https: true,
+        https: false,
         hot: true,
         historyApiFallback: true,
         port: 8080,

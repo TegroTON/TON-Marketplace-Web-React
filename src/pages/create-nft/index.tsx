@@ -31,7 +31,12 @@ interface Attribute {
   value: string;
 }
 
-export const CreateNft: React.FC<PageProps> = (props: PageProps) => {
+interface CreateNftProps extends PageProps {
+  transactionResponse: string;
+  setTransactionResponse: (transactionResponse: string) => void;
+}
+
+export const CreateNft = (props: CreateNftProps) => {
   const [firstRender, setFirstRender] = React.useState<boolean>(false);
 
   const [uploading, setUploading] = React.useState<boolean>(false);
@@ -155,7 +160,8 @@ export const CreateNft: React.FC<PageProps> = (props: PageProps) => {
       stateInit: toBoc,
     };
 
-    props.DeLabConnector.sendTransaction(trans);
+    const response = await props.DeLabConnector.sendTransaction(trans);
+    props.setTransactionResponse(response?.boc || '');
   }
 
   useEffect(() => {
@@ -491,7 +497,8 @@ export const CreateNft: React.FC<PageProps> = (props: PageProps) => {
                       price.value === '' ||
                       desc.value === '' ||
                       uploading ||
-                      !img1
+                      !img1 ||
+                      props.transactionResponse.length > 1
                     }
                     onClick={() => createSingleNft()}
                   >
