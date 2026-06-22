@@ -28,7 +28,7 @@
         "@vkontakte/icons": "^1.202.0",
         "@vkontakte/vk-bridge": "^2.7.0",
         "@vkontakte/vkui": "^4.39.0",
-        "axios": "^1.2.3",
+        "axios": "^1.4.0",
         "bn.js": "^5.2.1",
         "buffer": "^6.0.3",
         "chai": "^4.3.6",
